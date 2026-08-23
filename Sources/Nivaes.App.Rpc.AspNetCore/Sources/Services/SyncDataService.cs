@@ -11,19 +11,34 @@ namespace Nivaes.App.Rpc.AspNetCore.Server;
 internal class SyncDataService(IMongoClient mongoClient, ILogger<SyncDataService> logger) 
     : ISyncDataService
 {
-    public async IAsyncEnumerable<SyncData> GetData(CallContext context = default)
+    public async IAsyncEnumerable<SyncData> GetData(long lastTimestampTicks, CallContext context = default)
     {
         logger.LogInformation("The message is received");
 
-        yield return new SyncData
-        {
-            // datos
-        };
+        var database = mongoClient.GetDatabase("Db1");
+        var collection = database.GetCollection<Test>("Test");
 
-        yield return new SyncData
+        var filter = Builders<Test>.Filter.And(
+                Builders<Test>.Filter.Gt("TimeStampTicks", lastTimestampTicks)
+            );
+
+        using var syncDatas = await collection
+            .Find(filter)
+            .Sort(Builders<Test>.Sort.Ascending(nameof(Test.TimeStampTicks)))
+             .ToCursorAsync();
+
+        while (await syncDatas.MoveNextAsync())
         {
-            // datos
-        };
+            foreach (var syncData in syncDatas.Current)
+            {
+                yield return new SyncData
+                {
+                    Id = syncData.Id,
+                    EntityType = syncData.EntityType,
+                    TimeStampTicks = syncData.TimeStampTicks
+                };
+            }
+        }
     }
 
     public async ValueTask<SyncResult> SendData(IAsyncEnumerable<SyncData> datas, CallContext context = default)
@@ -38,7 +53,7 @@ internal class SyncDataService(IMongoClient mongoClient, ILogger<SyncDataService
             var test = new Test
             {
                 Id = syncData.Id,
-                Name = syncData.EntityType,
+                EntityType = syncData.EntityType,
                 TimeStampTicks = syncData.TimeStampTicks
             };
             await collection.InsertOneAsync(test);
@@ -50,13 +65,13 @@ internal class SyncDataService(IMongoClient mongoClient, ILogger<SyncDataService
             Success = true
         };
     }
-
 }
 
 public class Test
 {
-    public Guid Id { get; set; }
-    public string? Name { get; set; }
+    required public Guid Id { get; set; }
 
-    public long TimeStampTicks { get; set; }
+    required public string EntityType { get; set; }
+
+    required public long TimeStampTicks { get; set; }
 }
