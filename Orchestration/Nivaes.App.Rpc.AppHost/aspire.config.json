@@ -1,5 +1,6 @@
 {
   "appHost": {
-    "path": "Nivaes.App.RPC.AppHost.AppHost/Nivaes.App.RPC.AppHost.AppHost.csproj"
+    "path": "Nivaes.App.RPC.AppHost/Nivaes.App.RPC.AppHost.csproj"
   }
 }
+   
