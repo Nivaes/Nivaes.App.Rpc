@@ -2,9 +2,9 @@
 <Folder Name="/Docs/">
 <File Path="Docs/Database.md" />
 </Folder>
- <Folder Name="/Orquestation/">
- <Project Path="Orquestation/Nivaes.App.Rpc.AppHost/Nivaes.App.Rpc.AppHost.AppHost/Nivaes.App.Rpc.AppHost.AppHost.csproj" Id="509fe33e-64f5-4805-8232-905eee712eb1" />
- <Project Path="Orquestation/Nivaes.App.Rpc.AppHost/Nivaes.App.Rpc.AppHost.ServiceDefaults/Nivaes.App.Rpc.AppHost.ServiceDefaults.csproj" />
+ <Folder Name="/Orchestration/">
+ <Project Path="Orchestration/Nivaes.App.Rpc.AppHost/Nivaes.App.Rpc.AppHost.AppHost/Nivaes.App.Rpc.AppHost.AppHost.csproj" Id="509fe33e-64f5-4805-8232-905eee712eb1" />
+ <Project Path="Orchestration/Nivaes.App.Rpc.AppHost/Nivaes.App.Rpc.AppHost.ServiceDefaults/Nivaes.App.Rpc.AppHost.ServiceDefaults.csproj" />
  </Folder>
 <Folder Name="/Samples/">
 <Project Path="Samples/Nivaes.App.Rpc.Sample.Client/Nivaes.App.Rpc.Sample.Client.csproj" Id="721a9301-8b8b-42a1-80f6-ede173769c36" />
