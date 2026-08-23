@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Orquestation\Nivaes.App.Rpc.AppHost\Nivaes.App.Rpc.AppHost.AppHost\Nivaes.App.Rpc.AppHost.AppHost.csproj" />
     <ProjectReference Include="..\Nivaes.App.Rpc.Sample.Shared\Nivaes.App.Rpc.Sample.Shared.csproj" />
   </ItemGroup>
 

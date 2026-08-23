@@ -23,19 +23,21 @@ public static class LoadDatatest
         for (int i = 1; i <= 1000; i++) {
 
             var contact = ContactGenerator.GenerateContact();
-
-            var user = new UserDataModel
+            if (! users.Where(u => u.Name == contact.SortName).Any())
             {
-                IdUser = Guid.NewGuid(),
-                Identification = $"ID{i:00000}",
-                Name = contact.SortName,
-                GivenName = contact.GivenName,
-                FamilyName = contact.FamilyName,
-                Email = contact.Email,
-                PhoneNumber = contact.TelephoneNumber
-            };
 
-            users.Add(user);
+                var user = new UserDataModel
+                {
+                    IdUser = Guid.NewGuid(),
+                    Identification = $"ID{i:00000}",
+                    Name = contact.SortName,
+                    GivenName = contact.GivenName,
+                    FamilyName = contact.FamilyName,
+                    Email = contact.Email,
+                    PhoneNumber = contact.TelephoneNumber
+                };
+                users.Add(user);
+            }
         }
 
         await db.Users.AddRangeAsync(users);
