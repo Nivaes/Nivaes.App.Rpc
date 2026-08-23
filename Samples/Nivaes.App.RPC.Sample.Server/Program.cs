@@ -34,7 +34,7 @@ internal class Program
         await app.InitializeLoadDatatest();
 
         // Configure the HTTP request pipeline.
-        app.MapGrpcService<SendSyncDataService>().EnableGrpcWeb(); 
+        app.MapGrpcService<SyncDataService>().EnableGrpcWeb(); 
 
         //app.UseRouting();
         //app.UseEndpoints(endpoints =>

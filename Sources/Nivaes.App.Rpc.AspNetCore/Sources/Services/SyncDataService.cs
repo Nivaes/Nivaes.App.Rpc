@@ -3,8 +3,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Nivaes.App.Rpc.AspNetCore.Server;
 
-public class SendSyncDataService(ILogger<SendSyncDataService> logger) 
-    : ISendSyncDataContract
+public class SyncDataService(ILogger<SyncDataService> logger) 
+    : ISyncDataContract
 {
     public ValueTask<string> Echo(string message/*, ServerCallContext? context = null*/)
     {
@@ -12,7 +12,7 @@ public class SendSyncDataService(ILogger<SendSyncDataService> logger)
         return ValueTask.FromResult(message);
     }
 
-    ValueTask<SyncData> ISendSyncDataContract.GetData(IAsyncStreamReader<SyncData> requestStream/*, ServerCallContext? context*/)
+    ValueTask<SyncData> ISyncDataContract.GetData(IAsyncStreamReader<SyncData> requestStream/*, ServerCallContext? context*/)
     {
         //logger.LogInformation("The message is received from {id}", requestStream.Current.Id);
         logger.LogInformation("The message is received");

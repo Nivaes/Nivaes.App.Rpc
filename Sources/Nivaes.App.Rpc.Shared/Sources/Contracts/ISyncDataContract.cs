@@ -4,9 +4,8 @@ using ProtoBuf.Grpc.Configuration;
 
 namespace Nivaes.App.Rpc;
 
-//[ServiceContract]
 [Service]
-public interface ISendSyncDataContract
+public interface ISyncDataContract
 {
     [Operation]
     //ValueTask<string> Echo(string message, ServerCallContext? context = default);

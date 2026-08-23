@@ -55,7 +55,7 @@ internal static class Program
         using var channel = GrpcChannel.ForAddress(url!);
 
         //GrpcChannel channel = await GetGrpcChannel().ConfigureAwait(false);
-        var service = channel.CreateGrpcService<ISendSyncDataContract>();
+        var service = channel.CreateGrpcService<ISyncDataContract>();
 
         using var cancel = new CancellationTokenSource(TimeSpan.FromMinutes(1));
         var options = new CallOptions(cancellationToken: cancel.Token);
