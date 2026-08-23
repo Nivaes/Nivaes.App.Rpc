@@ -2,12 +2,13 @@ using Grpc.Core;
 using MagicOnion;
 using MagicOnion.Server;
 using Microsoft.Extensions.Logging;
+using MongoDB.Driver;
 
 namespace Nivaes.App.Rpc.AspNetCore.Server;
 
-public class SendSyncDataService(ILogger<SendSyncDataService> logger) 
-    : ServiceBase<ISendSyncDataService>,
-        ISendSyncDataService
+public class SendSyncDataService(ILogger<SendSyncDataService> logger, IMongoClient mongoClient) 
+    : ServiceBase<ISyncDataService>,
+        ISyncDataService
 {
     //public ValueTask<string> Echo(string message/*, ServerCallContext? context = null*/)
     //{

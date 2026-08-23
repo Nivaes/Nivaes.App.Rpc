@@ -4,7 +4,7 @@ using MagicOnion;
 
 namespace Nivaes.App.Rpc;
 
-public interface ISendSyncDataService : IService<ISendSyncDataService>
+public interface ISyncDataService : IService<ISyncDataService>
 {
 
     UnaryResult<string> Echo(string message);

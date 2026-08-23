@@ -40,7 +40,7 @@ internal static class Program
         //var url = builder.Configuration["services:SampleServer:https:0"];
 
         var channel = GrpcChannel.ForAddress(url!);
-        var service = MagicOnionClient.Create<ISendSyncDataService>(channel);
+        var service = MagicOnionClient.Create<ISyncDataService>(channel);
 
         var message = await service.Echo("Message");
 
