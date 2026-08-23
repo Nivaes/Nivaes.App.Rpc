@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Nivaes.App.Rpc.AspNetCore\Nivaes.App.Rpc.AspNetCore.Server.csproj" />
-    <ProjectReference Include="..\Nivaes.App.Rpc\Nivaes.App.Rpc.Client.csproj" />
+    <ProjectReference Include="..\Nivaes.App.Rpc.Client\Nivaes.App.Rpc.Client.csproj" />
   </ItemGroup>
 
 	<ItemGroup>
