@@ -1,6 +1,7 @@
 using System.Diagnostics.Metrics;
 using Microsoft.EntityFrameworkCore;
 using Nivaes.App.Rpc.AspNetCore.Server;
+using Nivaes.App.Rpc.Client.Hosting;
 using ProtoBuf.Grpc.Server;
 
 namespace Nivaes.App.RPC.Sample.Server;
@@ -36,8 +37,9 @@ internal class Program
         //await app.InitializeLoadDatatest();
 
         // Configure the HTTP request pipeline.
-        app.MapGrpcService<EchoService>().EnableGrpcWeb();
-        app.MapGrpcService<SyncDataService>().EnableGrpcWeb();
+        //app.MapGrpcService<EchoService>().EnableGrpcWeb();
+        //app.MapGrpcService<SyncDataService>().EnableGrpcWeb();
+        app.InitializeRpcServer();
 
         //app.UseRouting();
         //app.UseEndpoints(endpoints =>
