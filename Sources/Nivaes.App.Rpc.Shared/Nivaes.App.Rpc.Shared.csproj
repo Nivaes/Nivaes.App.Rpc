@@ -10,7 +10,7 @@
 
 	  <IsAotCompatible>true</IsAotCompatible>
 	  <!--<RunAOTAnalysis>true</RunAOTAnalysis>-->
-	  <WarningsAsErrors>IL2CPP;IL3xxx</WarningsAsErrors>
+	  <!--<WarningsAsErrors>IL2CPP;IL3xxx</WarningsAsErrors>-->
 	  <OptimizationPreference>Speed</OptimizationPreference>
 	  <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>

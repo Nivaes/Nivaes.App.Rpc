@@ -51,14 +51,14 @@ public class RpcSyncDatabaseContext : DbContext
 
     public static string databasePath = "client.db";
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        //SQLitePCL.Batteries_V2.Init();
+    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //{
+    //    //SQLitePCL.Batteries_V2.Init();
 
-        optionsBuilder.UseSqlite($"Data Source={databasePath}")
-            .AddInterceptors(new RpcSyncDataInterceptor());
-            //.UseModel(Client.Database.DatabaseContextModel.Instance);
+    //    //optionsBuilder.UseSqlite($"Data Source={databasePath}")
+    //    //    .AddInterceptors(new RpcSyncDataInterceptor());
+    //        //.UseModel(Client.Database.DatabaseContextModel.Instance);
 
-        base.OnConfiguring(optionsBuilder);
-    }
+    //    base.OnConfiguring(optionsBuilder);
+    //}
 }

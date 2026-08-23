@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Nivaes.App.Rpc;
+using Nivaes.App.Rpc.Client.Hosting;
 using Nivaes.App.RPC.Sample.Client;
 using Nivaes.DataTestGenerator;
 using ProtoBuf.Grpc;
@@ -27,8 +28,15 @@ internal static class Program
         // Logging
         builder.Logging.AddConsole();
 
+        var url = builder.Configuration["services:SampleServer:Grpc:0"];
+
+        builder.AddRpcClient(new Uri(url!));
+
         using var host = builder.Build();
 
+        await host.InitializeRpcClientAsync();
+
+        await host.RunAsync();
         //var service = host.Services.GetRequiredService<MyService>();
         //await service.RunAsync();
 
@@ -47,7 +55,7 @@ internal static class Program
         //    innerHandler);
         //var httpClient = new HttpClient(grpcWebHandler);
 
-        var url = builder.Configuration["services:SampleServer:Grpc:0"];
+        
         //using var channel = GrpcChannel.ForAddress(url!,
         //    new GrpcChannelOptions
         //    {
