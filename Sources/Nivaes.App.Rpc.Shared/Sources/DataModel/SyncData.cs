@@ -6,7 +6,15 @@ using ProtoBuf;
 
 namespace Nivaes.App.Rpc;
 
-[DataContract]
+[ProtoContract]
 public class SyncData
 {
+    [ProtoMember(1)]
+    public Guid Id { get; set; }
+
+    [ProtoMember(2)]
+    public string EntityType { get; set; } = "";
+
+    [ProtoMember(3)]
+    public byte[] Data { get; set; } = [];
 }

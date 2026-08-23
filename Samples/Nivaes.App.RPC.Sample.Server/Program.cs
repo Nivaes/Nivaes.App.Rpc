@@ -24,6 +24,8 @@ internal class Program
                        .LogTo(Console.WriteLine);
                    });
 
+        builder.AddMongoDBClient(connectionName: "dbAppMongo");
+
         // Add services to the container.
         //builder.Services.AddGrpc();
         builder.Services.AddCodeFirstGrpc();
@@ -34,7 +36,8 @@ internal class Program
         await app.InitializeLoadDatatest();
 
         // Configure the HTTP request pipeline.
-        app.MapGrpcService<SyncDataService>().EnableGrpcWeb(); 
+        app.MapGrpcService<EchoService>().EnableGrpcWeb();
+        app.MapGrpcService<SyncDataService>().EnableGrpcWeb();
 
         //app.UseRouting();
         //app.UseEndpoints(endpoints =>

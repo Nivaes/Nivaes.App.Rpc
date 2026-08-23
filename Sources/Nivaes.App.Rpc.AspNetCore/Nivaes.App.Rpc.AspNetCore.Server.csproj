@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Aspire.MongoDB.Driver.v3" />
     <PackageReference Include="Grpc.AspNetCore.Server" />
     <PackageReference Include="Grpc.AspNetCore.Web" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />

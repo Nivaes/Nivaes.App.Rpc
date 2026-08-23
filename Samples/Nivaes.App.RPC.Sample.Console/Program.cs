@@ -11,6 +11,7 @@ using Nivaes.App.RPC.Sample.Client;
 using Nivaes.DataTestGenerator;
 using ProtoBuf.Grpc;
 using ProtoBuf.Grpc.Client;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Nivaes.App.RPC.Sample;
 
@@ -55,14 +56,47 @@ internal static class Program
         using var channel = GrpcChannel.ForAddress(url!);
 
         //GrpcChannel channel = await GetGrpcChannel().ConfigureAwait(false);
-        var service = channel.CreateGrpcService<ISyncDataContract>();
+        
+        var echoService = channel.CreateGrpcService<IEchoService>();
+        var message = await echoService.Echo("Message");
 
         using var cancel = new CancellationTokenSource(TimeSpan.FromMinutes(1));
         var options = new CallOptions(cancellationToken: cancel.Token);
-        //var aa = await service.GetData(/*new SyncData()*/);
-        var message = await service.Echo("Message");
+        var message2 = await echoService.EchoContext("Message", new CallContext(options));
+
+        var syncService = channel.CreateGrpcService<ISyncDataService>();
+        await syncService.SendData(GetData()/*, new CallContext(options)*/);
 
         Console.Write(message);
+    }
+
+    private static async IAsyncEnumerable<SyncData> GetData()
+    {
+        yield return new SyncData
+        {
+            Id = Guid.NewGuid(),
+            Data = []
+        };
+
+        await Task.Delay(1000);
+
+        yield return new SyncData
+        {
+            Id = Guid.NewGuid(),
+            Data = []
+        };
+
+        await Task.Delay(1000);
+
+        yield return new SyncData
+        {
+            Id = Guid.NewGuid(),
+            Data = []
+        };
+
+        await Task.Delay(1000);
+
+        await Task.CompletedTask;
     }
 
     private static async Task SaveUsers()
