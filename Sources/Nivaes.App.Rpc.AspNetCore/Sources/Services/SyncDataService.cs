@@ -28,7 +28,7 @@ public class SyncDataService(ILogger<SyncDataService> logger)
 
         await foreach(var syncData in datas)
         {
-            Console.WriteLine(syncData.Id);
+            Console.WriteLine($"Sync: {syncData.Id}: {syncData.EntityType}");
         }
 
         return new SyncResult

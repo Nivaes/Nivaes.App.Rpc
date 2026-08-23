@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.DependencyInjection;
+using Nivaes.App.Rpc.Client.Hosting;
+using Nivaes.App.Rpc.Client.RpcSyncData;
+using Nivaes.App.RPC.Client;
 
 namespace Nivaes.App.Rpc.Client
 {
@@ -72,7 +76,7 @@ namespace Nivaes.App.Rpc.Client
             return base.SavingChanges(eventData, result);
         }
 
-        public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
+        public override async ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
         {
             var changes = eventData.Context!.ChangeTracker
                    .Entries()
@@ -82,14 +86,23 @@ namespace Nivaes.App.Rpc.Client
                        EntityState.Deleted)
                    .ToList();
 
+            var signal = RpcHostExtension.Services!.GetRequiredService<RpcSyncDataSignal>();
+            var rpcSyncDb = RpcHostExtension.Services!.GetRequiredService<RpcSyncDatabaseContext>();
+
             foreach (var entry in changes)
             {
                 var item = entry.Entity as IRpcDataModel;
                 if(item != null)
                 {
-                    Console.WriteLine(item.Id);
-                    Console.WriteLine(item.TimeStampTicks);
-                    Console.WriteLine(entry.Metadata.Name);
+                    rpcSyncDb.SyncDatas.Add(new SyncData
+                    {
+                        Id = item.Id,
+                        EntityType = item.GetType().FullName!
+                    });
+
+                    //Console.WriteLine(item.Id);
+                    //Console.WriteLine(item.TimeStampTicks);
+                    //Console.WriteLine(entry.Metadata.Name);
                 }
 
                 //Console.WriteLine(entry.Metadata.Name);
@@ -97,8 +110,11 @@ namespace Nivaes.App.Rpc.Client
                 //Console.WriteLine($"{entry.Metadata.ClrType.FullName}: {entry.State}");
                 //Console.WriteLine("--------");
             }
+            await rpcSyncDb.SaveChangesAsync();
 
-            return base.SavingChangesAsync(eventData, result, cancellationToken);
+            signal.Signal();
+
+            return await base.SavingChangesAsync(eventData, result, cancellationToken);
         }
 
         public override InterceptionResult ThrowingConcurrencyException(ConcurrencyExceptionEventData eventData, InterceptionResult result)

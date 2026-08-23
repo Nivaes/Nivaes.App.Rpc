@@ -33,7 +33,7 @@ internal class Program
 
         var app = builder.Build();
 
-        await app.InitializeLoadDatatest();
+        //await app.InitializeLoadDatatest();
 
         // Configure the HTTP request pipeline.
         app.MapGrpcService<EchoService>().EnableGrpcWeb();

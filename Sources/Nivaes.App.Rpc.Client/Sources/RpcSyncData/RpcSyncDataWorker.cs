@@ -29,7 +29,7 @@ internal class RpcSyncDataWorker(
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Outbox error");
+                logger.LogError(ex, "Sync RPC error");
             }
 
             await Task.Delay(

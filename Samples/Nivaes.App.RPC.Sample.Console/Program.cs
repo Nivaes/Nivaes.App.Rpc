@@ -36,15 +36,23 @@ internal static class Program
 
         await host.InitializeRpcClientAsync();
 
-        await host.RunAsync();
+        await host.StartAsync();
+
+        try
+        {
+            await DatabaseStart.InitializeDatabase();
+
+            await SaveUsers();
+        }
+        finally
+        {
+            await host.StartAsync();
+        }
         //var service = host.Services.GetRequiredService<MyService>();
         //await service.RunAsync();
 
         //await DatabaseStart.InitializeDatabase("Data Source=client.db");
         //await DatabaseStart.InitializeDatabase("client.db");
-        await DatabaseStart.InitializeDatabase();
-
-        await SaveUsers();
         //await LoadUsers();
 
         //GrpcClientFactory.AllowUnencryptedHttp2 = true;
@@ -61,21 +69,21 @@ internal static class Program
         //    {
         //        HttpClient = httpClient
         //    });
-        using var channel = GrpcChannel.ForAddress(url!);
+        //using var channel = GrpcChannel.ForAddress(url!);
 
-        //GrpcChannel channel = await GetGrpcChannel().ConfigureAwait(false);
+        ////GrpcChannel channel = await GetGrpcChannel().ConfigureAwait(false);
         
-        var echoService = channel.CreateGrpcService<IEchoService>();
-        var message = await echoService.Echo("Message");
+        //var echoService = channel.CreateGrpcService<IEchoService>();
+        //var message = await echoService.Echo("Message");
 
-        using var cancel = new CancellationTokenSource(TimeSpan.FromMinutes(1));
-        var options = new CallOptions(cancellationToken: cancel.Token);
-        var message2 = await echoService.Echo("Message", new CallContext(options));
+        //using var cancel = new CancellationTokenSource(TimeSpan.FromMinutes(1));
+        //var options = new CallOptions(cancellationToken: cancel.Token);
+        //var message2 = await echoService.Echo("Message", new CallContext(options));
 
-        var syncService = channel.CreateGrpcService<ISyncDataService>();
-        await syncService.SendData(GetData()/*, new CallContext(options)*/);
+        //var syncService = channel.CreateGrpcService<ISyncDataService>();
+        //await syncService.SendData(GetData()/*, new CallContext(options)*/);
 
-        Console.Write(message);
+        //Console.Write(message);
     }
 
     private static async IAsyncEnumerable<SyncData> GetData()

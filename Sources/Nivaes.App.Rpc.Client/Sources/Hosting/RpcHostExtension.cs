@@ -14,6 +14,8 @@ namespace Nivaes.App.Rpc.Client.Hosting
 {
     public static class RpcHostExtension
     {
+        internal static IServiceProvider? Services;
+
         public static IHostApplicationBuilder AddRpcClient(this IHostApplicationBuilder builder, Uri url)
         {
             builder.Services.AddPooledDbContextFactory<RpcSyncDatabaseContext>(options =>
@@ -36,6 +38,8 @@ namespace Nivaes.App.Rpc.Client.Hosting
 
         public static async Task<IHost> InitializeRpcClientAsync(this IHost host)
         {
+            Services = host.Services;
+
             await using (var scope = host.Services.CreateAsyncScope())
             {
                 var factory = scope.ServiceProvider
