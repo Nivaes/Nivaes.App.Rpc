@@ -39,7 +39,7 @@ internal static class Program
         await SaveUsers();
         //await LoadUsers();
 
-        GrpcClientFactory.AllowUnencryptedHttp2 = true;
+        //GrpcClientFactory.AllowUnencryptedHttp2 = true;
         //var innerHandler = new SocketsHttpHandler();
 
         //var grpcWebHandler = new GrpcWebHandler(
@@ -62,7 +62,7 @@ internal static class Program
 
         using var cancel = new CancellationTokenSource(TimeSpan.FromMinutes(1));
         var options = new CallOptions(cancellationToken: cancel.Token);
-        var message2 = await echoService.EchoContext("Message", new CallContext(options));
+        var message2 = await echoService.Echo("Message", new CallContext(options));
 
         var syncService = channel.CreateGrpcService<ISyncDataService>();
         await syncService.SendData(GetData()/*, new CallContext(options)*/);

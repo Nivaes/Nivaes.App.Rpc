@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Nivaes.App.Rpc.Client
 {
-    public class RpcSaveChangesInterceptor : SaveChangesInterceptor
+    public class RpcSyncDataInterceptor : SaveChangesInterceptor
     {
         public override void SaveChangesCanceled(DbContextEventData eventData)
         {

@@ -7,7 +7,5 @@ namespace Nivaes.App.Rpc;
 [Service]
 public interface IEchoService
 {   
-    ValueTask<string> Echo(string message);
-
-    ValueTask<string> EchoContext(string message, CallContext context = default);
+    ValueTask<string> Echo(string message, CallContext context = default);
 }

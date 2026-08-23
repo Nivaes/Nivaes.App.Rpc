@@ -17,4 +17,14 @@ public class SyncData
 
     [ProtoMember(3)]
     public byte[] Data { get; set; } = [];
+
+    [ProtoIgnore]
+    public DateTime TimeStamp
+    {
+        get => DateTime.FromBinary(TimeStampTicks);
+        set => TimeStampTicks = value.Ticks;
+    }
+
+    [ProtoMember(4)]
+    public long TimeStampTicks { get; set; }
 }
