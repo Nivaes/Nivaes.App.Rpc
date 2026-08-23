@@ -11,7 +11,8 @@ var postgresDb = postgres.AddDatabase("dbAppPostgres");
 var mongo = builder.AddMongoDB("rpc-mongodb")
                 .WithLifetime(ContainerLifetime.Session)
                 .WithDataVolume()
-                .WithMongoExpress();
+                .WithMongoExpress()
+                .WithDbGate();
 
 var mongoDb = mongo.AddDatabase("dbAppMongo");
 

@@ -5,6 +5,7 @@
     <PackageVersion Include="Aspire.MongoDB.Driver.v3" Version="9.5.2" />
     <PackageVersion Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="13.5.2" />
     <PackageVersion Include="AsyncFixer" Version="2.1.0" />
+    <PackageVersion Include="CommunityToolkit.Aspire.Hosting.MongoDB.Extensions" Version="13.4.0" />
     <PackageVersion Include="MagicOnion.Abstractions" Version="7.10.2" />
     <PackageVersion Include="MagicOnion.Client" Version="7.10.2" />
     <PackageVersion Include="MagicOnion.Server" Version="7.10.2" />
