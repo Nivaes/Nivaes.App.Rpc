@@ -1,3 +1,5 @@
+using System.Collections.Concurrent;
+using System.Threading.Channels;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
@@ -8,10 +10,30 @@ using ProtoBuf.Grpc;
 
 namespace Nivaes.App.Rpc.AspNetCore.Server;
 
-internal class SyncDataService(IMongoClient mongoClient, ILogger<SyncDataService> logger) 
+internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncDataService> logger) 
     : ISyncDataService
 {
-    public async IAsyncEnumerable<SyncData> GetData(long lastTimestampTicks, CallContext context = default)
+    private static readonly ConcurrentDictionary<string, Channel<SyncData>> Connections = new();
+    async IAsyncEnumerable<SyncData> ISyncDataService.Connect(SyncConnection request, CallContext context)
+    {
+        var channel = Channel.CreateUnbounded<SyncData>();
+
+        Connections[request.UserId] = channel;
+
+        try
+        {
+            await foreach (var message in channel.Reader.ReadAllAsync(context.CancellationToken))
+            {
+                yield return message;
+            }
+        }
+        finally
+        {
+            Connections.TryRemove(request.UserId, out _);
+        }
+    }
+
+    async IAsyncEnumerable<SyncData> ISyncDataService.GetData(SyncRequest request, CallContext context)
     {
         logger.LogInformation("The message is received");
 
@@ -19,7 +41,7 @@ internal class SyncDataService(IMongoClient mongoClient, ILogger<SyncDataService
         var collection = database.GetCollection<Test>("Test");
 
         var filter = Builders<Test>.Filter.And(
-                Builders<Test>.Filter.Gt("TimeStampTicks", lastTimestampTicks)
+                Builders<Test>.Filter.Gt("TimeStampTicks", request.LastTimestampTicks)
             );
 
         using var syncDatas = await collection
@@ -41,7 +63,7 @@ internal class SyncDataService(IMongoClient mongoClient, ILogger<SyncDataService
         }
     }
 
-    public async ValueTask<SyncResult> SendData(IAsyncEnumerable<SyncData> datas, CallContext context = default)
+    async ValueTask<SyncResult> ISyncDataService.SendData(IAsyncEnumerable<SyncData> datas, CallContext context)
     {       
         logger.LogInformation("The message is received");
 

@@ -48,17 +48,4 @@ public class RpcSyncDatabaseContext : DbContext
                 .HasColumnName("TimeStampTicks");
         });
     }
-
-    public static string databasePath = "client.db";
-
-    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //{
-    //    //SQLitePCL.Batteries_V2.Init();
-
-    //    //optionsBuilder.UseSqlite($"Data Source={databasePath}")
-    //    //    .AddInterceptors(new RpcSyncDataInterceptor());
-    //        //.UseModel(Client.Database.DatabaseContextModel.Instance);
-
-    //    base.OnConfiguring(optionsBuilder);
-    //}
 }

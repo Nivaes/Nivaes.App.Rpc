@@ -8,7 +8,9 @@ namespace Nivaes.App.Rpc;
 [Service]
 public interface ISyncDataService
 {
-    IAsyncEnumerable<SyncData> GetData(long lastTimestampTicks, CallContext context = default);
+    IAsyncEnumerable<SyncData> Connect(SyncConnection request, CallContext context = default);
+
+    IAsyncEnumerable<SyncData> GetData(SyncRequest request, CallContext context = default);
 
     ValueTask<SyncResult> SendData(IAsyncEnumerable<SyncData> datas, CallContext context = default);    
 }

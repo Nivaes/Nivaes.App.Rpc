@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using MemoryPack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
@@ -94,21 +95,18 @@ namespace Nivaes.App.Rpc.Client
                 var item = entry.Entity as IRpcDataModel;
                 if(item != null)
                 {
+                    var itemData = MemoryPackSerializer.Serialize(item.GetType(), item);
+
+                    //IRpcDataModel? item2 = null;
+                    var item2 = (IRpcDataModel?)MemoryPackSerializer.Deserialize(item.GetType(),itemData);
+
                     rpcSyncDb.SyncDatas.Add(new SyncData
                     {
                         Id = item.Id,
+                        Data = itemData,
                         EntityType = item.GetType().FullName!
                     });
-
-                    //Console.WriteLine(item.Id);
-                    //Console.WriteLine(item.TimeStampTicks);
-                    //Console.WriteLine(entry.Metadata.Name);
                 }
-
-                //Console.WriteLine(entry.Metadata.Name);
-                //Console.WriteLine(entry.Entity);
-                //Console.WriteLine($"{entry.Metadata.ClrType.FullName}: {entry.State}");
-                //Console.WriteLine("--------");
             }
             await rpcSyncDb.SaveChangesAsync();
 
