@@ -40,11 +40,13 @@
     <File Path=".github/workflows/publish_release.yaml" />
   </Folder>
   <Folder Name="/Sources/">
-  <Project Path="Sources/Nivaes.App.Rpc.Client.Database.Tools/Nivaes.App.Rpc.Client.Database.Tools.csproj" Id="fcacc0d9-1a8b-4ec7-966d-cc8ca4dae4ea" />
   <Project Path="Sources/Nivaes.App.Rpc.AspNetCore/Nivaes.App.Rpc.AspNetCore.Server.csproj" Id="16ba9335-1d9a-4a90-9fc0-95a35d312ed5" />
-  <Project Path="Sources/Nivaes.App.Rpc.Shared/Nivaes.App.Rpc.Shared.csproj" Id="0bf402f2-8ff2-40ee-99d1-780a1a63c27f" />
-  <Project Path="Sources/Nivaes.App.Rpc.Tests/Nivaes.App.Rpc.Tests.csproj" Id="165d261b-3132-4883-9f7f-12989b1d6069" />
+  <Project Path="Sources/Nivaes.App.Rpc.Client.Database.Tools/Nivaes.App.Rpc.Client.Database.Tools.csproj" Id="fcacc0d9-1a8b-4ec7-966d-cc8ca4dae4ea" />
   <Project Path="Sources/Nivaes.App.Rpc.Client/Nivaes.App.Rpc.Client.csproj" Id="a2ff7403-a586-4b16-8c1b-d1c803c032bc" />
+  <Project Path="Sources/Nivaes.App.Rpc.Shared/Nivaes.App.Rpc.Shared.csproj" Id="0bf402f2-8ff2-40ee-99d1-780a1a63c27f" />
+  <Project Path="Sources/Nivaes.App.Rpc.SourceGenerator.UnitTests/Nivaes.App.Rpc.SourceGenerator.UnitTests.csproj" Id="8d818a3b-dbc5-42c5-ad07-96e0e8a2ccb6" />
+  <Project Path="Sources/Nivaes.App.Rpc.SourceGenerator/Nivaes.App.Rpc.SourceGenerator.csproj" Id="65a21855-7ba1-40fa-8ee7-41707b85e3d3" />
+  <Project Path="Sources/Nivaes.App.Rpc.Tests/Nivaes.App.Rpc.Tests.csproj" Id="165d261b-3132-4883-9f7f-12989b1d6069" />
   <Project Path="Sources/Nivaes.EntityFramework.Sqlite/Nivaes.EntityFrameworkCore.Sqlite.csproj" Id="d9a3acc4-68bf-4580-a843-79350f05b129" />
   </Folder>
   </Solution>
