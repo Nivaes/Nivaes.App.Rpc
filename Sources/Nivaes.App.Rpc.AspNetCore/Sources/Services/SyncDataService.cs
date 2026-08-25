@@ -1,11 +1,13 @@
 using System.Collections.Concurrent;
 using System.Threading.Channels;
 using Grpc.Core;
+using MemoryPack;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
+using Nivaes.App.Cross;
 using ProtoBuf.Grpc;
 
 namespace Nivaes.App.Rpc.AspNetCore.Server;
@@ -70,16 +72,24 @@ internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncData
         var database = mongoClient.GetDatabase("Db1");
         var collection = database.GetCollection<Test>("Test");
 
-        await foreach(var syncData in datas)
+        await foreach(var item in datas)
         {
+            if(!Singleton<RpcDataModelsTypeContainer>.Instance.RpcDataModelsType.TryGetValue(item.EntityType, out var syncDataType))
+            {
+                logger.LogError($"The type {item.EntityType} not register.");
+                continue;
+            }
+            var itemData = (IRpcDataModel?)MemoryPackSerializer.Deserialize(syncDataType, item.Data);
+
             var test = new Test
             {
-                Id = syncData.Id,
-                EntityType = syncData.EntityType,
-                TimeStampTicks = syncData.TimeStampTicks
+                Id = item.Id,
+                EntityType = item.EntityType,
+                ItemData= itemData,
+                TimeStampTicks = item.TimeStampTicks
             };
             await collection.InsertOneAsync(test);
-            Console.WriteLine($"Sync: {syncData.Id}: {syncData.EntityType}");
+            Console.WriteLine($"Sync: {item.Id}: {item.EntityType}");
         }
 
         return new SyncResult
@@ -94,6 +104,8 @@ public class Test
     required public Guid Id { get; set; }
 
     required public string EntityType { get; set; }
+
+    required public IRpcDataModel? ItemData { get; set; }
 
     required public long TimeStampTicks { get; set; }
 }

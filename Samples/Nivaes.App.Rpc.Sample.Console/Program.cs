@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Nivaes.App.Cross;
 using Nivaes.App.Rpc;
 using Nivaes.App.Rpc.Client.Hosting;
 using Nivaes.App.RPC.Sample.Client;
@@ -31,6 +32,10 @@ internal static class Program
         var url = builder.Configuration["services:SampleServer:Grpc:0"];
 
         builder.AddRpcClient(new Uri(url!));
+
+        RpcDataModelTypeContainerHelper.RegisterCombiners([
+            RpcDataModelTypeContainerHelper.New<UserDataModel>()
+        ]);
 
         using var host = builder.Build();
 

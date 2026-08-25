@@ -63,7 +63,7 @@ internal class RpcSyncDataWorker(
         var messages = db.SyncDatas
             .OrderBy(x => x.TimeStampTicks)
             .Take(50)
-            .ToAsyncEnumerable();
+            .AsAsyncEnumerable();
 
         await foreach (var message in messages)
         {

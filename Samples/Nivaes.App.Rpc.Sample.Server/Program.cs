@@ -1,5 +1,6 @@
 using System.Diagnostics.Metrics;
 using Microsoft.EntityFrameworkCore;
+using Nivaes.App.Cross;
 using Nivaes.App.Rpc.AspNetCore.Server;
 using Nivaes.App.Rpc.Client.Hosting;
 using ProtoBuf.Grpc.Server;
@@ -31,6 +32,10 @@ internal class Program
         //builder.Services.AddGrpc();
         builder.Services.AddCodeFirstGrpc();
         //builder.Services.AddHealthChecks();
+
+        RpcDataModelTypeContainerHelper.RegisterCombiners([
+            RpcDataModelTypeContainerHelper.New<UserDataModel>()
+        ]);
 
         var app = builder.Build();
 

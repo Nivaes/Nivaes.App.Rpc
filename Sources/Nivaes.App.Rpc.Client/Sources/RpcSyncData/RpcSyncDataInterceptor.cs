@@ -95,10 +95,7 @@ namespace Nivaes.App.Rpc.Client
                 var item = entry.Entity as IRpcDataModel;
                 if(item != null)
                 {
-                    var itemData = MemoryPackSerializer.Serialize(item.GetType(), item);
-
-                    //IRpcDataModel? item2 = null;
-                    var item2 = (IRpcDataModel?)MemoryPackSerializer.Deserialize(item.GetType(),itemData);
+                    var itemData = MemoryPackSerializer.Serialize(item.GetType(), item);                    
 
                     rpcSyncDb.SyncDatas.Add(new SyncData
                     {
