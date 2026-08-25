@@ -3,32 +3,27 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
+using MemoryPack;
 using Nivaes.App.Rpc;
 
 namespace Nivaes.App.RPC.Sample;
 
-public abstract class DataModel
+public abstract partial class DataModel
     : INotifyPropertyChanged, IRpcDataModel
 {
     public abstract Guid Id { get; }
 
     #region TimeStamp
-    //[MemoryPackIgnore]
+    [MemoryPackIgnore]
     public DateTime TimeStamp
     {
         get => new DateTime(TimeStampTicks, DateTimeKind.Utc);
         set => TimeStampTicks = value.Ticks;
     }
 
-    //[MemoryPackInclude]
     public long TimeStampTicks
     {
-        get
-        {
-            if (field == 0)
-                field = DateTime.Now.Ticks;
-            return field;
-        }
+        get => field;
         set => field = value;
     }
 

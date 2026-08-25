@@ -9,7 +9,7 @@ var serverDb = postgres.AddDatabase("dbAppSample");
 
 var mongo = builder.AddMongoDB("rpc-mongodb")
                 .WithLifetime(ContainerLifetime.Session)
-                .WithDataVolume()
+                //.WithDataVolume()
                 .WithMongoExpress()
                 .WithDbGate();
 

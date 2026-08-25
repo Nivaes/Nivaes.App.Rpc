@@ -39,6 +39,7 @@ namespace Nivaes.App.Rpc.Test.Serializer
             userCopy.IdUser.ShouldBe(user.IdUser);
             userCopy.PhoneNumber.ShouldBe(user.PhoneNumber);
             userCopy.TimeStamp.ShouldBe(user.TimeStamp);
+            userCopy.TimeStampTicks.ShouldBe(user.TimeStampTicks);
         }
 
         [Fact]
@@ -75,6 +76,7 @@ namespace Nivaes.App.Rpc.Test.Serializer
             userCopy.IdUser.ShouldBe(user.IdUser);
             userCopy.PhoneNumber.ShouldBe(user.PhoneNumber);
             userCopy.TimeStamp.ShouldBe(user.TimeStamp);
+            userCopy.TimeStampTicks.ShouldBe(user.TimeStampTicks);
         }
 
         [Fact]
@@ -112,6 +114,7 @@ namespace Nivaes.App.Rpc.Test.Serializer
             userCopy.IdUser.ShouldBe(user.IdUser);
             userCopy.PhoneNumber.ShouldBe(user.PhoneNumber);
             userCopy.TimeStamp.ShouldBe(user.TimeStamp);
+            userCopy.TimeStampTicks.ShouldBe(user.TimeStampTicks);
         }
     }
 }

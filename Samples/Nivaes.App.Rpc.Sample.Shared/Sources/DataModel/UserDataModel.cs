@@ -11,7 +11,7 @@ public partial class UserDataModel
 {
     public override Guid Id => IdUser;
 
-    public Guid IdUser { get; set; }
+    required public Guid IdUser { get; set; }
 
     public string? Identification
     {
@@ -60,7 +60,7 @@ public partial class UserDataModel
             }
         }
     }
-
+    
     public string FullName => string.Join(" ", new string[] { GivenName ?? string.Empty, FamilyName ?? string.Empty }.Where(s => !string.IsNullOrEmpty(s)));
 
     public string Initials => GivenName?.Substring(0, 1) + FamilyName?.Substring(0, 1);
@@ -70,6 +70,7 @@ public partial class UserDataModel
         get => field;
         set => base.SetProperty(ref field, value);
     }
+
     public string? Email
     {
         get => field;
