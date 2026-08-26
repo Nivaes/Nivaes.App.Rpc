@@ -15,7 +15,7 @@ internal class Program
 
         builder.AddServiceDefaults();
 
-        builder.AddNpgsqlDbContext<ServerDatabaseContext>("dbAppSample",
+        builder.AddNpgsqlDbContext<ServerDatabaseContext>("DbAppSample",
                    settings => { },
                    options =>
                    {
@@ -26,7 +26,7 @@ internal class Program
                        .LogTo(Console.WriteLine);
                    });
 
-        builder.AddMongoDBClient(connectionName: "dbAppMongo");
+        builder.AddMongoDBClient(connectionName: "DbAppMongo");
 
         // Add services to the container.
         //builder.Services.AddGrpc();

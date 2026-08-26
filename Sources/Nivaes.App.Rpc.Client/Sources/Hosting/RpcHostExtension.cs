@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Text;
-using System.Text.Json;
+﻿using System.Data.Common;
 using Grpc.Net.Client;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -43,8 +39,7 @@ namespace Nivaes.App.Rpc.Client.Hosting
 
             await using (var scope = host.Services.CreateAsyncScope())
             {
-                var factory = scope.ServiceProvider
-                    .GetRequiredService<IDbContextFactory<RpcSyncDatabaseContext>>();
+                var factory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<RpcSyncDatabaseContext>>();
 
                 await using var db = await factory.CreateDbContextAsync();
 

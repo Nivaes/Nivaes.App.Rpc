@@ -29,7 +29,7 @@ internal static class Program
         // Logging
         builder.Logging.AddConsole();
 
-        var url = builder.Configuration["services:SampleServer:Grpc:0"];
+        var url = builder.Configuration["services:RpcSampleSerice:Grpc:0"];
 
         builder.AddRpcClient(new Uri(url!));
 

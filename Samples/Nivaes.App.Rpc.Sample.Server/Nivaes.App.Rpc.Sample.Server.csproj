@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Orchestration\Nivaes.App.Rpc.AppHost\Nivaes.App.Rpc.ServiceDefaults\Nivaes.App.Rpc.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\..\Orchestration\Nivaes.App.Rpc.Sample.AppHost\Nivaes.App.Rpc.Sample.ServiceDefaults\Nivaes.App.Rpc.Sample.ServiceDefaults.csproj" />
     <ProjectReference Include="..\..\Sources\Nivaes.App.Rpc.AspNetCore\Nivaes.App.Rpc.AspNetCore.Server.csproj" />
     <ProjectReference Include="..\Nivaes.App.Rpc.Sample.Shared\Nivaes.App.Rpc.Sample.Shared.csproj" />
   </ItemGroup>

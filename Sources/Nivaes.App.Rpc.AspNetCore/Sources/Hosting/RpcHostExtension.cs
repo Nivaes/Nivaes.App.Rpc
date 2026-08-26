@@ -17,7 +17,7 @@ namespace Nivaes.App.Rpc.Client.Hosting
 
             Services = builder.ServiceProvider;
 
-            //builder.MapGrpcService<EchoService>().EnableGrpcWeb();
+            builder.MapGrpcService<EchoService>().EnableGrpcWeb();
             builder.MapGrpcService<SyncDataService>().EnableGrpcWeb();
 
             return builder;

@@ -2,7 +2,7 @@
 using Nivaes.App.RPC.Sample;
 using Nivaes.DataTestGenerator;
 
-namespace Nivaes.App.Rpc.Test.Serializer
+namespace Nivaes.App.Rpc.Sample.Test.Serializer
 {
     public class UserDataModelTest
     {

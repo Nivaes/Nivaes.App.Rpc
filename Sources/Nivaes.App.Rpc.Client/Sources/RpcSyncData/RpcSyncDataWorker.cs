@@ -32,17 +32,13 @@ internal class RpcSyncDataWorker(
                 logger.LogError(ex, "Sync RPC error");
             }
 
-            await Task.Delay(
-                TimeSpan.FromSeconds(2),
-                cancellationToken);
+            await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
         }
     }
 
     private async Task ProcessAsync(CancellationToken cancellationToken)
     {
-        await using var db =
-            await factory.CreateDbContextAsync(
-                cancellationToken);
+        await using var db = await factory.CreateDbContextAsync(cancellationToken);
 
         try
         {
@@ -62,7 +58,7 @@ internal class RpcSyncDataWorker(
 
         var messages = db.SyncDatas
             .OrderBy(x => x.TimeStampTicks)
-            .Take(50)
+            //.Take(50)
             .AsAsyncEnumerable();
 
         await foreach (var message in messages)
