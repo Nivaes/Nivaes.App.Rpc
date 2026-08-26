@@ -94,7 +94,8 @@ internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncData
             }
             //var itemData = (IRpcDataModel?)MemoryPackSerializer.Deserialize(syncDataType, item.Data);
 
-            await channel!.Writer.WriteAsync(item, context.CancellationToken);
+            if(channel != null)
+                await channel!.Writer.WriteAsync(item, context.CancellationToken);
 
             var test = new MongoDocument
             {

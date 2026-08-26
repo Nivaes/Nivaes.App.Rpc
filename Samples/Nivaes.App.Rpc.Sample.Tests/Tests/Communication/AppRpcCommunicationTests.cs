@@ -21,10 +21,13 @@ namespace Nivaes.App.Rpc.Sample.Tests
     public class AppRpcCommunicationTests
     {
         private readonly AppApiRpcHostFixture fixture;
+        private readonly ITestOutputHelper output;
 
-        public AppRpcCommunicationTests(AppApiRpcHostFixture fixture)
+        public AppRpcCommunicationTests(AppApiRpcHostFixture fixture, ITestOutputHelper output)
         {
             this.fixture = fixture;
+            this.output = output;
+       
         }
 
         [Fact]
@@ -102,11 +105,10 @@ namespace Nivaes.App.Rpc.Sample.Tests
         public async Task ApiRpc_Communication_Connection_SyncData_Test()
         {
             var syncDataService = fixture.CreateGrpcService<ISyncDataService>();
+            var connection = syncDataService.Connect(new SyncConnection(), fixture.CancellationToken);
 
             Task connectionTask = Task.Run(async() =>
             {
-                var connection = syncDataService.Connect(new SyncConnection(), fixture.CancellationToken);
-
                 await foreach (var item in connection)
                 {
                     item.ShouldNotBeNull();
@@ -116,32 +118,40 @@ namespace Nivaes.App.Rpc.Sample.Tests
                     var itemData = MemoryPackSerializer.Deserialize(syncDataType, item.Data);
 
                     itemData.ShouldNotBeNull();
+                    var user = (UserDataModel)itemData;
+
+                    user.ShouldNotBeNull();
+                    user.Name.ShouldNotBeNull();
+                    output.WriteLine(user.Name!);
                 }
             });
+            await Task.Delay(100);
 
             async IAsyncEnumerable<SyncData> GetUsers()
             {
-                var contact = ContactGenerator.GenerateContact();
-
-                int i = 1;
-                var item = new UserDataModel
+                for (int i = 1; i <= 10; i++)
                 {
-                    IdUser = Guid.NewGuid(),
-                    Identification = $"ID{i:00000}",
-                    Name = contact.SortName,
-                    GivenName = contact.GivenName,
-                    FamilyName = contact.FamilyName,
-                    Email = contact.Email,
-                    PhoneNumber = contact.TelephoneNumber
-                };
-                var itemData = MemoryPackSerializer.Serialize(item.GetType(), item);
+                    var contact = ContactGenerator.GenerateContact();
 
-                yield return new SyncData
-                {
-                    Id = item.Id,
-                    Data = itemData,
-                    EntityType = item.GetType().FullName!
-                };
+                    var item = new UserDataModel
+                    {
+                        IdUser = Guid.NewGuid(),
+                        Identification = $"ID{i:00000}",
+                        Name = contact.SortName,
+                        GivenName = contact.GivenName,
+                        FamilyName = contact.FamilyName,
+                        Email = contact.Email,
+                        PhoneNumber = contact.TelephoneNumber
+                    };
+                    var itemData = MemoryPackSerializer.Serialize(item.GetType(), item);
+
+                    yield return new SyncData
+                    {
+                        Id = item.Id,
+                        Data = itemData,
+                        EntityType = item.GetType().FullName!
+                    };
+                }
             }
             var items = GetUsers();
 
