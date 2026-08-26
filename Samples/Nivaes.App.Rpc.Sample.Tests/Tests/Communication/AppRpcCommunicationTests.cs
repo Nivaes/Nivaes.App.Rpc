@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using Aspire.Hosting.Testing;
+using AutoFixture;
+using AutoFixture.Xunit3;
 using Grpc.Net.Client;
 using MemoryPack;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Nivaes.App.Rpc.Client;
 using Nivaes.App.RPC.Sample;
 using Nivaes.DataTestGenerator;
 using ProtoBuf.Grpc.Client;
-using AutoFixture.Xunit3;
 
 namespace Nivaes.App.Rpc.Sample.Tests
 {
@@ -53,8 +55,6 @@ namespace Nivaes.App.Rpc.Sample.Tests
         [Fact]
         public async Task ApiRpc_Communication_SyncData_Test()
         {
-            var ct = CancellationToken.None;
-
             var syncDataService = fixture.CreateGrpcService<ISyncDataService>();
 
             async IAsyncEnumerable<SyncData> GetUsers()
@@ -81,9 +81,20 @@ namespace Nivaes.App.Rpc.Sample.Tests
                     EntityType = item.GetType().FullName!
                 };
             }
-            var users = GetUsers();
+            var items = GetUsers();
 
-            await syncDataService.SendData(users);
+            await syncDataService.SendData(items, fixture.CancellationToken);
+
+            var itemsCopy = syncDataService.GetData(new SyncRequest {  LastTimestampTicks = 0 }, fixture.CancellationToken);
+
+            var syncDataCopy = await itemsCopy.FirstAsync();
+            syncDataCopy.ShouldNotBeNull();
+
+            var syncDataType = Singleton<RpcDataModelsTypeContainer>.Instance.RpcDataModelsType[syncDataCopy.EntityType];
+          
+            var itemData = MemoryPackSerializer.Deserialize(syncDataType, syncDataCopy.Data);
+
+            itemData.ShouldNotBeNull();
         }
     }
 }

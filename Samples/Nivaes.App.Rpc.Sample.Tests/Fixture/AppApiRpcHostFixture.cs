@@ -6,6 +6,8 @@ using Aspire.Hosting.Testing;
 using Grpc.Net.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Nivaes.App.Cross;
+using Nivaes.App.RPC.Sample;
 using ProtoBuf.Grpc.Client;
 
 namespace Nivaes.App.Rpc.Sample.Tests
@@ -15,11 +17,21 @@ namespace Nivaes.App.Rpc.Sample.Tests
         public IDistributedApplicationTestingBuilder? AppHost;
         public DistributedApplication? App;
         private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(30);
-        public CancellationToken ct = CancellationToken.None;
 
+        private CancellationTokenSource CancellationTokenSource = new();
+        public CancellationToken CancellationToken;
+
+        public AppApiRpcHostFixture()
+        {
+            CancellationToken = CancellationTokenSource.Token;
+        }
 
         public async ValueTask InitializeAsync()
         {
+            RpcDataModelTypeContainerHelper.RegisterCombiners([
+                RpcDataModelTypeContainerHelper.New<UserDataModel>()
+            ]);
+
             AppHost = await DistributedApplicationTestingBuilder.CreateAsync<Projects.Nivaes_App_Rpc_Sample_AppHost>();
 
             AppHost.Services.AddLogging(logging =>
@@ -35,11 +47,11 @@ namespace Nivaes.App.Rpc.Sample.Tests
                 clientBuilder.AddStandardResilienceHandler();
             });
 
-            App = await AppHost.BuildAsync(ct)
-                .WaitAsync(DefaultTimeout, ct);
+            App = await AppHost.BuildAsync(CancellationToken)
+                .WaitAsync(DefaultTimeout, CancellationToken);
 
             await App.StartAsync()
-                .WaitAsync(DefaultTimeout, ct);
+                .WaitAsync(DefaultTimeout, CancellationToken);
         }
 
         public HttpClient GetHttpClient()
@@ -61,6 +73,8 @@ namespace Nivaes.App.Rpc.Sample.Tests
         {
             await App!.DisposeAsync();
             await AppHost!.DisposeAsync();
+
+            await CancellationTokenSource.CancelAsync();
         }
     }
 }

@@ -38,28 +38,35 @@ internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncData
 
     async IAsyncEnumerable<SyncData> ISyncDataService.GetData(SyncRequest request, CallContext context)
     {
-        logger.LogInformation("The message is received");
+        logger.LogInformation("Rpc GetData");
 
         var database = mongoClient.GetDatabase("Db1");
-        var collection = database.GetCollection<MongoDocument>("Test");
+        var collection = database.GetCollection<MongoDocument>("Items");
 
         var filter = Builders<MongoDocument>.Filter.And(
-                Builders<MongoDocument>.Filter.Gt("TimeStampTicks", request.LastTimestampTicks)
+                Builders<MongoDocument>.Filter.Lte(x => x.TimeStampTicks, request.LastTimestampTicks)
             );
+        var findOptions = new FindOptions<MongoDocument>
+        {
+            BatchSize = 100,
+            Sort = Builders<MongoDocument>.Sort.Ascending(nameof(MongoDocument.TimeStampTicks))
+        };
 
         using var syncDatas = await collection
-            .Find(filter)
-            .Sort(Builders<MongoDocument>.Sort.Ascending(nameof(MongoDocument.TimeStampTicks)))
-             .ToCursorAsync(context.CancellationToken);
+            .FindAsync(filter, findOptions, context.CancellationToken);
 
         while (await syncDatas.MoveNextAsync(context.CancellationToken))
         {
             foreach (var syncData in syncDatas.Current)
             {
+                var type = syncData.DataItem!.GetType();
+                var data = MemoryPackSerializer.Serialize(type!, syncData.DataItem);
+
                 yield return new SyncData
                 {
                     Id = syncData.Id,
-                    //EntityType = syncData.EntityType
+                    EntityType = type.FullName!,
+                    Data = data,
                     TimeStampTicks = syncData.TimeStampTicks
                 };
             }
@@ -68,7 +75,7 @@ internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncData
 
     async ValueTask<SyncResult> ISyncDataService.SendData(IAsyncEnumerable<SyncData> datas, CallContext context)
     {       
-        logger.LogInformation("The message is received");
+        logger.LogInformation("Rpc SendData");
 
         var database = mongoClient.GetDatabase("Db1");
         var collection = database.GetCollection<MongoDocument>("Items");
@@ -91,24 +98,24 @@ internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncData
                 TimeStampTicks = item.TimeStampTicks
             };
             await collection.InsertOrUpdateOneAsync(test, context.CancellationToken);
-            Console.WriteLine($"Sync: {item.Id}: {item.EntityType}");
+            //Console.WriteLine($"Sync: {item.Id}: {item.EntityType}");
 
-            using var syncDatas = await collection
-             .Find(Builders<MongoDocument>.Filter.Empty)
-             .ToCursorAsync();
+            //    using var syncDatas = await collection
+            //     .Find(Builders<MongoDocument>.Filter.Empty)
+            //     .ToCursorAsync();
 
-            while (await syncDatas.MoveNextAsync(context.CancellationToken))
-            {
-                foreach (var syncData in syncDatas.Current)
-                {
-                    //yield return new SyncData
-                    //{
-                    //    Id = syncData.Id,
-                    //    EntityType = syncData.EntityType,
-                    //    TimeStampTicks = syncData.TimeStampTicks
-                    //};
-                }
-            }
+            //    while (await syncDatas.MoveNextAsync(context.CancellationToken))
+            //    {
+            //        foreach (var syncData in syncDatas.Current)
+            //        {
+            //            //yield return new SyncData
+            //            //{
+            //            //    Id = syncData.Id,
+            //            //    EntityType = syncData.EntityType,
+            //            //    TimeStampTicks = syncData.TimeStampTicks
+            //            //};
+            //        }
+            //    }
         }
 
         return new SyncResult
