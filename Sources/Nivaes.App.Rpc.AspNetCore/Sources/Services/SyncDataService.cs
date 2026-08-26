@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.ServiceModel.Channels;
 using System.Threading.Channels;
 using Grpc.Core;
 using MemoryPack;
@@ -7,21 +8,24 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
+using MongoDB.Driver.Core.Connections;
 using Nivaes.App.Cross;
 using ProtoBuf.Grpc;
-using static System.Net.WebRequestMethods;
 
 namespace Nivaes.App.Rpc.AspNetCore.Server;
 
 internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncDataService> logger) 
     : ISyncDataService
 {
-    private static readonly ConcurrentDictionary<string, Channel<SyncData>> Connections = new();
+    private const string CollectionName = "Items";
+    //private static readonly ConcurrentDictionary<string, Channel<SyncData>> Connections = new();
+    private static Channel<SyncData>? channel;
+
     async IAsyncEnumerable<SyncData> ISyncDataService.Connect(SyncConnection request, CallContext context)
     {
-        var channel = Channel.CreateUnbounded<SyncData>();
+        channel = Channel.CreateUnbounded<SyncData>();
 
-        Connections[request.UserId] = channel;
+        //Connections[request.UserId] = channel;
 
         try
         {
@@ -32,7 +36,8 @@ internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncData
         }
         finally
         {
-            Connections.TryRemove(request.UserId, out _);
+            //Connections.TryRemove(request.UserId, out _);
+            channel = null;
         }
     }
 
@@ -41,7 +46,7 @@ internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncData
         logger.LogInformation("Rpc GetData");
 
         var database = mongoClient.GetDatabase("Db1");
-        var collection = database.GetCollection<MongoDocument>("Items");
+        var collection = database.GetCollection<MongoDocument>(CollectionName);
 
         var filter = Builders<MongoDocument>.Filter.And(
                 Builders<MongoDocument>.Filter.Lte(x => x.TimeStampTicks, request.LastTimestampTicks)
@@ -78,7 +83,7 @@ internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncData
         logger.LogInformation("Rpc SendData");
 
         var database = mongoClient.GetDatabase("Db1");
-        var collection = database.GetCollection<MongoDocument>("Items");
+        var collection = database.GetCollection<MongoDocument>(CollectionName);
 
         await foreach(var item in datas)
         {
@@ -89,6 +94,8 @@ internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncData
             }
             //var itemData = (IRpcDataModel?)MemoryPackSerializer.Deserialize(syncDataType, item.Data);
 
+            await channel!.Writer.WriteAsync(item, context.CancellationToken);
+
             var test = new MongoDocument
             {
                 Id = item.Id,
@@ -98,24 +105,6 @@ internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncData
                 TimeStampTicks = item.TimeStampTicks
             };
             await collection.InsertOrUpdateOneAsync(test, context.CancellationToken);
-            //Console.WriteLine($"Sync: {item.Id}: {item.EntityType}");
-
-            //    using var syncDatas = await collection
-            //     .Find(Builders<MongoDocument>.Filter.Empty)
-            //     .ToCursorAsync();
-
-            //    while (await syncDatas.MoveNextAsync(context.CancellationToken))
-            //    {
-            //        foreach (var syncData in syncDatas.Current)
-            //        {
-            //            //yield return new SyncData
-            //            //{
-            //            //    Id = syncData.Id,
-            //            //    EntityType = syncData.EntityType,
-            //            //    TimeStampTicks = syncData.TimeStampTicks
-            //            //};
-            //        }
-            //    }
         }
 
         return new SyncResult

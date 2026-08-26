@@ -9,6 +9,7 @@ using Grpc.Net.Client;
 using MemoryPack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel.Engine;
 using Nivaes.App.Rpc.Client;
 using Nivaes.App.RPC.Sample;
 using Nivaes.DataTestGenerator;
@@ -95,6 +96,56 @@ namespace Nivaes.App.Rpc.Sample.Tests
             var itemData = MemoryPackSerializer.Deserialize(syncDataType, syncDataCopy.Data);
 
             itemData.ShouldNotBeNull();
+        }
+
+        [Fact]
+        public async Task ApiRpc_Communication_Connection_SyncData_Test()
+        {
+            var syncDataService = fixture.CreateGrpcService<ISyncDataService>();
+
+            Task connectionTask = Task.Run(async() =>
+            {
+                var connection = syncDataService.Connect(new SyncConnection(), fixture.CancellationToken);
+
+                await foreach (var item in connection)
+                {
+                    item.ShouldNotBeNull();
+
+                    var syncDataType = Singleton<RpcDataModelsTypeContainer>.Instance.RpcDataModelsType[item.EntityType];
+
+                    var itemData = MemoryPackSerializer.Deserialize(syncDataType, item.Data);
+
+                    itemData.ShouldNotBeNull();
+                }
+            });
+
+            async IAsyncEnumerable<SyncData> GetUsers()
+            {
+                var contact = ContactGenerator.GenerateContact();
+
+                int i = 1;
+                var item = new UserDataModel
+                {
+                    IdUser = Guid.NewGuid(),
+                    Identification = $"ID{i:00000}",
+                    Name = contact.SortName,
+                    GivenName = contact.GivenName,
+                    FamilyName = contact.FamilyName,
+                    Email = contact.Email,
+                    PhoneNumber = contact.TelephoneNumber
+                };
+                var itemData = MemoryPackSerializer.Serialize(item.GetType(), item);
+
+                yield return new SyncData
+                {
+                    Id = item.Id,
+                    Data = itemData,
+                    EntityType = item.GetType().FullName!
+                };
+            }
+            var items = GetUsers();
+
+            await syncDataService.SendData(items, fixture.CancellationToken);
         }
     }
 }
