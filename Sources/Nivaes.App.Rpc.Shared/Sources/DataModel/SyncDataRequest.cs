@@ -11,6 +11,6 @@ public class SyncDataRequest
     [ProtoMember(2)]
     public int IdChannel { get; set; } = 0;
 
-    [ProtoMember(1)]
+    [ProtoMember(3)]
     required public long LastTimestampTicks { get; set; }
 }
