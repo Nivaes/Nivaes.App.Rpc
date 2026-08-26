@@ -18,14 +18,13 @@ internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncData
     : ISyncDataService
 {
     private const string CollectionName = "Items";
-    //private static readonly ConcurrentDictionary<string, Channel<SyncData>> Connections = new();
-    private static Channel<SyncData>? channel;
+    private static readonly ConcurrentDictionary<int, Channel<SyncData>> Connections = new();
 
     async IAsyncEnumerable<SyncData> ISyncDataService.Connect(SyncConnection request, CallContext context)
     {
-        channel = Channel.CreateUnbounded<SyncData>();
+        var channel = Channel.CreateUnbounded<SyncData>();
 
-        //Connections[request.UserId] = channel;
+        Connections[request.UserId] = channel;
 
         try
         {
@@ -36,8 +35,7 @@ internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncData
         }
         finally
         {
-            //Connections.TryRemove(request.UserId, out _);
-            channel = null;
+            Connections.TryRemove(request.UserId, out _);
         }
     }
 
@@ -92,16 +90,15 @@ internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncData
                 logger.LogError($"The type {item.EntityType} not register.");
                 continue;
             }
-            //var itemData = (IRpcDataModel?)MemoryPackSerializer.Deserialize(syncDataType, item.Data);
 
-            if(channel != null)
-                await channel!.Writer.WriteAsync(item, context.CancellationToken);
+            foreach (var channel in Connections)
+            {
+                await channel.Value.Writer.WriteAsync(item, context.CancellationToken);
+            }
 
             var test = new MongoDocument
             {
                 Id = item.Id,
-                //EntityType = item.EntityType,
-                //DataItem= new BsonBinaryData(item.Data)
                 DataItem = (IRpcDataModel?)MemoryPackSerializer.Deserialize(syncDataType, item.Data),
                 TimeStampTicks = item.TimeStampTicks
             };

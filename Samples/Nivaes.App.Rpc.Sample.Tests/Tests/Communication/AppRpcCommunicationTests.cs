@@ -1,19 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Text;
-using Aspire.Hosting.Testing;
-using AutoFixture;
+﻿using System.Net;
 using AutoFixture.Xunit3;
-using Grpc.Net.Client;
 using MemoryPack;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel.Engine;
-using Nivaes.App.Rpc.Client;
 using Nivaes.App.RPC.Sample;
 using Nivaes.DataTestGenerator;
-using ProtoBuf.Grpc.Client;
 
 namespace Nivaes.App.Rpc.Sample.Tests
 {
@@ -74,7 +63,8 @@ namespace Nivaes.App.Rpc.Sample.Tests
                     GivenName = contact.GivenName,
                     FamilyName = contact.FamilyName,
                     Email = contact.Email,
-                    PhoneNumber = contact.TelephoneNumber
+                    PhoneNumber = contact.TelephoneNumber,
+                    TimeStamp = DateTime.UtcNow
                 };
                 var itemData = MemoryPackSerializer.Serialize(item.GetType(), item);
 
@@ -105,10 +95,11 @@ namespace Nivaes.App.Rpc.Sample.Tests
         public async Task ApiRpc_Communication_Connection_SyncData_Test()
         {
             var syncDataService = fixture.CreateGrpcService<ISyncDataService>();
-            var connection = syncDataService.Connect(new SyncConnection(), fixture.CancellationToken);
-
+            
             Task connectionTask = Task.Run(async() =>
             {
+                var connection = syncDataService.Connect(new SyncConnection(), fixture.CancellationToken);
+
                 await foreach (var item in connection)
                 {
                     item.ShouldNotBeNull();
@@ -122,7 +113,7 @@ namespace Nivaes.App.Rpc.Sample.Tests
 
                     user.ShouldNotBeNull();
                     user.Name.ShouldNotBeNull();
-                    output.WriteLine(user.Name!);
+                    output.WriteLine($"{user.Identification}:{user.Name}");
                 }
             });
             await Task.Delay(100);
@@ -141,7 +132,74 @@ namespace Nivaes.App.Rpc.Sample.Tests
                         GivenName = contact.GivenName,
                         FamilyName = contact.FamilyName,
                         Email = contact.Email,
-                        PhoneNumber = contact.TelephoneNumber
+                        PhoneNumber = contact.TelephoneNumber,
+                        TimeStamp = DateTime.UtcNow
+                    };
+                    var itemData = MemoryPackSerializer.Serialize(item.GetType(), item);
+
+                    yield return new SyncData
+                    {
+                        Id = item.Id,
+                        Data = itemData,
+                        EntityType = item.GetType().FullName!
+                    };
+                }
+            }
+            var items = GetUsers();
+
+            await syncDataService.SendData(items, fixture.CancellationToken);
+        }
+    
+        [Fact]
+        public async Task ApiRpc_Communication_Multi_Connection_SyncData_Test()
+        {
+            var syncDataService = fixture.CreateGrpcService<ISyncDataService>();
+
+            async Task Connection(int i)
+            {
+                var connection = syncDataService.Connect(new SyncConnection { UserId = i }, fixture.CancellationToken);
+
+                await foreach (var item in connection)
+                {
+                    item.ShouldNotBeNull();
+
+                    var syncDataType = Singleton<RpcDataModelsTypeContainer>.Instance.RpcDataModelsType[item.EntityType];
+
+                    var itemData = MemoryPackSerializer.Deserialize(syncDataType, item.Data);
+
+                    itemData.ShouldNotBeNull();
+                    var user = (UserDataModel)itemData;
+
+                    user.ShouldNotBeNull();
+                    user.Name.ShouldNotBeNull();
+
+                    output.WriteLine($"{i} - {user.Identification}:{user.Name}");
+                }
+            }
+            
+            var taskConnection1 = Task.Run(async () => await Connection(1));
+            var taskConnection2 = Task.Run(async () => await Connection(2));
+            var taskConnection3 = Task.Run(async () => await Connection(3));
+            var taskConnection4 = Task.Run(async () => await Connection(4));
+
+            await Task.Delay(50);
+
+            async IAsyncEnumerable<SyncData> GetUsers()
+            {
+                for (int i = 1; i <= 3; i++)
+                {
+                    var contact = ContactGenerator.GenerateContact();
+
+                    var item = new UserDataModel
+                    {
+                        IdUser = Guid.NewGuid(),
+                        Identification = $"ID{i:00000}",
+                        Name = contact.SortName,
+                        GivenName = contact.GivenName,
+                        FamilyName = contact.FamilyName,
+                        Email = contact.Email,
+                        PhoneNumber = contact.TelephoneNumber,
+                        TimeStamp = DateTime.UtcNow
                     };
                     var itemData = MemoryPackSerializer.Serialize(item.GetType(), item);
 

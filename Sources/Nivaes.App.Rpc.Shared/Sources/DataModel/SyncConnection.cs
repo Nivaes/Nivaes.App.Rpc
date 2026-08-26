@@ -6,8 +6,8 @@ namespace Nivaes.App.Rpc;
 public class SyncConnection
 {
     [ProtoMember(1)]
-    public string UserId { get; set; } = string.Empty;
+    public int UserId { get; set; } = 0;
 
     [ProtoMember(2)]
-    public string ChatId { get; set; } = string.Empty;
+    public int ChatId { get; set; } = 0;
 }

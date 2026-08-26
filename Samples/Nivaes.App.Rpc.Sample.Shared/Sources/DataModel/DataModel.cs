@@ -23,7 +23,13 @@ public abstract partial class DataModel
 
     public long TimeStampTicks
     {
-        get => field;
+        get
+        {
+            if(field == 0)
+                field = DateTime.UtcNow.Ticks;
+
+            return field;
+        }
         set => field = value;
     }
 
