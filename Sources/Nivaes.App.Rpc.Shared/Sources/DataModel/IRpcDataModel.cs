@@ -8,5 +8,5 @@ public interface IRpcDataModel
 {
     Guid Id { get; }
 
-    long TimeStampTicks { get; }
+    long TimeStampTicks { get; set; }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Reflection.PortableExecutable;
 using System.ServiceModel.Channels;
 using System.Threading.Channels;
 using Grpc.Core;
@@ -20,11 +21,11 @@ internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncData
     private const string CollectionName = "Items";
     private static readonly ConcurrentDictionary<int, Channel<SyncData>> Connections = new();
 
-    async IAsyncEnumerable<SyncData> ISyncDataService.Connect(SyncConnection request, CallContext context)
+    async IAsyncEnumerable<SyncData> ISyncDataService.Connect(SyncDataRequest request, CallContext context)
     {
         var channel = Channel.CreateUnbounded<SyncData>();
 
-        Connections[request.UserId] = channel;
+        Connections[request.IdClient] = channel;
 
         try
         {
@@ -35,11 +36,11 @@ internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncData
         }
         finally
         {
-            Connections.TryRemove(request.UserId, out _);
+            Connections.TryRemove(request.IdClient, out _);
         }
     }
 
-    async IAsyncEnumerable<SyncData> ISyncDataService.GetData(SyncRequest request, CallContext context)
+    async IAsyncEnumerable<SyncData> ISyncDataService.GetData(SyncDataRequest request, CallContext context)
     {
         logger.LogInformation("Rpc GetData");
 
@@ -76,9 +77,11 @@ internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncData
         }
     }
 
-    async ValueTask<SyncResult> ISyncDataService.SendData(IAsyncEnumerable<SyncData> datas, CallContext context)
+    async ValueTask<SyncDataResult> ISyncDataService.SendData(IAsyncEnumerable<SyncData> datas, CallContext context)
     {       
         logger.LogInformation("Rpc SendData");
+        var headers = context.ServerCallContext?.RequestHeaders;
+        var idUser = int.Parse(headers!.FirstOrDefault(x => x.Key == "iduser")!.Value!);
 
         var database = mongoClient.GetDatabase("Db1");
         var collection = database.GetCollection<MongoDocument>(CollectionName);
@@ -93,7 +96,8 @@ internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncData
 
             foreach (var channel in Connections)
             {
-                await channel.Value.Writer.WriteAsync(item, context.CancellationToken);
+                if(channel.Key != idUser)
+                    await channel.Value.Writer.WriteAsync(item, context.CancellationToken);
             }
 
             var test = new MongoDocument
@@ -105,7 +109,7 @@ internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncData
             await collection.InsertOrUpdateOneAsync(test, context.CancellationToken);
         }
 
-        return new SyncResult
+        return new SyncDataResult
         {
             Success = true
         };

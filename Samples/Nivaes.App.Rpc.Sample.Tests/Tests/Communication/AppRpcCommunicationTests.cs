@@ -1,6 +1,8 @@
 ﻿using System.Net;
 using AutoFixture.Xunit3;
+using Grpc.Core;
 using MemoryPack;
+using Microsoft.AspNetCore.Components.Web;
 using Nivaes.App.RPC.Sample;
 using Nivaes.DataTestGenerator;
 
@@ -77,9 +79,26 @@ namespace Nivaes.App.Rpc.Sample.Tests
             }
             var items = GetUsers();
 
-            await syncDataService.SendData(items, fixture.CancellationToken);
+            var requestSend = new SyncDataRequest
+            {
+                IdClient = 1,
+                LastTimestampTicks = DateTime.UtcNow.Ticks
+            };
 
-            var itemsCopy = syncDataService.GetData(new SyncRequest {  LastTimestampTicks = 0 }, fixture.CancellationToken);
+            await syncDataService.SendData(items,
+                  new ProtoBuf.Grpc.CallContext(
+                    new CallOptions(
+                        headers: new Metadata { { "IdUser", "1" } },
+                        //credentials: 
+                        cancellationToken: fixture.CancellationToken)));
+
+            var requestGet = new SyncDataRequest
+            {
+                IdClient = 1,
+                LastTimestampTicks = DateTime.UtcNow.Ticks
+            };
+
+            var itemsCopy = syncDataService.GetData(requestGet, fixture.CancellationToken);
 
             var syncDataCopy = await itemsCopy.FirstAsync();
             syncDataCopy.ShouldNotBeNull();
@@ -95,10 +114,15 @@ namespace Nivaes.App.Rpc.Sample.Tests
         public async Task ApiRpc_Communication_Connection_SyncData_Test()
         {
             var syncDataService = fixture.CreateGrpcService<ISyncDataService>();
-            
-            Task connectionTask = Task.Run(async() =>
+
+            var connectionTask = Task.Run(async() =>
             {
-                var connection = syncDataService.Connect(new SyncConnection(), fixture.CancellationToken);
+                var requestSend = new SyncDataRequest
+                {
+                    IdClient = 1,
+                    LastTimestampTicks = DateTime.UtcNow.Ticks
+                };
+                var connection = syncDataService.Connect(requestSend, fixture.CancellationToken);
 
                 await foreach (var item in connection)
                 {
@@ -116,7 +140,7 @@ namespace Nivaes.App.Rpc.Sample.Tests
                     output.WriteLine($"{user.Identification}:{user.Name}");
                 }
             });
-            await Task.Delay(100);
+            await Task.Delay(50);
 
             async IAsyncEnumerable<SyncData> GetUsers()
             {
@@ -146,8 +170,18 @@ namespace Nivaes.App.Rpc.Sample.Tests
                 }
             }
             var items = GetUsers();
+            var requestSend = new SyncDataRequest
+            {
+                IdClient = 1,
+                LastTimestampTicks = DateTime.UtcNow.Ticks
+            };
 
-            await syncDataService.SendData(items, fixture.CancellationToken);
+            await syncDataService.SendData(items,
+                  new ProtoBuf.Grpc.CallContext(
+                    new CallOptions(
+                        headers: new Metadata { { "IdUser", "1" } },
+                        //credentials: 
+                        cancellationToken: fixture.CancellationToken)));
         }
     
         [Fact]
@@ -157,23 +191,36 @@ namespace Nivaes.App.Rpc.Sample.Tests
 
             async Task Connection(int i)
             {
-                var connection = syncDataService.Connect(new SyncConnection { UserId = i }, fixture.CancellationToken);
-
-                await foreach (var item in connection)
+                var requestSend = new SyncDataRequest
                 {
-                    item.ShouldNotBeNull();
+                    IdClient = i,
+                    LastTimestampTicks = DateTime.UtcNow.Ticks
+                };
+                var connection = syncDataService.Connect(requestSend, fixture.CancellationToken);
 
-                    var syncDataType = Singleton<RpcDataModelsTypeContainer>.Instance.RpcDataModelsType[item.EntityType];
+                try
+                {
+                    await foreach (var item in connection)
+                            //.WithCancellation(fixture.CancellationToken))
+                    {
+                        item.ShouldNotBeNull();
 
-                    var itemData = MemoryPackSerializer.Deserialize(syncDataType, item.Data);
+                        var syncDataType = Singleton<RpcDataModelsTypeContainer>.Instance.RpcDataModelsType[item.EntityType];
 
-                    itemData.ShouldNotBeNull();
-                    var user = (UserDataModel)itemData;
+                        var itemData = MemoryPackSerializer.Deserialize(syncDataType, item.Data);
 
-                    user.ShouldNotBeNull();
-                    user.Name.ShouldNotBeNull();
+                        itemData.ShouldNotBeNull();
+                        var user = (UserDataModel)itemData;
 
-                    output.WriteLine($"{i} - {user.Identification}:{user.Name}");
+                        user.ShouldNotBeNull();
+                        user.Name.ShouldNotBeNull();
+
+                        output.WriteLine($"{i} - {user.Identification}:{user.Name}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    output.WriteLine(ex.ToString());
                 }
             }
             
@@ -182,7 +229,7 @@ namespace Nivaes.App.Rpc.Sample.Tests
             var taskConnection3 = Task.Run(async () => await Connection(3));
             var taskConnection4 = Task.Run(async () => await Connection(4));
 
-            await Task.Delay(50);
+            await Task.Delay(5000);
 
             async IAsyncEnumerable<SyncData> GetUsers()
             {
@@ -203,6 +250,8 @@ namespace Nivaes.App.Rpc.Sample.Tests
                     };
                     var itemData = MemoryPackSerializer.Serialize(item.GetType(), item);
 
+                    await Task.Delay(100);
+
                     yield return new SyncData
                     {
                         Id = item.Id,
@@ -212,8 +261,18 @@ namespace Nivaes.App.Rpc.Sample.Tests
                 }
             }
             var items = GetUsers();
+            var requestSend = new SyncDataRequest
+            {
+                IdClient = 1,
+                LastTimestampTicks = DateTime.UtcNow.Ticks
+            };
 
-            await syncDataService.SendData(items, fixture.CancellationToken);
+            await syncDataService.SendData(items, 
+                new ProtoBuf.Grpc.CallContext(
+                    new CallOptions(
+                        headers: new Metadata { { "IdUser", "1" } },
+                        //credentials: 
+                        cancellationToken: fixture.CancellationToken)));
         }
     }
 }

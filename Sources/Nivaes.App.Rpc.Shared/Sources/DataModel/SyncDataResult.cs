@@ -3,8 +3,8 @@
 namespace Nivaes.App.Rpc;
 
 [ProtoContract]
-public class SyncRequest
+public class SyncDataResult
 {
     [ProtoMember(1)]
-    public long LastTimestampTicks { get; set; }
+    public bool Success { get; set; }
 }

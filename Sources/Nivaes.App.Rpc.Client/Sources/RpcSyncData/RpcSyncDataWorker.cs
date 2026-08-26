@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -43,8 +44,13 @@ internal class RpcSyncDataWorker(
         try
         {
             var syncDatas = SyncDatas(cancellationToken);
+            var request = new SyncDataRequest 
+            { 
+                IdClient = 1, 
+                LastTimestampTicks = DateTime.UtcNow.Ticks
+            };
 
-            await syncDataService.SendData(syncDatas, cancellationToken);
+            await syncDataService.SendData(syncDatas, new CallOptions(cancellationToken: cancellationToken));
         }
         catch (Exception ex)
         {
