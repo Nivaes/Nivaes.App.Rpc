@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net10.0</TargetFramework>
+
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+
+		<!--<PublishAot>true</PublishAot>-->
+		<InvariantGlobalization>true</InvariantGlobalization>
+
+		<InterceptorsNamespaces>$(InterceptorsNamespaces);Microsoft.EntityFrameworkCore.GeneratedInterceptors</InterceptorsNamespaces>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="Sources\**" />
+		<EmbeddedResource Remove="Sources\**" />
+		<None Remove="Sources\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Grpc.Net.Client.Web" />
+		<PackageReference Include="Grpc.Net.Client" />
+		<PackageReference Include="protobuf-net.Grpc" />
+
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tasks">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Extensions.Hosting" />
+
+		<PackageReference Include="Nivaes.DataTestGenerator" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Nivaes.App.Rpc.Sample.Client\Nivaes.App.Rpc.Sample.Client.csproj" />
+	</ItemGroup>
+
+
+</Project>

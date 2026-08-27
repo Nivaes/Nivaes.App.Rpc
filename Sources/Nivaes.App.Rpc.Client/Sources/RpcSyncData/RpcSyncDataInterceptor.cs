@@ -100,19 +100,30 @@ namespace Nivaes.App.Rpc.Client
             foreach (var entry in changes)
             {
                 var item = entry.Entity as IRpcDataModel;
-                if(item != null)
+                if (item != null)
                 {
                     item.TimeStampTicks = DateTime.UtcNow.Ticks;
 
                     var itemData = MemoryPackSerializer.Serialize(item.GetType(), item);
 
-                    rpcSyncDb.SyncDatas.Add(new SyncData
+                    var syncDataItem = await rpcSyncDb.SyncDatas.FindAsync(item.Id, cancellationToken);
+
+                    var syncData = new SyncData
                     {
                         Id = item.Id,
                         Data = itemData,
                         EntityType = item.GetType().FullName!,
                         TimeStampTicks = item.TimeStampTicks,
-                    });
+                    };
+
+                    if (syncDataItem == null)
+                    {
+                        rpcSyncDb.SyncDatas.Add(syncData);
+                    }
+                    else
+                    {
+                        rpcSyncDb.Entry(syncDataItem).CurrentValues.SetValues(syncData);
+                    }
                 }
             }
             await rpcSyncDb.SaveChangesAsync();

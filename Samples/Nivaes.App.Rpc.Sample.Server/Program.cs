@@ -15,16 +15,16 @@ internal class Program
 
         builder.AddServiceDefaults();
 
-        builder.AddNpgsqlDbContext<ServerDatabaseContext>("DbAppSample",
-                   settings => { },
-                   options =>
-                   {
-                       options.UseNpgsql(o =>
-                       {
-                           o.EnableRetryOnFailure();
-                       })
-                       .LogTo(Console.WriteLine);
-                   });
+        //builder.AddNpgsqlDbContext<ServerDatabaseContext>("DbAppSample",
+        //           settings => { },
+        //           options =>
+        //           {
+        //               options.UseNpgsql(o =>
+        //               {
+        //                   o.EnableRetryOnFailure();
+        //               })
+        //               .LogTo(Console.WriteLine);
+        //           });
 
         builder.AddMongoDBClient(connectionName: "DbAppMongo");
 

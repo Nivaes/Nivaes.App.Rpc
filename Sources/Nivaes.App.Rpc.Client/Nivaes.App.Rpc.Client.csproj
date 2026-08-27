@@ -35,8 +35,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<InternalsVisibleTo Include="Nivaes.App.Rpc.Sample.Tests"/>
-		<InternalsVisibleTo Include="Nivaes.App.Rpc.Client.Database.Tools"/>
+		<InternalsVisibleTo Include="Nivaes.App.Rpc.Sample.Tests" />
+		<InternalsVisibleTo Include="Nivaes.App.Rpc.Client.Database.Tools" />
 	</ItemGroup>
 
 </Project>

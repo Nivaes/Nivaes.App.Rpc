@@ -15,6 +15,8 @@ internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncData
 
     async IAsyncEnumerable<SyncData> ISyncDataService.Connect(SyncConnectionRequest request, CallContext context)
     {
+        logger.LogDebug("Rpc Connect");
+
         var channel = Channel.CreateUnbounded<SyncData>();
 
         Connections[request.IdClient] = channel;
@@ -34,7 +36,7 @@ internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncData
 
     async IAsyncEnumerable<SyncData> ISyncDataService.GetData(SyncDataRequest request, CallContext context)
     {
-        logger.LogInformation("Rpc GetData");
+        logger.LogDebug("Rpc GetData");
 
         var database = mongoClient.GetDatabase("Db1");
         var collection = database.GetCollection<MongoDocument>(CollectionName);
@@ -71,7 +73,8 @@ internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncData
 
     async ValueTask<SyncDataResult> ISyncDataService.SendData(IAsyncEnumerable<SyncData> datas, CallContext context)
     {       
-        logger.LogInformation("Rpc SendData");
+        logger.LogDebug("Rpc SendData");
+
         var headers = context.ServerCallContext?.RequestHeaders;
         var idUser = int.Parse(headers!.FirstOrDefault(x => x.Key == "idclient")!.Value!);
 

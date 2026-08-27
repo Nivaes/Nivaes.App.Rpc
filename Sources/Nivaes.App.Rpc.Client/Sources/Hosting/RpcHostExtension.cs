@@ -30,9 +30,14 @@ namespace Nivaes.App.Rpc.Client.Hosting
                 options.UseSqlite("Data Source=syncache.db");
             });
 
+            builder.Services.AddSingleton<GrpcChannel>(sp =>
+            {
+                return GrpcChannel.ForAddress(url);
+            });
+
             builder.Services.AddSingleton<ISyncDataService>(sp =>
             {
-                var channel = GrpcChannel.ForAddress(url);
+                var channel = sp.GetRequiredService<GrpcChannel>();
 
                 return channel.CreateGrpcService<ISyncDataService>();
             });

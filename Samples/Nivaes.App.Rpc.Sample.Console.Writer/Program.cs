@@ -19,7 +19,8 @@ internal static class Program
         builder.Logging.AddFilter("Microsoft", LogLevel.Information);
         builder.Logging.AddFilter("Nivaes", LogLevel.Trace);
 
-        var url = builder.Configuration["services:RpcSampleSerice:Grpc:0"];
+        //var url = builder.Configuration["services:RpcSampleSerice:Grpc:0"];
+        var url = "https://localhost:7121";
 
         builder.AddRpcClient<DatabaseContext>(new Uri(url!));
 
@@ -51,21 +52,19 @@ internal static class Program
 
     private static async Task SaveUsers(IHost host)
     {
-        //await using DatabaseContext db = new DatabaseContext();
-        var factory = host.Services.GetService<IDbContextFactory<DatabaseContext>>();
-
-        await using var db = await factory!.CreateDbContextAsync();
-
-        var users = new List<UserDataModel>();
-
-        for (int i = 1; i <= 10; i++)
+        int i = 0;
+        while (true)
         {
+            var factory = host.Services.GetService<IDbContextFactory<DatabaseContext>>();
+
+            await using var db = await factory!.CreateDbContextAsync();
+    
             var contact = ContactGenerator.GenerateContact();
 
             var user = new UserDataModel
             {
                 IdUser = Guid.NewGuid(),
-                Identification = $"ID{i:00000}",
+                Identification = $"ID{i++:00000}",
                 Name = contact.SortName,
                 GivenName = contact.GivenName,
                 FamilyName = contact.FamilyName,
@@ -73,10 +72,14 @@ internal static class Program
                 PhoneNumber = contact.TelephoneNumber
             };
 
-            users.Add(user);
+            await db.Users.AddAsync(user);
+            await db.SaveChangesAsync();
+
+            Console.WriteLine($"Write object {user.Identification}");
+
+            Console.ReadLine();
+        
         }
 
-        await db.Users.AddRangeAsync(users);
-        await db.SaveChangesAsync();
     }
 }

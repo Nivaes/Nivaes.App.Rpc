@@ -1,15 +1,15 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
 #region Database
-var postgres = builder.AddPostgres("RpcPostgres", port: 5432)
-                      .WithLifetime(ContainerLifetime.Persistent)
-                      .WithDataVolume()
-                      .WithPgAdmin();
-var serverDb = postgres.AddDatabase("DbAppSample");
+//var postgres = builder.AddPostgres("RpcPostgres", port: 5432)
+//                      .WithLifetime(ContainerLifetime.Persistent)
+//                      .WithDataVolume()
+//                      .WithPgAdmin();
+//var serverDb = postgres.AddDatabase("DbAppSample");
 
 var mongo = builder.AddMongoDB("RpcMongoDB")
-                .WithLifetime(ContainerLifetime.Session)
-                //.WithDataVolume()
+                .WithLifetime(ContainerLifetime.Persistent)
+                .WithDataVolume()
                 .WithMongoExpress()
                 .WithDbGate();
 
@@ -20,8 +20,8 @@ var mongoDb = mongo.AddDatabase("DbAppMongo");
 var appWebApi = builder.AddProject<Projects.Nivaes_App_Rpc_Sample_Server>("RpcSampleSerice")
                 .WithHttpsEndpoint(name: "grpc")
                 .WithHttpHealthCheck("/health")
-                .WithReference(serverDb)
-                .WaitFor(serverDb)
+                //.WithReference(serverDb)
+                //.WaitFor(serverDb)
                 .WithReference(mongoDb)
                 .WaitFor(mongoDb);
 #endregion

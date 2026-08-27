@@ -15,10 +15,9 @@ internal static class Program
     {
         var builder = Host.CreateApplicationBuilder(args);
 
-        // Servicios
-        //builder.Services.AddSingleton<MyService>();
-
-        // Logging
+        builder.Logging.SetMinimumLevel(LogLevel.Debug);
+        builder.Logging.AddFilter("Microsoft", LogLevel.Information);
+        builder.Logging.AddFilter("Nivaes", LogLevel.Trace);
         builder.Logging.AddConsole();
 
         var url = builder.Configuration["services:RpcSampleSerice:Grpc:0"];
@@ -42,12 +41,11 @@ internal static class Program
             await DatabaseStart.InitializeDatabase(host);
 
             //await SaveUsers(host);
-
-            await Task.Delay(30000);
+            await Task.Delay(12000000);
         }
         finally
         {
-            await host.StartAsync();
+            await host.StopAsync();
         }
     }
 
