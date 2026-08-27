@@ -75,7 +75,7 @@ internal static class Program
             await db.Users.AddAsync(user);
             await db.SaveChangesAsync();
 
-            Console.WriteLine($"Write object {user.Identification}");
+            Console.WriteLine($"Write object {user.IdUser} <-> {user.Identification}");
 
             Console.ReadLine();
         

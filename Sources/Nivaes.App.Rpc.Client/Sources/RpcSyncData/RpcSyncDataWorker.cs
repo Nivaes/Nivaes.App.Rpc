@@ -44,7 +44,14 @@ internal class RpcSyncDataWorker<TContext>(
                 logger.LogError(ex, "Sync RPC error");
             }
 
-            await Task.Delay(TimeSpan.FromSeconds(10), cancellationToken);
+            try
+            {
+                await Task.Delay(TimeSpan.FromSeconds(10), cancellationToken);
+            }
+            catch(TaskCanceledException)
+            {
+                return;
+            }
         }
     }
 
@@ -112,6 +119,29 @@ internal class RpcSyncDataWorker<TContext>(
         }
     }
 
+    private async Task ReceiverDatas(CancellationToken cancellationToken)
+    {
+        var requestSend = new SyncConnectionRequest
+        {
+            IdClient = 2
+        };
+
+        var connection = syncDataService.Connect(requestSend, cancellationToken);
+
+        try
+        {
+            await SaveDatas(connection, cancellationToken);
+        }
+        catch (RpcException ex) when (ex.StatusCode == StatusCode.Cancelled)
+        {
+            logger.LogDebug("Rpc connection cancelled");
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "RPC read datas error.");
+        }
+    }
+
     private async Task SaveDatas(IAsyncEnumerable<SyncData> items, CancellationToken cancellationToken)
     {
         await foreach (var item in items.WithCancellation(cancellationToken))
@@ -134,29 +164,6 @@ internal class RpcSyncDataWorker<TContext>(
 
             logger.LogDebug("Rpc Reciving saving");
         }       
-    }
-
-    private async Task ReceiverDatas(CancellationToken cancellationToken)
-    {
-        var requestSend = new SyncConnectionRequest
-        {
-            IdClient = 2
-        };
-
-        var connection = syncDataService.Connect(requestSend, cancellationToken);
-
-        try
-        { 
-            await SaveDatas(connection, cancellationToken);
-        }
-        catch (RpcException ex) when (ex.StatusCode == StatusCode.Cancelled)
-        {
-            logger.LogTrace("Rpc connection cancelled");
-        }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, "RPC read datas error.");
-        }
     }
 
     private const string keyLastTimestamp = "LastTimestamp";
