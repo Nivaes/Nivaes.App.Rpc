@@ -81,7 +81,7 @@ public class DatabaseContext : DbContext
         SQLitePCL.Batteries_V2.Init();
 
         optionsBuilder.UseSqlite($"Data Source={databasePath}")
-            .AddInterceptors(new RpcSyncDataInterceptor());
+            .RpcIntegration();
             //.UseModel(Client.Database.DatabaseContextModel.Instance);
 
         base.OnConfiguring(optionsBuilder);

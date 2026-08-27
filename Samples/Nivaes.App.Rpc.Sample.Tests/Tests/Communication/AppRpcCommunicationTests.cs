@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Nivaes.App.RPC.Sample;
 using Nivaes.DataTestGenerator;
 
+
 namespace Nivaes.App.Rpc.Sample.Tests
 {
     [Collection(nameof(AppApiRpcHostFixture))]
@@ -271,7 +272,6 @@ namespace Nivaes.App.Rpc.Sample.Tests
                 new ProtoBuf.Grpc.CallContext(
                     new CallOptions(
                         headers: new Metadata { { "IdUser", "1" } },
-                        //credentials: 
                         cancellationToken: fixture.CancellationToken)));
         }
     }

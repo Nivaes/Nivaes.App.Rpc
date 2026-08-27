@@ -11,7 +11,7 @@ using Nivaes.App.RPC.Client;
 
 namespace Nivaes.App.Rpc.Client
 {
-    public class RpcSyncDataInterceptor : SaveChangesInterceptor
+    internal class RpcSyncDataInterceptor : SaveChangesInterceptor
     {
         public override void SaveChangesCanceled(DbContextEventData eventData)
         {
