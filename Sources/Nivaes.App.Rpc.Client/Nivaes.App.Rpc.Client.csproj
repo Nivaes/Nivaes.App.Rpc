@@ -34,4 +34,9 @@
 	  <ProjectReference Include="..\Nivaes.App.Rpc.Shared\Nivaes.App.Rpc.Shared.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="Nivaes.App.Rpc.Sample.Tests"/>
+		<InternalsVisibleTo Include="Nivaes.App.Rpc.Client.Database.Tools"/>
+	</ItemGroup>
+
 </Project>

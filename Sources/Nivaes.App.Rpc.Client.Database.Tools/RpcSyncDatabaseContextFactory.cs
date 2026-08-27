@@ -4,7 +4,7 @@ using Nivaes.App.RPC.Client;
 
 namespace Nivaes.App.RPC.Sample.Client;
 
-public class RpcSyncDatabaseContextFactory
+internal class RpcSyncDatabaseContextFactory
     : IDesignTimeDbContextFactory<RpcSyncDatabaseContext>
 {
     public RpcSyncDatabaseContext CreateDbContext(string[] args)

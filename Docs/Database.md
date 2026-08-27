@@ -33,9 +33,9 @@ Crear migración
 
 ```shell
  dotnet ef migrations add InitialCreate `
-   --project Nivaes.App.RPC.Client.csproj `
+   --project Nivaes.App.Rpc.Client.csproj `
    --startup-project ../Nivaes.App.Rpc.Client.Database.Tools/Nivaes.App.Rpc.Client.Database.Tools.csproj `
-   --context Nivaes.App.RPC.Client.RpcSyncDatabaseContext `
+   --context Nivaes.App.Rpc.Client.RpcSyncDatabaseContext `
    --output-dir Sources/Database/Migrations `
    --framework net10.0 
 ```
@@ -43,11 +43,11 @@ Crear migración
 Crear modelo optimizado para ser compatible on AoT.
 ```shell
 dotnet ef dbcontext optimize `
-    --project Nivaes.App.RPC.Client.csproj `
-    --context Nivaes.App.RPC.Client.RpcSyncDatabaseContext `
+    --project Nivaes.App.Rpc.Client.csproj `
+    --context Nivaes.App.Rpc.Client.RpcSyncDatabaseContext `
     --startup-project ../Nivaes.App.Rpc.Client.Database.Tools/Nivaes.App.Rpc.Client.Database.Tools.csproj `
     --output-dir Sources/Database/CompiledModel `
-    --namespace Nivaes.App.RPC.Client.Database `
+    --namespace Nivaes.App.Rpc.Client.Database `
     --nativeaot `
     --framework net10.0 
 ```

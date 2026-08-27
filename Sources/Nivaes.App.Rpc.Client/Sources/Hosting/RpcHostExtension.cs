@@ -28,7 +28,7 @@ namespace Nivaes.App.Rpc.Client.Hosting
             });
 
             builder.Services.AddSingleton<RpcSyncDataSignal>();
-            //builder.Services.AddHostedService<RpcSyncDataWorker>();
+            builder.Services.AddHostedService<RpcSyncDataWorker>();
 
             return builder;
         }

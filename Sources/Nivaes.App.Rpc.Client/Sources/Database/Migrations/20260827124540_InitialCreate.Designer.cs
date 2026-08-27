@@ -11,7 +11,7 @@ using Nivaes.App.RPC.Client;
 namespace Nivaes.App.RPC.Client.Sources.Database.Migrations
 {
     [DbContext(typeof(RpcSyncDatabaseContext))]
-    [Migration("20260823143810_InitialCreate")]
+    [Migration("20260827124540_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -19,6 +19,22 @@ namespace Nivaes.App.RPC.Client.Sources.Database.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.11");
+
+            modelBuilder.Entity("Nivaes.App.Rpc.Client.SyncSetting", b =>
+                {
+                    b.Property<string>("Key")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Key");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Value");
+
+                    b.HasKey("Key");
+
+                    b.ToTable("SyncSetting", (string)null);
+                });
 
             modelBuilder.Entity("Nivaes.App.Rpc.SyncData", b =>
                 {

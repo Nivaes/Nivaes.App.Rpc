@@ -25,7 +25,6 @@ namespace Nivaes.App.Rpc.Sample.Tests
             using var httpClient = fixture.GetHttpClient();
 
             var rpcSyncDataInterceptor = new RpcSyncDataInterceptor();
-
         }
     }
 }

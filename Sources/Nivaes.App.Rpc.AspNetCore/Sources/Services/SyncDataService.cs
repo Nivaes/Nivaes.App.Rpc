@@ -1,16 +1,8 @@
 using System.Collections.Concurrent;
-using System.Reflection.PortableExecutable;
-using System.ServiceModel.Channels;
 using System.Threading.Channels;
-using Grpc.Core;
 using MemoryPack;
 using Microsoft.Extensions.Logging;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
-using MongoDB.Driver.Core.Connections;
-using Nivaes.App.Cross;
 using ProtoBuf.Grpc;
 
 namespace Nivaes.App.Rpc.AspNetCore.Server;
@@ -21,7 +13,7 @@ internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncData
     private const string CollectionName = "Items";
     private static readonly ConcurrentDictionary<int, Channel<SyncData>> Connections = new();
 
-    async IAsyncEnumerable<SyncData> ISyncDataService.Connect(SyncDataRequest request, CallContext context)
+    async IAsyncEnumerable<SyncData> ISyncDataService.Connect(SyncConnectionRequest request, CallContext context)
     {
         var channel = Channel.CreateUnbounded<SyncData>();
 

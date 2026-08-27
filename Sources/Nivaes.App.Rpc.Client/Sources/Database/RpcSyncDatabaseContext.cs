@@ -4,7 +4,7 @@ using Nivaes.App.Rpc.Client;
 
 namespace Nivaes.App.RPC.Client;
 
-public class RpcSyncDatabaseContext : DbContext
+internal class RpcSyncDatabaseContext : DbContext
 {
     #region Constructors
     public RpcSyncDatabaseContext()
@@ -19,12 +19,29 @@ public class RpcSyncDatabaseContext : DbContext
     #endregion
 
     #region DbSet
+    public DbSet<SyncSetting> SyncSetting { get; set; }
+
     public DbSet<SyncData> SyncDatas { get; set; }
     #endregion
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<SyncSetting>(entity =>
+        {
+            entity.ToTable("SyncSetting");
+
+            entity.HasKey(e => e.Key);
+
+            entity.Property(up => up.Key)
+              .IsRequired()
+              .HasColumnName("Key");
+
+            entity.Property(up => up.Value)
+              .IsRequired()
+              .HasColumnName("Value");
+        });
 
         modelBuilder.Entity<SyncData>(entity =>
         {

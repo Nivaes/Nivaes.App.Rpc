@@ -21,6 +21,12 @@
     <PackageReference Include="protobuf-net.Grpc" />
   </ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="Nivaes.App.Rpc.Client" />
+		<InternalsVisibleTo Include="Nivaes.App.Rpc.AspNetCore.Server" />
+		<InternalsVisibleTo Include="Nivaes.App.Rpc.Sample.Tests"/>
+	</ItemGroup>
+
   <ItemGroup>
 	  <ProjectReference Include="..\Nivaes.App.Rpc.SourceGenerator\Nivaes.App.Rpc.SourceGenerator.csproj">
 		  <OutputItemType>Analyzer</OutputItemType>

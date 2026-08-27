@@ -75,7 +75,8 @@ namespace Nivaes.App.Rpc.Sample.Tests
                 {
                     Id = item.Id,
                     Data = itemData,
-                    EntityType = item.GetType().FullName!
+                    EntityType = item.GetType().FullName!,
+                    TimeStampTicks = DateTime.UtcNow.Ticks
                 };
             }
             var items = GetUsers();
@@ -118,10 +119,9 @@ namespace Nivaes.App.Rpc.Sample.Tests
 
             var connectionTask = Task.Run(async() =>
             {
-                var requestSend = new SyncDataRequest
+                var requestSend = new SyncConnectionRequest
                 {
-                    IdClient = 1,
-                    LastTimestampTicks = DateTime.UtcNow.Ticks
+                    IdClient = 1
                 };
                 var connection = syncDataService.Connect(requestSend, fixture.CancellationToken);
 
@@ -166,7 +166,8 @@ namespace Nivaes.App.Rpc.Sample.Tests
                     {
                         Id = item.Id,
                         Data = itemData,
-                        EntityType = item.GetType().FullName!
+                        EntityType = item.GetType().FullName!,
+                        TimeStampTicks = DateTime.UtcNow.Ticks
                     };
                 }
             }
@@ -192,10 +193,9 @@ namespace Nivaes.App.Rpc.Sample.Tests
 
             async Task Connection(int i)
             {
-                var requestSend = new SyncDataRequest
+                var requestSend = new SyncConnectionRequest
                 {
-                    IdClient = i,
-                    LastTimestampTicks = DateTime.UtcNow.Ticks
+                    IdClient = i
                 };
                 var connection = syncDataService.Connect(requestSend, fixture.CancellationToken);
 
@@ -257,7 +257,8 @@ namespace Nivaes.App.Rpc.Sample.Tests
                     {
                         Id = item.Id,
                         Data = itemData,
-                        EntityType = item.GetType().FullName!
+                        EntityType = item.GetType().FullName!,
+                        TimeStampTicks = DateTime.UtcNow.Ticks
                     };
                 }
             }

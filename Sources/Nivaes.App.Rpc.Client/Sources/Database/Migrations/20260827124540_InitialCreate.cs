@@ -26,6 +26,18 @@ namespace Nivaes.App.RPC.Client.Sources.Database.Migrations
                     table.PrimaryKey("PK_SyncData", x => x.Id);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "SyncSetting",
+                columns: table => new
+                {
+                    Key = table.Column<string>(type: "TEXT", nullable: false),
+                    Value = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SyncSetting", x => x.Key);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_SyncData_TimeStampTicks",
                 table: "SyncData",
@@ -37,6 +49,9 @@ namespace Nivaes.App.RPC.Client.Sources.Database.Migrations
         {
             migrationBuilder.DropTable(
                 name: "SyncData");
+
+            migrationBuilder.DropTable(
+                name: "SyncSetting");
         }
     }
 }
