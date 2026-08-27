@@ -41,9 +41,9 @@ internal static class Program
         {
             await DatabaseStart.InitializeDatabase(host);
 
-            await SaveUsers(host);
+            //await SaveUsers(host);
 
-            await Task.Delay(60000);
+            await Task.Delay(30000);
         }
         finally
         {
@@ -51,34 +51,34 @@ internal static class Program
         }
     }
 
-    private static async Task SaveUsers(IHost host)
-    {
-        //await using DatabaseContext db = new DatabaseContext();
-        var factory = host.Services.GetService<IDbContextFactory<DatabaseContext>>();
+    //private static async Task SaveUsers(IHost host)
+    //{
+    //    //await using DatabaseContext db = new DatabaseContext();
+    //    var factory = host.Services.GetService<IDbContextFactory<DatabaseContext>>();
 
-        await using var db = await factory!.CreateDbContextAsync();
+    //    await using var db = await factory!.CreateDbContextAsync();
 
-        var users = new List<UserDataModel>();
+    //    var users = new List<UserDataModel>();
 
-        for (int i = 1; i <= 1; i++)
-        {
-            var contact = ContactGenerator.GenerateContact();
+    //    for (int i = 1; i <= 1; i++)
+    //    {
+    //        var contact = ContactGenerator.GenerateContact();
 
-            var user = new UserDataModel
-            {
-                IdUser = Guid.NewGuid(),
-                Identification = $"ID{i:00000}",
-                Name = contact.SortName,
-                GivenName = contact.GivenName,
-                FamilyName = contact.FamilyName,
-                Email = contact.Email,
-                PhoneNumber = contact.TelephoneNumber
-            };
+    //        var user = new UserDataModel
+    //        {
+    //            IdUser = Guid.NewGuid(),
+    //            Identification = $"ID{i:00000}",
+    //            Name = contact.SortName,
+    //            GivenName = contact.GivenName,
+    //            FamilyName = contact.FamilyName,
+    //            Email = contact.Email,
+    //            PhoneNumber = contact.TelephoneNumber
+    //        };
 
-            users.Add(user);
-        }
+    //        users.Add(user);
+    //    }
 
-        await db.Users.AddRangeAsync(users);
-        await db.SaveChangesAsync();
-    }
+    //    await db.Users.AddRangeAsync(users);
+    //    await db.SaveChangesAsync();
+    //}
 }

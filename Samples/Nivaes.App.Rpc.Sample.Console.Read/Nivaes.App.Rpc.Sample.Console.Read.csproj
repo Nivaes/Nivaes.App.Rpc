@@ -19,11 +19,11 @@
 	  <None Remove="Sources\**" />
 	</ItemGroup>
 
-	<ItemGroup>	
+	<ItemGroup>
 		<PackageReference Include="Grpc.Net.Client.Web" />
 		<PackageReference Include="Grpc.Net.Client" />
 		<PackageReference Include="protobuf-net.Grpc" />
-		
+
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tasks">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -36,6 +36,4 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Nivaes.App.Rpc.Sample.Client\Nivaes.App.Rpc.Sample.Client.csproj" />
 	</ItemGroup>
-
-	
 </Project>

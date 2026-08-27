@@ -73,7 +73,7 @@ internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncData
     {       
         logger.LogInformation("Rpc SendData");
         var headers = context.ServerCallContext?.RequestHeaders;
-        var idUser = int.Parse(headers!.FirstOrDefault(x => x.Key == "iduser")!.Value!);
+        var idUser = int.Parse(headers!.FirstOrDefault(x => x.Key == "idclient")!.Value!);
 
         var database = mongoClient.GetDatabase("Db1");
         var collection = database.GetCollection<MongoDocument>(CollectionName);

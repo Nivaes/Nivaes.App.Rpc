@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace Nivaes.App.Rpc.Client;
 
-namespace Nivaes.App.Rpc.Client
+public class SyncSetting
 {
-    internal class SyncSetting
-    {
-        required public string Key { get; set; }
-        required public string Value { get; set; }
-    }
+    required public string Key { get; set; }
+    required public string Value { get; set; }
 }

@@ -90,7 +90,7 @@ namespace Nivaes.App.Rpc.Sample.Tests
             await syncDataService.SendData(items,
                   new ProtoBuf.Grpc.CallContext(
                     new CallOptions(
-                        headers: new Metadata { { "IdUser", "1" } },
+                        headers: new Metadata { { "IdClient", "1" } },
                         //credentials: 
                         cancellationToken: fixture.CancellationToken)));
 
@@ -181,7 +181,7 @@ namespace Nivaes.App.Rpc.Sample.Tests
             await syncDataService.SendData(items,
                   new ProtoBuf.Grpc.CallContext(
                     new CallOptions(
-                        headers: new Metadata { { "IdUser", "1" } },
+                        headers: new Metadata { { "IdClient", "1" } },
                         //credentials: 
                         cancellationToken: fixture.CancellationToken)));
         }
@@ -272,7 +272,7 @@ namespace Nivaes.App.Rpc.Sample.Tests
             await syncDataService.SendData(items, 
                 new ProtoBuf.Grpc.CallContext(
                     new CallOptions(
-                        headers: new Metadata { { "IdUser", "1" } },
+                        headers: new Metadata { { "IdClient", "1" } },
                         cancellationToken: fixture.CancellationToken)));
         }
     }

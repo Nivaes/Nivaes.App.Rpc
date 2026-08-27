@@ -13,8 +13,18 @@ namespace Nivaes.App.Rpc.Client.Hosting
     {
         internal static IServiceProvider? Services;
 
-        public static IHostApplicationBuilder AddRpcClient(this IHostApplicationBuilder builder, Uri url)
+        public static IHostApplicationBuilder AddRpcClient<TContext>(this IHostApplicationBuilder builder, Uri url)
+            where TContext : DbContext
         {
+            var databasePath = "client.db";
+
+            builder.Services.AddPooledDbContextFactory<TContext>((sp, optionsAction) =>
+            {
+                optionsAction
+                    .UseSqlite($"Data Source={databasePath}")
+                    .AddInterceptors(new RpcSyncDataInterceptor());
+            });
+
             builder.Services.AddPooledDbContextFactory<RpcSyncDatabaseContext>(options =>
             {
                 options.UseSqlite("Data Source=syncache.db");
@@ -28,7 +38,7 @@ namespace Nivaes.App.Rpc.Client.Hosting
             });
 
             builder.Services.AddSingleton<RpcSyncDataSignal>();
-            builder.Services.AddHostedService<RpcSyncDataWorker>();
+            builder.Services.AddHostedService<RpcSyncDataWorker<TContext>>();
 
             return builder;
         }

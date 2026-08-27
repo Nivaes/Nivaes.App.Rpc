@@ -7,15 +7,18 @@ using Microsoft.Extensions.Logging;
 using Nivaes.App.Rpc.Client;
 using Nivaes.App.Rpc.Client.RpcSyncData;
 using Nivaes.App.RPC.Client;
+using ProtoBuf.Grpc;
 
 namespace Nivaes.App.Rpc;
 
-internal class RpcSyncDataWorker(
-        IDbContextFactory<RpcSyncDatabaseContext> factory,
+internal class RpcSyncDataWorker<TContext>(
+        IDbContextFactory<TContext> dbFactory,
+        IDbContextFactory<RpcSyncDatabaseContext> syncDbFactory,
         ISyncDataService syncDataService,
         RpcSyncDataSignal signal,
-        ILogger<RpcSyncDataWorker> logger)
+        ILogger<RpcSyncDataWorker<TContext>> logger)
     : BackgroundService
+    where TContext : DbContext
 {
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
@@ -45,14 +48,18 @@ internal class RpcSyncDataWorker(
     {
         try
         {
+            await UpdateLastTimestampSetting(cancellationToken);
+            //var request = new SyncDataRequest
+            //{
+            //    IdClient = 1,
+            //    LastTimestampTicks = await GetLastAndUpdateLastTimestampSetting(cancellationToken)
+            //};
             var syncDatas = SyncDatas(cancellationToken);
-            var request = new SyncDataRequest
-            {
-                IdClient = 1,
-                LastTimestampTicks = await GetLastAndUpdateLastTimestampSetting(cancellationToken)
-            };
 
-            await syncDataService.SendData(syncDatas, new CallOptions(cancellationToken: cancellationToken));
+            await syncDataService.SendData(syncDatas, new CallContext(
+                    new CallOptions(
+                        headers: new Metadata {{ "IdClient", "1" }},
+                        cancellationToken: cancellationToken)));
         }
         catch (Exception ex)
         {
@@ -62,7 +69,7 @@ internal class RpcSyncDataWorker(
 
     private async IAsyncEnumerable<SyncData> SyncDatas([EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        await using var db = await factory.CreateDbContextAsync(cancellationToken);
+        await using var db = await syncDbFactory.CreateDbContextAsync(cancellationToken);
 
         var messages = db.SyncDatas
             .OrderBy(x => x.TimeStampTicks)
@@ -83,7 +90,7 @@ internal class RpcSyncDataWorker(
     {
         var requestSend = new SyncConnectionRequest
         {
-            IdClient = 1
+            IdClient = 2
         };
 
         var connection = syncDataService.Connect(requestSend, cancellationToken);
@@ -92,7 +99,7 @@ internal class RpcSyncDataWorker(
         {
             await foreach (var item in connection.WithCancellation(cancellationToken))
             {
-                await using var db = await factory.CreateDbContextAsync(cancellationToken);
+                await using var db = await dbFactory.CreateDbContextAsync(cancellationToken);
 
                 if (!Singleton<RpcDataModelsTypeContainer>.Instance.RpcDataModelsType.TryGetValue(item.EntityType, out var syncDataType))
                 {
@@ -103,6 +110,8 @@ internal class RpcSyncDataWorker(
                 var dataItem = (IRpcDataModel?)MemoryPackSerializer.Deserialize(syncDataType, item.Data);
 
                 db.Update(dataItem!);
+
+                await db.SaveChangesAsync(cancellationToken);
             }
         }
         catch (Exception ex)
@@ -113,28 +122,25 @@ internal class RpcSyncDataWorker(
 
     private const string keyLastTimestamp = "LastTimestamp";
 
-    private async Task<long> GetLastAndUpdateLastTimestampSetting(CancellationToken cancellationToken)
+    private async Task UpdateLastTimestampSetting(CancellationToken cancellationToken)
     {
-        await using var db = await factory.CreateDbContextAsync(cancellationToken);
+        await using var db = await syncDbFactory.CreateDbContextAsync(cancellationToken);
 
         var lastTimestampSetting = await db.SyncSetting.Where(x => x.Key == keyLastTimestamp).FirstOrDefaultAsync(cancellationToken);
 
-        var newLastTimestamp = DateTime.UtcNow.Ticks;
-        long lastTimestamp = 0;
+        long lastTimestamp = DateTime.UtcNow.Ticks;
 
         if (lastTimestampSetting == null)
         {
-            lastTimestampSetting = new SyncSetting { Key = keyLastTimestamp, Value = newLastTimestamp.ToString() };
+            lastTimestampSetting = new SyncSetting { Key = keyLastTimestamp, Value = lastTimestamp.ToString() };
             db.SyncSetting.Add(lastTimestampSetting);
         }
         else
         {
             lastTimestamp = long.Parse(lastTimestampSetting.Value);
-            lastTimestampSetting.Value = newLastTimestamp.ToString();
+            lastTimestampSetting.Value = lastTimestamp.ToString();
         }
 
         await db.SaveChangesAsync(cancellationToken);
-
-        return lastTimestamp;
     }
 }

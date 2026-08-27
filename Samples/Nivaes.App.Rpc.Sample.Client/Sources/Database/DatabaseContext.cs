@@ -6,10 +6,10 @@ namespace Nivaes.App.RPC.Sample.Client;
 public class DatabaseContext : DbContext
 {
     #region Constructors
-    public DatabaseContext()
-     : base()
-    {
-    }
+    //public DatabaseContext()
+    // : base()
+    //{
+    //}
 
     public DatabaseContext(DbContextOptions<DatabaseContext> options)
         : base(options)
@@ -74,16 +74,16 @@ public class DatabaseContext : DbContext
         });
     }
 
-    public static string databasePath = "client.db";
+    //public static string databasePath = "client.db";
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        SQLitePCL.Batteries_V2.Init();
+//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+//    {
+//        SQLitePCL.Batteries_V2.Init();
 
-        optionsBuilder.UseSqlite($"Data Source={databasePath}")
-            .RpcIntegration();
-            //.UseModel(Client.Database.DatabaseContextModel.Instance);
+//        optionsBuilder.UseSqlite($"Data Source={databasePath}");
+//            //.RpcIntegration();
+//            //.UseModel(Client.Database.DatabaseContextModel.Instance);
 
-        base.OnConfiguring(optionsBuilder);
-    }
+//        base.OnConfiguring(optionsBuilder);
+//    }
 }

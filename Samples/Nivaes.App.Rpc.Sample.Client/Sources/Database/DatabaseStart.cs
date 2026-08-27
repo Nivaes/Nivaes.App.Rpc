@@ -1,60 +1,42 @@
 ﻿using System.Data.Common;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.Extensions.Logging;
-using Nivaes.EntityFrameworkCore.Sqlite;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Nivaes.App.RPC.Sample.Client;
 
 public static class DatabaseStart
 {
-    //private static readonly VersionScriptMigration[] Migrations =
-    //   [
-    //       new(
-    //            "20260819175954_InitialCreate",
-    //            "Nivaes.App.RPC.Sample.Client.Sources.Database.Migrations.20260819175954_InitialCreate.sql"),
-
-    //        //new(
-    //        //    "20260818181000_AddStudent",
-    //        //    "Nivaes.App.RPC.Sample.Client.MigrationScripts.20260818181000_AddStudent.sql"),
-
-    //        //new(
-    //        //    "20260818182000_AddEmail",
-    //        //    "Nivaes.App.RPC.Sample.Client.MigrationScripts.20260818182000_AddEmail.sql")
-    //   ];
-
-    //public static async Task InitializeDatabase(string databasePath)
-    //{
-    //    //using var db = new DatabaseContext();
-    //    //await db.Database.EnsureCreatedAsync();
-    //    var assembly = typeof(DatabaseStart).Assembly;
-
-    //    await ScriptDatabaseMigrator.MigrateAsync(databasePath, Migrations, assembly);
-    //}
-
-    public static async Task InitializeDatabase()
+    public static async Task InitializeDatabase(IHost host)
     {
         try
         {
-            await CreateDatabase().ConfigureAwait(false);
+            await CreateDatabase(host).ConfigureAwait(false);
         }
         catch (DbException)
         {
-            using (var db = new DatabaseContext())
-            {
-                await db.Database.EnsureDeletedAsync().ConfigureAwait(false);
-            }
+            var factory = host.Services.GetService<IDbContextFactory<DatabaseContext>>();
 
-            await CreateDatabase().ConfigureAwait(false);
+            await using var db = await factory!.CreateDbContextAsync();
+
+            //using (var db = new DatabaseContext())
+            //{
+                await db.Database.EnsureDeletedAsync().ConfigureAwait(false);
+            //}
+
+            await CreateDatabase(host).ConfigureAwait(false);
         }
     }
 
-    private static async Task CreateDatabase()
+    private static async Task CreateDatabase(IHost host)
     {
         try
         {
-            await using var db = new DatabaseContext();
+            var factory = host.Services.GetService<IDbContextFactory<DatabaseContext>>();
+
+            await using var db = await factory!.CreateDbContextAsync();
+            //await using var db = new DatabaseContext();
 
             //await db.Database.MigrateAsync().ConfigureAwait(false);
             await db.Database.EnsureCreatedAsync().ConfigureAwait(false);
@@ -64,9 +46,12 @@ public static class DatabaseStart
         }
     }
 
-    public static async Task ResetData()
+    public static async Task ResetData(IHost host)
     {
-        using var db = new DatabaseContext();
+        //using var db = new DatabaseContext();
+        var factory = host.Services.GetService<IDbContextFactory<DatabaseContext>>();
+
+        await using var db = await factory!.CreateDbContextAsync();
 
         await db.Database.EnsureDeletedAsync().ConfigureAwait(false);
     }

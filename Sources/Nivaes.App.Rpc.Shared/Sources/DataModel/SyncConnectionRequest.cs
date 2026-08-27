@@ -6,7 +6,7 @@ namespace Nivaes.App.Rpc;
 public class SyncConnectionRequest
 {
     [ProtoMember(1)]
-    required public int IdClient { get; set; };
+    required public int IdClient { get; set; }
 
     [ProtoMember(2)]
     public int IdChannel { get; set; } = 0;

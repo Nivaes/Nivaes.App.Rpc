@@ -26,8 +26,12 @@ var appWebApi = builder.AddProject<Projects.Nivaes_App_Rpc_Sample_Server>("RpcSa
                 .WaitFor(mongoDb);
 #endregion
 
-#region Cliente
-var appConsole = builder.AddProject<Projects.Nivaes_App_RPC_Sample_Console>("RpcSampleConsole")
+#region Clientes
+var appConsole = builder.AddProject<Projects.Nivaes_App_Rpc_Sample_Console>("RpcSampleConsole")
+                .WithReference(appWebApi)
+                .WaitFor(appWebApi);
+
+var appConsoleRead = builder.AddProject<Projects.Nivaes_App_Rpc_Sample_Console_Read>("RpcSampleConsoleRead")
                 .WithReference(appWebApi)
                 .WaitFor(appWebApi);
 

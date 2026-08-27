@@ -3,7 +3,7 @@
 namespace Nivaes.App.Rpc;
 
 [ProtoContract]
-internal class SyncData
+public class SyncData
 {
     [ProtoMember(1)]
     required public Guid Id { get; set; }

@@ -6,7 +6,7 @@ using ProtoBuf.Grpc.Configuration;
 namespace Nivaes.App.Rpc;
 
 [Service]
-internal interface ISyncDataService
+public interface ISyncDataService
 {
     IAsyncEnumerable<SyncData> Connect(SyncConnectionRequest request, CallContext context = default);
 
