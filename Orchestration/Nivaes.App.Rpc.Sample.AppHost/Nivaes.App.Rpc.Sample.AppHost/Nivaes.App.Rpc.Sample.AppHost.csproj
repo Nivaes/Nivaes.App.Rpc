@@ -15,7 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Samples\Nivaes.App.Rpc.Sample.Console.Read\Nivaes.App.Rpc.Sample.Console.Read.csproj" />
+    <ProjectReference Include="..\..\..\Samples\Nivaes.App.Rpc.Sample.Console.Read\Nivaes.App.Rpc.Sample.Console.Reader.csproj" />
+    <ProjectReference Include="..\..\..\Samples\Nivaes.App.Rpc.Sample.Console.Writer\Nivaes.App.Rpc.Sample.Console.Writer.csproj" />
     <ProjectReference Include="..\..\..\Samples\Nivaes.App.Rpc.Sample.Console\Nivaes.App.Rpc.Sample.Console.csproj" />
     <ProjectReference Include="..\..\..\Samples\Nivaes.App.RPC.Sample.Server\Nivaes.App.Rpc.Sample.Server.csproj" />
   </ItemGroup>

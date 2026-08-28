@@ -8,7 +8,7 @@
  </Folder>
 <Folder Name="/Samples/">
 <Project Path="Samples/Nivaes.App.Rpc.Sample.Client/Nivaes.App.Rpc.Sample.Client.csproj" Id="721a9301-8b8b-42a1-80f6-ede173769c36" />
-<Project Path="Samples/Nivaes.App.Rpc.Sample.Console.Read/Nivaes.App.Rpc.Sample.Console.Read.csproj" Id="47150223-f2e7-4b6b-bb41-39f01908f45c" />
+<Project Path="Samples/Nivaes.App.Rpc.Sample.Console.Read/Nivaes.App.Rpc.Sample.Console.Reader.csproj" Id="47150223-f2e7-4b6b-bb41-39f01908f45c" />
 <Project Path="Samples/Nivaes.App.Rpc.Sample.Console.Writer/Nivaes.App.Rpc.Sample.Console.Writer.csproj" Id="02b04959-acc0-4eba-8a99-8067f362ebb2" />
 <Project Path="Samples/Nivaes.App.Rpc.Sample.Console/Nivaes.App.Rpc.Sample.Console.csproj" Id="0d8305e5-82a3-4cb6-9235-b7034dc1c3ad" />
 <Project Path="Samples/Nivaes.App.Rpc.Sample.Server/Nivaes.App.Rpc.Sample.Server.csproj" />

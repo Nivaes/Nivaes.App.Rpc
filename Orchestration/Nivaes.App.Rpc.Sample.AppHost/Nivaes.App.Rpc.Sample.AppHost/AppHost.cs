@@ -26,12 +26,16 @@ var appWebApi = builder.AddProject<Projects.Nivaes_App_Rpc_Sample_Server>("RpcSa
                 .WaitFor(mongoDb);
 #endregion
 
-#region Clientes
+#region Clients
 var appConsole = builder.AddProject<Projects.Nivaes_App_Rpc_Sample_Console>("RpcSampleConsole")
                 .WithReference(appWebApi)
                 .WaitFor(appWebApi);
 
-var appConsoleRead = builder.AddProject<Projects.Nivaes_App_Rpc_Sample_Console_Read>("RpcSampleConsoleRead")
+var appConsoleRead = builder.AddProject<Projects.Nivaes_App_Rpc_Sample_Console_Reader>("RpcSampleConsoleRead")
+                .WithReference(appWebApi)
+                .WaitFor(appWebApi);
+
+var appConsoleWriter = builder.AddProject<Projects.Nivaes_App_Rpc_Sample_Console_Writer>("RpcSampleConsoleWriter")
                 .WithReference(appWebApi)
                 .WaitFor(appWebApi);
 

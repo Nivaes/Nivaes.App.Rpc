@@ -21,7 +21,7 @@ internal static class Program
 
         var url = builder.Configuration["services:RpcSampleSerice:Grpc:0"];
 
-        builder.AddRpcClient<DatabaseContext>(new Uri(url!));
+        builder.AddRpcClient<DatabaseContext>(new Uri(url!), 1);
 
         RpcDataModelTypeContainerHelper.RegisterCombiners([
             RpcDataModelTypeContainerHelper.New<UserDataModel>()

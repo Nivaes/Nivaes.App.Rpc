@@ -86,6 +86,9 @@ namespace Nivaes.App.Rpc.Client
 
         public override async ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
         {
+            if (RpcSyncDataInterceptorScope.IsSuppressed(eventData.Context!.ContextId))
+                return result;
+
             var changes = eventData.Context!.ChangeTracker
                    .Entries()
                    .Where(x => x.State is
@@ -95,7 +98,8 @@ namespace Nivaes.App.Rpc.Client
                    .ToList();
 
             var signal = RpcHostExtension.Services!.GetRequiredService<RpcSyncDataSignal>();
-            var rpcSyncDb = RpcHostExtension.Services!.GetRequiredService<RpcSyncDatabaseContext>();
+            var rpcSyncDbFactory = RpcHostExtension.Services!.GetRequiredService<IDbContextFactory<RpcSyncDatabaseContext>>();
+            using var rpcSyncDb = await rpcSyncDbFactory.CreateDbContextAsync(cancellationToken);
 
             foreach (var entry in changes)
             {

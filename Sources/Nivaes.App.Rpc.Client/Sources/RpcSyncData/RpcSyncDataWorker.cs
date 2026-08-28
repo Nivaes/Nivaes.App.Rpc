@@ -14,6 +14,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 namespace Nivaes.App.Rpc;
 
 internal class RpcSyncDataWorker<TContext>(
+        SyncClientConfiguration clientConfiguration,
         IDbContextFactory<TContext> dbFactory,
         IDbContextFactory<RpcSyncDatabaseContext> syncDbFactory,
         ISyncDataService syncDataService,
@@ -65,7 +66,7 @@ internal class RpcSyncDataWorker<TContext>(
 
             await syncDataService.SendData(syncDatas, new CallContext(
                     new CallOptions(
-                        headers: new Metadata {{ "IdClient", "1" }},
+                        headers: new Metadata {{ "IdClient", clientConfiguration.IdClient } },
                         cancellationToken: cancellationToken)));
         }
         catch (Exception ex)
@@ -101,7 +102,7 @@ internal class RpcSyncDataWorker<TContext>(
 
         var rquest = new SyncDataRequest
         {
-            IdClient = 3,
+            IdClient = clientConfiguration.IdClient,
             LastTimestampTicks = 0//await LastTimestampSetting(cancellationToken)
         };
 
@@ -123,7 +124,7 @@ internal class RpcSyncDataWorker<TContext>(
     {
         var requestSend = new SyncConnectionRequest
         {
-            IdClient = 2
+            IdClient = clientConfiguration.IdClient
         };
 
         var connection = syncDataService.Connect(requestSend, cancellationToken);
@@ -138,7 +139,7 @@ internal class RpcSyncDataWorker<TContext>(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "RPC read datas error.");
+            logger.LogError(ex, "RPC receiver datas error.");
         }
     }
 
@@ -160,8 +161,10 @@ internal class RpcSyncDataWorker<TContext>(
 
             await db.UpdateItemAsync(dataItem!);
 
-            await db.SaveChangesAsync(cancellationToken);
-
+            using (RpcSyncDataInterceptorScope.Suppress(db.ContextId))
+            {
+                await db.SaveChangesAsync(cancellationToken);
+            }
             logger.LogDebug("Rpc Reciving saving");
         }       
     }

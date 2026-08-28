@@ -7,7 +7,7 @@ using Nivaes.App.Rpc.Client.Hosting;
 using Nivaes.App.RPC.Sample.Client;
 using Nivaes.DataTestGenerator;
 
-namespace Nivaes.App.RPC.Sample;
+namespace Nivaes.App.RPC.Sample.Writer;
 
 internal static class Program
 {
@@ -22,7 +22,7 @@ internal static class Program
         //var url = builder.Configuration["services:RpcSampleSerice:Grpc:0"];
         var url = "https://localhost:7121";
 
-        builder.AddRpcClient<DatabaseContext>(new Uri(url!));
+        builder.AddRpcClient<DatabaseContext>(new Uri(url!), 3);
 
         RpcDataModelTypeContainerHelper.RegisterCombiners([
             RpcDataModelTypeContainerHelper.New<UserDataModel>()
@@ -58,7 +58,7 @@ internal static class Program
             var factory = host.Services.GetService<IDbContextFactory<DatabaseContext>>();
 
             await using var db = await factory!.CreateDbContextAsync();
-    
+
             var contact = ContactGenerator.GenerateContact();
 
             var user = new UserDataModel
@@ -71,7 +71,7 @@ internal static class Program
                 Email = contact.Email,
                 PhoneNumber = contact.TelephoneNumber
             };
-
+       
             await db.Users.AddAsync(user);
             await db.SaveChangesAsync();
 
