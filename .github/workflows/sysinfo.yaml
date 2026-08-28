@@ -1,8 +1,8 @@
 name: SyncInfo
 
 on:
-  push:
-    
+  workflow_dispatch:
+
 jobs:
     SyncInfo:
       runs-on: ubuntu-latest
