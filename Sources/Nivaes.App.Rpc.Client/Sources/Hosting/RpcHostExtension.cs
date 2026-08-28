@@ -13,7 +13,7 @@ namespace Nivaes.App.Rpc.Client.Hosting
     {
         internal static IServiceProvider? Services;
 
-        public static IHostApplicationBuilder AddRpcClient<TContext>(this IHostApplicationBuilder builder, Uri url)
+        public static IHostApplicationBuilder AddRpcClient<TContext>(this IHostApplicationBuilder builder, Uri url, int idClient)
             where TContext : DbContext
         {
             var databasePath = "client.db";
@@ -32,7 +32,15 @@ namespace Nivaes.App.Rpc.Client.Hosting
 
             builder.Services.AddSingleton<GrpcChannel>(sp =>
             {
-                return GrpcChannel.ForAddress(url);
+                return GrpcChannel.ForAddress(url, new GrpcChannelOptions
+                {
+                    HttpHandler = new SocketsHttpHandler
+                    {
+                        KeepAlivePingDelay = TimeSpan.FromSeconds(30),
+                        KeepAlivePingTimeout = TimeSpan.FromSeconds(10),
+                        EnableMultipleHttp2Connections = true
+                    }
+                });
             });
 
             builder.Services.AddSingleton<ISyncDataService>(sp =>
@@ -44,6 +52,7 @@ namespace Nivaes.App.Rpc.Client.Hosting
 
             builder.Services.AddSingleton<RpcSyncDataSignal>();
             builder.Services.AddHostedService<RpcSyncDataWorker<TContext>>();
+            builder.Services.AddSingleton<SyncClientConfiguration>(new SyncClientConfiguration { IdClient = idClient });
 
             return builder;
         }
