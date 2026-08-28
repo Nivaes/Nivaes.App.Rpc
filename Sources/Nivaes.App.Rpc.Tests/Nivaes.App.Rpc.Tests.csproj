@@ -8,6 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Tests\Serializer\**" />
+    <EmbeddedResource Remove="Tests\Serializer\**" />
+    <None Remove="Tests\Serializer\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="Shouldly" />
     <PackageReference Include="xunit.v3" />
@@ -22,10 +28,5 @@
 		<Using Include="Xunit" />
 		<Using Include="Shouldly" />
 	</ItemGroup>
-
-	<ItemGroup>
-    <Folder Include="Tests\" />
-    <Folder Include="Tests\Serializer\" />
-  </ItemGroup>
 
 </Project>
