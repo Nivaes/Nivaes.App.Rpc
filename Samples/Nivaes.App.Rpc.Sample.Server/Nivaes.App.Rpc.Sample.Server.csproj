@@ -1,25 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Nivaes.DataTestGenerator" />
-    <PackageReference Include="protobuf-net.Grpc.AspNetCore" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Nivaes.DataTestGenerator" />
+		<PackageReference Include="protobuf-net.Grpc.AspNetCore" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Orchestration\Nivaes.App.Rpc.Sample.AppHost\Nivaes.App.Rpc.Sample.ServiceDefaults\Nivaes.App.Rpc.Sample.ServiceDefaults.csproj" />
-    <ProjectReference Include="..\..\Sources\Nivaes.App.Rpc.AspNetCore\Nivaes.App.Rpc.AspNetCore.Server.csproj" />
-    <ProjectReference Include="..\Nivaes.App.Rpc.Sample.Shared\Nivaes.App.Rpc.Sample.Shared.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Orchestration\Nivaes.App.Rpc.Sample.AppHost\Nivaes.App.Rpc.Sample.ServiceDefaults\Nivaes.App.Rpc.Sample.ServiceDefaults.csproj" />
+		<ProjectReference Include="..\..\Sources\Nivaes.App.Rpc.AspNetCore\Nivaes.App.Rpc.AspNetCore.Server.csproj" />
+		<ProjectReference Include="..\Nivaes.App.Rpc.Sample.Shared\Nivaes.App.Rpc.Sample.Shared.csproj" />
+	</ItemGroup>
 
 </Project>

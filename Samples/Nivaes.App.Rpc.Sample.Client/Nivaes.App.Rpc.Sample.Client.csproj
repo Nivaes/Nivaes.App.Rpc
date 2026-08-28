@@ -10,6 +10,7 @@
 		<WarningsAsErrors>IL2CPP;IL3xxx</WarningsAsErrors>
 		<OptimizationPreference>Speed</OptimizationPreference>
 		<IsTrimmable>true</IsTrimmable>
+		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 
 	<!--<ItemGroup>
@@ -41,7 +42,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Sources\Nivaes.App.Rpc.Client\Nivaes.App.Rpc.Client.csproj" />
-		<ProjectReference Include="..\..\Sources\Nivaes.EntityFramework.Sqlite\Nivaes.EntityFrameworkCore.Sqlite.csproj" />
 		<ProjectReference Include="..\Nivaes.App.Rpc.Sample.Shared\Nivaes.App.Rpc.Sample.Shared.csproj" />
 	</ItemGroup>
 

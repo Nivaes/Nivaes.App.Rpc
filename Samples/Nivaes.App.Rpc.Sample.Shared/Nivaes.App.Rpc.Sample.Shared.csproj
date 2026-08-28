@@ -1,17 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-	  
-	  <AssemblyName>Nivaes.App.Rpc.Sample</AssemblyName>
-	  <RootNamespace>Nivaes.App.Rpc.Sample</RootNamespace>
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
 
-	  <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+		<AssemblyName>Nivaes.App.Rpc.Sample</AssemblyName>
+		<RootNamespace>Nivaes.App.Rpc.Sample</RootNamespace>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Sources\Nivaes.App.Rpc.Shared\Nivaes.App.Rpc.Shared.csproj" />
-  </ItemGroup>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Sources\Nivaes.App.Rpc.Shared\Nivaes.App.Rpc.Shared.csproj" />
+	</ItemGroup>
 
 </Project>

@@ -1,26 +1,27 @@
 ﻿<Project Sdk="Aspire.AppHost.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-	  <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <UserSecretsId>52085e4a-f6d8-4773-ba98-2a61b8a3cc26</UserSecretsId>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<IsPackable>false</IsPackable>
+		<UserSecretsId>52085e4a-f6d8-4773-ba98-2a61b8a3cc26</UserSecretsId>
 
-	  <AspireUseCliBundle>true</AspireUseCliBundle>
-  </PropertyGroup>
+		<AspireUseCliBundle>true</AspireUseCliBundle>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Aspire.Hosting.MongoDB" />
-    <PackageReference Include="Aspire.Hosting.PostgreSQL" />
-    <PackageReference Include="CommunityToolkit.Aspire.Hosting.MongoDB.Extensions" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Aspire.Hosting.MongoDB" />
+		<PackageReference Include="Aspire.Hosting.PostgreSQL" />
+		<PackageReference Include="CommunityToolkit.Aspire.Hosting.MongoDB.Extensions" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Samples\Nivaes.App.Rpc.Sample.Console.Read\Nivaes.App.Rpc.Sample.Console.Reader.csproj" />
-    <ProjectReference Include="..\..\..\Samples\Nivaes.App.Rpc.Sample.Console.Writer\Nivaes.App.Rpc.Sample.Console.Writer.csproj" />
-    <ProjectReference Include="..\..\..\Samples\Nivaes.App.Rpc.Sample.Console\Nivaes.App.Rpc.Sample.Console.csproj" />
-    <ProjectReference Include="..\..\..\Samples\Nivaes.App.Rpc.Sample.Server\Nivaes.App.Rpc.Sample.Server.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\Samples\Nivaes.App.Rpc.Sample.Console.Read\Nivaes.App.Rpc.Sample.Console.Reader.csproj" />
+		<ProjectReference Include="..\..\..\Samples\Nivaes.App.Rpc.Sample.Console.Writer\Nivaes.App.Rpc.Sample.Console.Writer.csproj" />
+		<ProjectReference Include="..\..\..\Samples\Nivaes.App.Rpc.Sample.Console\Nivaes.App.Rpc.Sample.Console.csproj" />
+		<ProjectReference Include="..\..\..\Samples\Nivaes.App.Rpc.Sample.Server\Nivaes.App.Rpc.Sample.Server.csproj" />
+	</ItemGroup>
 
 </Project>

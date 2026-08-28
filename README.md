@@ -1,2 +1,2 @@
-# Nivaes.App.RPC
+# Nivaes.App.Rpc
 
