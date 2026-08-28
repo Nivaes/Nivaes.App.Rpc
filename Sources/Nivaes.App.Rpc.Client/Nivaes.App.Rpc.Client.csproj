@@ -15,6 +15,16 @@
 		<InterceptorsNamespaces>$(InterceptorsNamespaces);Microsoft.EntityFrameworkCore.GeneratedInterceptors</InterceptorsNamespaces>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<PackageId>Nivaes.App.Rpc.Client</PackageId>
+		<Title>Nivaes.App.Rpc.Client</Title>
+
+		<Product>Nivaes.App.Rpc.Client</Product>
+		<Description>Nivaes.App.Rpc.Client.</Description>
+		<PackageTags>Nivaes.App.Rpc.Client</PackageTags>
+		<PackageReadmeFile>Readme.md</PackageReadmeFile>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<PackageReference Include="Grpc.Net.Client" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" />

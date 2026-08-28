@@ -1,14 +1,19 @@
 ﻿<Project>
-	<!--<PropertyGroup>
+	<PropertyGroup Condition="$(MSBuildProjectName.Contains('Test')) == 'False'">
 		<Copyright>Copyright (c) Nivaes Systems S.L.</Copyright>
-		<PackageProjectUrl>https://github.com/Nivaes</PackageProjectUrl>
+		<PackageProject>https://github.com/Nivaes/Nivaes.App.Rpc</PackageProject>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageIcon>icon.png</PackageIcon>
 		<Authors>Nivaes Systems</Authors>
+		<Company>Nivaes Systems</Company>
 		<Owners>Nivaes</Owners>
 		<PackageReleaseNotes>https://www.nivaes.com</PackageReleaseNotes>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<RepositoryUrl>https://github.com/Nivaes/Nivaes.App.Rpc</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
 		<Product>$(AssemblyName) ($(TargetFramework))</Product>
-	</PropertyGroup>-->
-
+	</PropertyGroup>
+	
 	<PropertyGroup>
 		<NoWarn>$(NoWarn);NU1507;1591</NoWarn>
 	</PropertyGroup>

@@ -1,21 +1,31 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-	  <TargetFrameworks>$(_CommonTargets)</TargetFrameworks>
-	  
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>$(_CommonTargets)</TargetFrameworks>
 
-  <ItemGroup>
-    <PackageReference Include="Aspire.MongoDB.Driver" />
-    <PackageReference Include="Grpc.AspNetCore.Server" />
-    <PackageReference Include="Grpc.AspNetCore.Web" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
-  </ItemGroup>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Nivaes.App.Rpc.Shared\Nivaes.App.Rpc.Shared.csproj" />
-  </ItemGroup>
+	<PropertyGroup>
+		<PackageId>Nivaes.App.Rpc.AspNetCore.Server</PackageId>
+		<Title>Nivaes.App.Rpc.AspNetCore.Server</Title>
+
+		<Product>Nivaes.App.Rpc.AspNetCore.Server</Product>
+		<Description>Nivaes.App.Rpc.AspNetCore.Server.</Description>
+		<PackageTags>Nivaes.App.Rpc.AspNetCore.Server</PackageTags>
+		<PackageReadmeFile>Readme.md</PackageReadmeFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Aspire.MongoDB.Driver" />
+		<PackageReference Include="Grpc.AspNetCore.Server" />
+		<PackageReference Include="Grpc.AspNetCore.Web" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Nivaes.App.Rpc.Shared\Nivaes.App.Rpc.Shared.csproj" />
+	</ItemGroup>
 
 </Project>

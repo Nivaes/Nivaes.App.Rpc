@@ -15,6 +15,16 @@
 	  <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>
 
+	<PropertyGroup>
+		<PackageId>Nivaes.App.Rpc</PackageId>
+		<Title>Nivaes.App.Rpc</Title>
+
+		<Product>Nivaes.App.Rpc</Product>
+		<Description>Nivaes.App.Rpc.</Description>
+		<PackageTags>Nivaes.App.Rpc</PackageTags>
+		<PackageReadmeFile>Readme.md</PackageReadmeFile>
+	</PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="MemoryPack" />
     <PackageReference Include="Nivaes.Extensions" />
