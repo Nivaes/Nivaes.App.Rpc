@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MemoryPack;
+﻿using MemoryPack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,47 +39,6 @@ namespace Nivaes.App.Rpc.Client
             System.Diagnostics.Debugger.Break();
             return base.SavedChanges(eventData, result);
         }
-
-        //public override ValueTask<int> SavedChangesAsync(SaveChangesCompletedEventData eventData, int result, CancellationToken cancellationToken = default)
-        //{
-        //    System.Diagnostics.Debugger.Break();
-        //    //var changes = eventData.Context!.ChangeTracker
-        //    //       .Entries()
-        //    //       //.Where(x => x.State is
-        //    //       //    EntityState.Added or
-        //    //       //    EntityState.Modified or
-        //    //       //    EntityState.Deleted)
-        //    //       .ToList();
-
-        //    //foreach (var entry in changes)
-        //    //{
-        //    //    Console.WriteLine(entry.Metadata.Name);
-        //    //    Console.WriteLine(entry.Entity);
-        //    //    Console.WriteLine($"{entry.Metadata.ClrType.FullName}: {entry.State}");
-        //    //    Console.WriteLine("--------");
-        //    //}
-
-        //    return base.SavedChangesAsync(eventData, result, cancellationToken);
-        //}
-
-        //public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
-        //{
-        //    System.Diagnostics.Debugger.Break();
-        //    //var changes = base.ChangeTracker
-        //    //       .Entries()
-        //    //       .Where(x => x.State is
-        //    //           EntityState.Added or
-        //    //           EntityState.Modified or
-        //    //           EntityState.Deleted)
-        //    //       .ToList();
-
-        //    //foreach (var entry in changes)
-        //    //{
-        //    //    Console.WriteLine($"{entry.Metadata.ClrType.Name}: {entry.State}");
-        //    //}
-
-        //    return base.SavingChanges(eventData, result);
-        //}
 
         public override async ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
         {
