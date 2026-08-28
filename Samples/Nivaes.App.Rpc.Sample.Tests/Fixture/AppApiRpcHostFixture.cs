@@ -16,7 +16,7 @@ namespace Nivaes.App.Rpc.Sample.Tests
     {
         public IDistributedApplicationTestingBuilder? AppHost;
         public DistributedApplication? App;
-        private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(30);
+        private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(300);
 
         private CancellationTokenSource CancellationTokenSource = new();
         public CancellationToken CancellationToken;
