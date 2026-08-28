@@ -3,7 +3,7 @@
     <PackageVersion Include="Aspire.Hosting.MongoDB" Version="13.5.2" />
     <PackageVersion Include="Aspire.Hosting.PostgreSQL" Version="13.5.2" />
     <PackageVersion Include="Aspire.Hosting.Testing" Version="13.5.3" />
-    <PackageVersion Include="Aspire.MongoDB.Driver.v3" Version="9.5.2" />
+    <PackageVersion Include="Aspire.MongoDB.Driver" Version="13.5.3" />
     <PackageVersion Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="13.5.2" />
     <PackageVersion Include="AsyncFixer" Version="2.1.0" />
     <PackageVersion Include="AutoFixture.Xunit3" Version="4.19.0" />
