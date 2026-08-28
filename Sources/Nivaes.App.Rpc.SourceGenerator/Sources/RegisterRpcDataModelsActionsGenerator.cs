@@ -133,7 +133,7 @@ public class RegisterRpcDataModelsActionsGenerator : IIncrementalGenerator
             {rootNamespace}
             internal static class GeneratedRegisterRpcDataModelsExtensions
             {{
-                public static void RegisterRegisterRpcDataModelsActions()
+                public static void RegisterRpcDataModelsActions()
                 {{
                     {sourceRegisterConverters}
                 }}

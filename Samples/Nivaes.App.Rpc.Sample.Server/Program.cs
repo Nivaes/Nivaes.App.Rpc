@@ -1,7 +1,3 @@
-using System.Diagnostics.Metrics;
-using Microsoft.EntityFrameworkCore;
-using Nivaes.App.Cross;
-using Nivaes.App.Rpc.AspNetCore.Server;
 using Nivaes.App.Rpc.Client.Hosting;
 using ProtoBuf.Grpc.Server;
 

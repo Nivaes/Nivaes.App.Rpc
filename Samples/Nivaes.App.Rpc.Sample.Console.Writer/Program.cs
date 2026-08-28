@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Nivaes.App.Cross;
 using Nivaes.App.Rpc.Client.Hosting;
 using Nivaes.App.Rpc.Sample.Client;
 using Nivaes.DataTestGenerator;

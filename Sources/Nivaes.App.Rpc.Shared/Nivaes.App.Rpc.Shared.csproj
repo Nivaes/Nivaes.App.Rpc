@@ -38,13 +38,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Nivaes.App.Rpc.SourceGenerator\Nivaes.App.Rpc.SourceGenerator.csproj">
-			<OutputItemType>Analyzer</OutputItemType>
-			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-			<PrivateAssets>runtime; build; native; contentfiles; buildtransitive</PrivateAssets>
-			<IncludeAssets>analyzers</IncludeAssets>
-			<ExcludeAssets>runtime; build; native; contentfiles; buildtransitive</ExcludeAssets>
-		</ProjectReference>
+		<ProjectReference Include="..\Nivaes.App.Rpc.SourceGenerator\Nivaes.App.Rpc.SourceGenerator.csproj" 
+						  OutputItemType="Analyzer"
+						  ReferenceOutputAssembly="false"
+						  PrivateAssets="none"
+						  IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
 	</ItemGroup>
 
 	<ItemGroup>
