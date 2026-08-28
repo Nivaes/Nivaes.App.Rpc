@@ -16,7 +16,7 @@ namespace Nivaes.App.Rpc.Sample.Tests
     {
         public IDistributedApplicationTestingBuilder? AppHost;
         public DistributedApplication? App;
-        private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(3000);
+        private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(30);
 
         private CancellationTokenSource CancellationTokenSource = new();
         public CancellationToken CancellationToken;
@@ -50,8 +50,27 @@ namespace Nivaes.App.Rpc.Sample.Tests
             App = await AppHost.BuildAsync(CancellationToken)
                 .WaitAsync(DefaultTimeout, CancellationToken);
 
-            await App.StartAsync()
-                .WaitAsync(DefaultTimeout, CancellationToken);
+            try{
+                Console.WriteLine("Starting Aspire...");
+                    await App.StartAsync()
+                        .WaitAsync(DefaultTimeout, CancellationToken);
+                Console.WriteLine("Aspire started.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Aspire START FAILED");
+                Console.WriteLine(ex);
+
+                Console.WriteLine("Resources:");
+
+                foreach (var resource in AppHost.Resources)
+                {
+                    Console.WriteLine(
+                        $"{resource.Name} - {resource.GetType().Name}");
+                }
+
+                throw;
+            }
         }
 
         public HttpClient GetHttpClient()
