@@ -39,6 +39,7 @@ namespace Nivaes.App.Rpc.Sample.Tests
                 logging.SetMinimumLevel(LogLevel.Debug);
                 logging.AddFilter(AppHost.Environment.ApplicationName, LogLevel.Debug);
                 logging.AddFilter("Aspire.", LogLevel.Debug);
+                logging.AddFilter("Nivaes", LogLevel.Trace);
                 logging.AddConsole();
             });
 
