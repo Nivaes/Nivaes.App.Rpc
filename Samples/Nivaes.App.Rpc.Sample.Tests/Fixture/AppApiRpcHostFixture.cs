@@ -16,7 +16,7 @@ namespace Nivaes.App.Rpc.Sample.Tests
     {
         public IDistributedApplicationTestingBuilder? AppHost;
         public DistributedApplication? App;
-        private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(3000);
+        private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(30);
 
         private CancellationTokenSource CancellationTokenSource = new();
         public CancellationToken CancellationToken;
@@ -39,6 +39,7 @@ namespace Nivaes.App.Rpc.Sample.Tests
                 logging.SetMinimumLevel(LogLevel.Debug);
                 logging.AddFilter(AppHost.Environment.ApplicationName, LogLevel.Debug);
                 logging.AddFilter("Aspire.", LogLevel.Debug);
+                logging.AddFilter("Nivaes", LogLevel.Trace);
                 logging.AddConsole();
             });
 
