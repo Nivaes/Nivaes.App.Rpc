@@ -1,0 +1,21 @@
+name: SyncInfo
+
+on:
+  push:
+    
+jobs:
+    SyncInfo:
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: System information
+          run: |
+            echo "=== CPU ==="
+            nproc
+            lscpu
+            echo "=== MEMORY ==="
+            free -h
+            echo "=== DISK ==="
+            df -h
+            echo "=== DOCKER ==="
+            docker info
