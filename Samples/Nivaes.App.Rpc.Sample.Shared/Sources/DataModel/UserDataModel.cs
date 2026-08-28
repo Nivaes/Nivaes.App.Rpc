@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using MemoryPack;
 
-namespace Nivaes.App.RPC.Sample;
+namespace Nivaes.App.Rpc.Sample;
 
 [MemoryPackable]
 public partial class UserDataModel

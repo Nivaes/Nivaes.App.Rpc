@@ -6,7 +6,7 @@ using System.Text;
 using MemoryPack;
 using Nivaes.App.Rpc;
 
-namespace Nivaes.App.RPC.Sample;
+namespace Nivaes.App.Rpc.Sample;
 
 public abstract partial class DataModel
     : INotifyPropertyChanged, IRpcDataModel
