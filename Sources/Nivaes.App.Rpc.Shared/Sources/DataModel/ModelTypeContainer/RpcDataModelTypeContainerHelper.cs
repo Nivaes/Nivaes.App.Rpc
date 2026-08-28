@@ -20,7 +20,7 @@ namespace Nivaes.App.Cross
                 };
         }
        
-        public static void RegisterCombiners(RpcDataModelTypeItem[] items)
+        public static void RegisterRpcDataModels(RpcDataModelTypeItem[] items)
         {
             var combinersContainer = Singleton<RpcDataModelsTypeContainer>.Instance;
 

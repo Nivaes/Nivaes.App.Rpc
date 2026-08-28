@@ -28,7 +28,7 @@ namespace Nivaes.App.Rpc.Sample.Tests
 
         public async ValueTask InitializeAsync()
         {
-            RpcDataModelTypeContainerHelper.RegisterCombiners([
+            RpcDataModelTypeContainerHelper.RegisterRpcDataModels([
                 RpcDataModelTypeContainerHelper.New<UserDataModel>()
             ]);
 

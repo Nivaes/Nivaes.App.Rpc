@@ -23,7 +23,7 @@ internal static class Program
 
         builder.AddRpcClient<DatabaseContext>(new Uri(url!), 1);
 
-        RpcDataModelTypeContainerHelper.RegisterCombiners([
+        RpcDataModelTypeContainerHelper.RegisterRpcDataModels([
             RpcDataModelTypeContainerHelper.New<UserDataModel>()
         ]);
 

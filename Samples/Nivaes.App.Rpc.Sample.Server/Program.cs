@@ -33,7 +33,7 @@ internal class Program
         builder.Services.AddCodeFirstGrpc();
         //builder.Services.AddHealthChecks();
 
-        RpcDataModelTypeContainerHelper.RegisterCombiners([
+        RpcDataModelTypeContainerHelper.RegisterRpcDataModels([
             RpcDataModelTypeContainerHelper.New<UserDataModel>()
         ]);
 

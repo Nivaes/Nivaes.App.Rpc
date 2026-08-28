@@ -48,10 +48,10 @@ public class RegisterRpcDataModelsActionsGenerator : IIncrementalGenerator
         var compilation = context.SemanticModel.Compilation;
 
         var viewInterface =
-            compilation.GetTypeByMetadataName("Nivaes.App.Cross.ICrossView");
+            compilation.GetTypeByMetadataName("Nivaes.App.Rpc.IRpcDataModel");
 
         var viewBase =
-            compilation.GetTypeByMetadataName("Nivaes.App.Cross.ICrossView`1");
+            compilation.GetTypeByMetadataName("Nivaes.App.Rpc.IRpcDataModel`1");
 
         if (viewInterface is null || viewBase is null)
             return null;
@@ -112,7 +112,7 @@ public class RegisterRpcDataModelsActionsGenerator : IIncrementalGenerator
         var sourceConverters = string.Join(Environment.NewLine,
             types.Select(type =>
                 {
-                    return $"ViewsContainerHelper.New<{type.ViewModelType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}, {type.ViewType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}>(),";
+                    return $"RpcDataModelTypeContainerHelper.New<{type.ViewModelType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}, {type.ViewType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}>(),";
                 }
             ));
 
@@ -120,7 +120,7 @@ public class RegisterRpcDataModelsActionsGenerator : IIncrementalGenerator
         if (!string.IsNullOrWhiteSpace(sourceConverters))
         {
             sourceRegisterConverters = $@"
-                    ViewsContainerHelper.RegisterViewModels(new[]
+                    RpcDataModelTypeContainerHelper.RegisterRpcDataModels(new[]
                     {{
                        {sourceConverters}
                     }});";
@@ -131,9 +131,9 @@ public class RegisterRpcDataModelsActionsGenerator : IIncrementalGenerator
             using System;
             using Nivaes.App.Cross;
             {rootNamespace}
-            internal static class GeneratedViewsExtensions
+            internal static class GeneratedRegisterRpcDataModelsExtensions
             {{
-                public static void RegisterViewsActions()
+                public static void RegisterRegisterRpcDataModelsActions()
                 {{
                     {sourceRegisterConverters}
                 }}
@@ -141,7 +141,7 @@ public class RegisterRpcDataModelsActionsGenerator : IIncrementalGenerator
         ";
 
         context.AddSource(
-            "GeneratedViewsExtensions.g.cs",
+            "GeneratedRegisterRpcDataModelsExtensions.g.cs",
             SourceText.From(source, Encoding.UTF8));
     }
 }
