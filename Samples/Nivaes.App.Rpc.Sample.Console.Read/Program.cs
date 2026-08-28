@@ -4,10 +4,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Nivaes.App.Cross;
 using Nivaes.App.Rpc.Client.Hosting;
-using Nivaes.App.RPC.Sample.Client;
+using Nivaes.App.Rpc.Sample.Client;
 using Nivaes.DataTestGenerator;
 
-namespace Nivaes.App.RPC.Sample.Reader;
+namespace Nivaes.App.Rpc.Sample.Reader;
 
 internal static class Program
 {

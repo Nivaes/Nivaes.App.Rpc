@@ -3,7 +3,7 @@ using AutoFixture.Xunit3;
 using Grpc.Core;
 using MemoryPack;
 using Microsoft.AspNetCore.Components.Web;
-using Nivaes.App.RPC.Sample;
+using Nivaes.App.Rpc.Sample;
 using Nivaes.DataTestGenerator;
 
 

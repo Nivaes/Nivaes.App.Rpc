@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Nivaes.App.RPC.Sample.Client;
+namespace Nivaes.App.Rpc.Sample.Client;
 
 public static class DatabaseStart
 {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Nivaes.DataTestGenerator;
 
-namespace Nivaes.App.RPC.Sample.Server;
+namespace Nivaes.App.Rpc.Sample.Server;
 
 public static class LoadDatatest
 {

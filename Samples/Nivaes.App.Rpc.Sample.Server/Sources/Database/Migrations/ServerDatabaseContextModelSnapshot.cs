@@ -3,12 +3,12 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Nivaes.App.RPC.Sample.Server;
+using Nivaes.App.Rpc.Sample.Server;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Nivaes.App.RPC.Sample.Server.Sources.Database.Migrations
+namespace Nivaes.App.Rpc.Sample.Server.Sources.Database.Migrations
 {
     [DbContext(typeof(ServerDatabaseContext))]
     partial class ServerDatabaseContextModelSnapshot : ModelSnapshot

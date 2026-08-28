@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 #pragma warning disable 219, 612, 618
 #nullable disable
 
-namespace Nivaes.App.RPC.Sample.Client.Database
+namespace Nivaes.App.Rpc.Sample.Client.Database
 {
     [EntityFrameworkInternal]
     public partial class UserDataModelEntityType
@@ -21,7 +21,7 @@ namespace Nivaes.App.RPC.Sample.Client.Database
         public static RuntimeEntityType Create(RuntimeModel model, RuntimeEntityType baseEntityType = null)
         {
             var runtimeEntityType = model.AddEntityType(
-                "Nivaes.App.RPC.Sample.UserDataModel",
+                "Nivaes.App.Rpc.Sample.UserDataModel",
                 typeof(UserDataModel),
                 baseEntityType,
                 propertyCount: 10,

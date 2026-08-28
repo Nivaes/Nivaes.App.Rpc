@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Nivaes.App.RPC.Sample.Client.Sources.Database.Migrations
+namespace Nivaes.App.Rpc.Sample.Client.Sources.Database.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration

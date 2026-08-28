@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace Nivaes.App.RPC.Sample.Client;
+namespace Nivaes.App.Rpc.Sample.Client;
 
 public class DatabaseContextFactory
     : IDesignTimeDbContextFactory<DatabaseContext>

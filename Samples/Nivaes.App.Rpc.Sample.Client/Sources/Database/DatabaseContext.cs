@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Nivaes.App.Rpc.Client;
 
-namespace Nivaes.App.RPC.Sample.Client;
+namespace Nivaes.App.Rpc.Sample.Client;
 
 public class DatabaseContext : DbContext
 {

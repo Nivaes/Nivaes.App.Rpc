@@ -3,11 +3,11 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Nivaes.App.RPC.Sample.Client;
+using Nivaes.App.Rpc.Sample.Client;
 
 #nullable disable
 
-namespace Nivaes.App.RPC.Sample.Client.Sources.Database.Migrations
+namespace Nivaes.App.Rpc.Sample.Client.Sources.Database.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
     partial class DatabaseContextModelSnapshot : ModelSnapshot

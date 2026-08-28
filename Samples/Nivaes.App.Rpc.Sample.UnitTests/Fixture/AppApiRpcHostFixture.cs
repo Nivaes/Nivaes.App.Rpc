@@ -7,7 +7,7 @@ using Grpc.Net.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Nivaes.App.Cross;
-using Nivaes.App.RPC.Sample;
+using Nivaes.App.Rpc.Sample;
 using ProtoBuf.Grpc.Client;
 
 namespace Nivaes.App.Rpc.Sample.Tests

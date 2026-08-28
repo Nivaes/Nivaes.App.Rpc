@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Nivaes.App.RPC.Sample.Server;
+using Nivaes.App.Rpc.Sample.Server;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Nivaes.App.RPC.Sample.Server.Sources.Database.Migrations
+namespace Nivaes.App.Rpc.Sample.Server.Sources.Database.Migrations
 {
     [DbContext(typeof(ServerDatabaseContext))]
     [Migration("20260818160842_InitialCreate")]
@@ -25,7 +25,7 @@ namespace Nivaes.App.RPC.Sample.Server.Sources.Database.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Nivaes.App.RPC.Sample.UserDataModel", b =>
+            modelBuilder.Entity("Nivaes.App.Rpc.Sample.UserDataModel", b =>
                 {
                     b.Property<Guid>("IdUser")
                         .ValueGeneratedOnAdd()

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 
-namespace Nivaes.App.RPC.Sample.Server;
+namespace Nivaes.App.Rpc.Sample.Server;
 
 public class ServerDatabaseContext : DbContext
 {

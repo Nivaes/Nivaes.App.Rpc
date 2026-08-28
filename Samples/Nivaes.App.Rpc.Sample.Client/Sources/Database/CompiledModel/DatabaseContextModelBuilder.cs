@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Update.Internal;
 #pragma warning disable 219, 612, 618
 #nullable disable
 
-namespace Nivaes.App.RPC.Sample.Client.Database
+namespace Nivaes.App.Rpc.Sample.Client.Database
 {
     public partial class DatabaseContextModel
     {

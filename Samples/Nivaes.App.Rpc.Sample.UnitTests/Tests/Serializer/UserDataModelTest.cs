@@ -1,5 +1,5 @@
 ﻿using MemoryPack;
-using Nivaes.App.RPC.Sample;
+using Nivaes.App.Rpc.Sample;
 using Nivaes.DataTestGenerator;
 
 namespace Nivaes.App.Rpc.Sample.Test.Serializer

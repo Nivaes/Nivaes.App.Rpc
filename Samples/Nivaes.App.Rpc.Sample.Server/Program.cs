@@ -5,7 +5,7 @@ using Nivaes.App.Rpc.AspNetCore.Server;
 using Nivaes.App.Rpc.Client.Hosting;
 using ProtoBuf.Grpc.Server;
 
-namespace Nivaes.App.RPC.Sample.Server;
+namespace Nivaes.App.Rpc.Sample.Server;
 
 internal class Program
 {
