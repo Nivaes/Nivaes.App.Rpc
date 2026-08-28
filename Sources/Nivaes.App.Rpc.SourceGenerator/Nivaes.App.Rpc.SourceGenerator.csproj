@@ -43,6 +43,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Include="Images\icon.png" Pack="true" PackagePath="\" />
+		<None Include="Docs\Readme.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

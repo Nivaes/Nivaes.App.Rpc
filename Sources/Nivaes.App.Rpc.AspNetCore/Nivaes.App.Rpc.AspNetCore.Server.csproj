@@ -28,4 +28,9 @@
 		<ProjectReference Include="..\Nivaes.App.Rpc.Shared\Nivaes.App.Rpc.Shared.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<None Include="Images\icon.png" Pack="true" PackagePath="\" />
+		<None Include="Docs\Readme.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
 </Project>
