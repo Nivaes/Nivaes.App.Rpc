@@ -42,7 +42,7 @@ internal static class Program
 
             await SaveUsers(host);
 
-            await Task.Delay(60000);
+            await Task.Delay(6000);
         }
         finally
         {
@@ -77,7 +77,7 @@ internal static class Program
 
             Console.WriteLine($"Write object {user.IdUser} <-> {user.Identification}");
 
-            Console.ReadLine();
+            //Console.ReadLine();
         
         }
 

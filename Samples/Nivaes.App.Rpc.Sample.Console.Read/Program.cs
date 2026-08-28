@@ -41,7 +41,7 @@ internal static class Program
             await DatabaseStart.InitializeDatabase(host);
 
             //await SaveUsers(host);
-            await Task.Delay(12000000);
+            await Task.Delay(6000);
         }
         finally
         {
