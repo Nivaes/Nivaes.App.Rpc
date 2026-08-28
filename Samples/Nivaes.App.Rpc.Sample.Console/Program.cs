@@ -22,9 +22,10 @@ internal static class Program
 
         builder.AddRpcClient<DatabaseContext>(new Uri(url!), 1);
 
-        RpcDataModelTypeContainerHelper.RegisterRpcDataModels([
-            RpcDataModelTypeContainerHelper.New<UserDataModel>()
-        ]);
+        GeneratedRegisterRpcDataModelsExtensions.RegisterRpcDataModelsActions();
+        //RpcDataModelTypeContainerHelper.RegisterRpcDataModels([
+        //    RpcDataModelTypeContainerHelper.New<UserDataModel>()
+        //]);
 
         using var host = builder.Build();
 

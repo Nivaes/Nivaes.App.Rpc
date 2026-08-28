@@ -9,7 +9,7 @@ namespace Nivaes.App.Rpc.SourceGenerator;
 [Generator(LanguageNames.CSharp)]
 public class RegisterRpcDataModelsActionsGenerator : IIncrementalGenerator
 {
-    private record struct ConverterInfo(INamedTypeSymbol ViewModelType, INamedTypeSymbol ViewType);
+    private record struct ConverterInfo(INamedTypeSymbol RpcModelType);
 
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
@@ -50,10 +50,7 @@ public class RegisterRpcDataModelsActionsGenerator : IIncrementalGenerator
         var viewInterface =
             compilation.GetTypeByMetadataName("Nivaes.App.Rpc.IRpcDataModel");
 
-        var viewBase =
-            compilation.GetTypeByMetadataName("Nivaes.App.Rpc.IRpcDataModel`1");
-
-        if (viewInterface is null || viewBase is null)
+        if (viewInterface is null)
             return null;
 
         // Debe implementar ICrossView
@@ -63,37 +60,7 @@ public class RegisterRpcDataModelsActionsGenerator : IIncrementalGenerator
             return null;
         }
 
-        // Buscar ICrossView<TViewModel> en la jerarquía de herencia
-        INamedTypeSymbol? current = symbol;
-        INamedTypeSymbol? viewModelAttributeType = null;
-
-        //System.Diagnostics.Debugger.Launch();
-
-        while (current is not null)
-        {
-            var crossView = symbol.AllInterfaces
-                .FirstOrDefault(i =>
-                    i.IsGenericType &&
-                    SymbolEqualityComparer.Default.Equals(
-                        i.OriginalDefinition,
-                        viewBase));
-
-            if (crossView != null)
-            {
-                viewModelAttributeType =
-                    (INamedTypeSymbol)crossView.TypeArguments[0];
-                break;
-            }
-
-            current = current.BaseType;
-        }
-
-        if (viewModelAttributeType is null)
-            return null;
-
-        return new ConverterInfo(
-            viewModelAttributeType,
-            symbol);
+        return new ConverterInfo(symbol);
     }
 
     private static void Generate(
@@ -103,16 +70,16 @@ public class RegisterRpcDataModelsActionsGenerator : IIncrementalGenerator
         var types = input.ressenterActions
             .Where(x => x != null)
             .Cast<ConverterInfo>()
-            .GroupBy(x => x.ViewType)
+            .GroupBy(x => x.RpcModelType)
             .Select(g => g.First())
-            .OrderBy(x => x.ViewType.Name);
+            .OrderBy(x => x.RpcModelType.Name);
 
         var rootNamespace = string.IsNullOrWhiteSpace(input.rootNamespace) ? string.Empty : $"namespace {input.rootNamespace};";
 
         var sourceConverters = string.Join(Environment.NewLine,
             types.Select(type =>
                 {
-                    return $"RpcDataModelTypeContainerHelper.New<{type.ViewModelType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}, {type.ViewType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}>(),";
+                    return $"RpcDataModelTypeContainerHelper.New<{type.RpcModelType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}>(),";
                 }
             ));
 
@@ -131,7 +98,7 @@ public class RegisterRpcDataModelsActionsGenerator : IIncrementalGenerator
             using System;
             using Nivaes.App.Rpc;
             {rootNamespace}
-            internal static class GeneratedRegisterRpcDataModelsExtensions
+            public static class GeneratedRegisterRpcDataModelsExtensions
             {{
                 public static void RegisterRpcDataModelsActions()
                 {{

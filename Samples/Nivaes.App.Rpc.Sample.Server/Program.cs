@@ -29,9 +29,10 @@ internal class Program
         builder.Services.AddCodeFirstGrpc();
         //builder.Services.AddHealthChecks();
 
-        RpcDataModelTypeContainerHelper.RegisterRpcDataModels([
-            RpcDataModelTypeContainerHelper.New<UserDataModel>()
-        ]);
+        Nivaes.App.Rpc.Sample.GeneratedRegisterRpcDataModelsExtensions.RegisterRpcDataModelsActions();
+        //RpcDataModelTypeContainerHelper.RegisterRpcDataModels([
+        //    RpcDataModelTypeContainerHelper.New<UserDataModel>()
+        //]);
 
         var app = builder.Build();
 
