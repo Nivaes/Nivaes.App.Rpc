@@ -21,7 +21,10 @@ namespace Nivaes.App.Rpc.Client.Hosting
             {
                 optionsAction.Invoke(sp, optionsbuilder);
 
-                optionsbuilder.AddInterceptors(new RpcSyncDataInterceptor());
+                var rpcSyncDbFactory = sp.GetRequiredService<IDbContextFactory<RpcSyncDatabaseContext>>();
+                var rpcSyncDataSignal = sp.GetRequiredService<RpcSyncDataSignal>();
+
+                optionsbuilder.AddInterceptors(new RpcSyncDataInterceptor(rpcSyncDbFactory, rpcSyncDataSignal));
             });
 
             builder.Services.AddPooledDbContextFactory<RpcSyncDatabaseContext>(options =>
