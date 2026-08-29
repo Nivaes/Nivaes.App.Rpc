@@ -17,15 +17,11 @@ namespace Nivaes.App.Rpc.Client.Hosting
             Action<IServiceProvider, DbContextOptionsBuilder> optionsAction)
             where TContext : DbContext
         {
-            //var databasePath = "client.db";
-
-            builder.Services.AddPooledDbContextFactory<TContext>((sp, oa) =>
+            builder.Services.AddPooledDbContextFactory<TContext>((sp, optionsbuilder) =>
             {
-                optionsAction.Invoke(sp, oa);
+                optionsAction.Invoke(sp, optionsbuilder);
 
-                oa.AddInterceptors(new RpcSyncDataInterceptor());
-                //.UseSqlite($"Data Source={databasePath}")
-
+                optionsbuilder.AddInterceptors(new RpcSyncDataInterceptor());
             });
 
             builder.Services.AddPooledDbContextFactory<RpcSyncDatabaseContext>(options =>
