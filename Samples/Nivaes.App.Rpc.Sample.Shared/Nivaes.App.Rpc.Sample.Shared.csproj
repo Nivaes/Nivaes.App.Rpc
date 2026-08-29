@@ -17,7 +17,7 @@
 						  OutputItemType="Analyzer"
 						  ReferenceOutputAssembly="false"
 						  IncludeAssets="analyzers;"
-						  PrivateAssets="runtime; build; native; contentfiles; buildtransitive"
+						  PrivateAssets="contentfiles; buildtransitive"
 					      ExcludeAssets="runtime; build; native; contentfiles; buildtransitive"
 						  />
 	</ItemGroup>

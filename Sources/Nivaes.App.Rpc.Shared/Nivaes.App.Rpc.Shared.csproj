@@ -38,11 +38,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Nivaes.App.Rpc.SourceGenerator\Nivaes.App.Rpc.SourceGenerator.csproj" 
-						  OutputItemType="Analyzer"
-						  ReferenceOutputAssembly="false"
-						  PrivateAssets="none"
-						  IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+		<ProjectReference Include="..\Nivaes.App.Rpc.SourceGenerator\Nivaes.App.Rpc.SourceGenerator.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -3,17 +3,19 @@
 	<PropertyGroup>
 		<OutputType>Library</OutputType>
 		<TargetFramework>netstandard2.0</TargetFramework>
+		
 		<AssemblyName>Nivaes.App.Rpc.SourceGenerator</AssemblyName>
 		<RootNamespace>Nivaes.App.Rpc.SourceGenerator</RootNamespace>
 
-		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
-		<IncludeBuildOutput>false</IncludeBuildOutput>
-
+		<AnalyzerLanguage>cs</AnalyzerLanguage>
 		<IncludeBuildOutput>false</IncludeBuildOutput>
 		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+		<DevelopmentDependency>true</DevelopmentDependency>
 		<IsRoslynComponent>true</IsRoslynComponent>
-		<PublishAot>false</PublishAot>
+		<IncludeSymbols>false</IncludeSymbols>
+		<SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
 
+		<PublishAot>false</PublishAot>
 		<LangVersion>latest</LangVersion>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
@@ -25,6 +27,7 @@
 		<GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">true</GeneratePackageOnBuild>
 		<Description>Nivaes App Rpc source generator.</Description>
 		<PackageTags>Nivaes;app;rpc;roslyn</PackageTags>
+		
 		<NoPackageAnalysis>true</NoPackageAnalysis>
 		<DevelopmentDependency>true</DevelopmentDependency>
 	</PropertyGroup>
@@ -32,11 +35,6 @@
 	<PropertyGroup>
 		<PackageReadmeFile>Readme.md</PackageReadmeFile>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<None Include="Images\icon.png" Pack="true" PackagePath="\" />
-		<None Include="Docs\Readme.md" Pack="true" PackagePath="\" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
@@ -53,8 +51,8 @@
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
-
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all"  />
+		
 		<PackageReference Update="Roslynator.Analyzers">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

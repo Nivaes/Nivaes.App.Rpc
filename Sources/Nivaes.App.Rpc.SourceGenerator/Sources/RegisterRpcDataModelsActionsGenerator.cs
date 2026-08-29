@@ -74,6 +74,9 @@ public class RegisterRpcDataModelsActionsGenerator : IIncrementalGenerator
             .Select(g => g.First())
             .OrderBy(x => x.RpcModelType.Name);
 
+        if (!types.Any())
+            return;
+
         var rootNamespace = string.IsNullOrWhiteSpace(input.rootNamespace) ? string.Empty : $"namespace {input.rootNamespace};";
 
         var sourceConverters = string.Join(Environment.NewLine,
