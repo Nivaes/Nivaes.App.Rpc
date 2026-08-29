@@ -30,7 +30,7 @@ internal static class Program
 
         using var host = builder.Build();
 
-        await host.InitializeRpcClientAsync();
+        await host.Services.InitializeRpcClientAsync();
 
         await host.StartAsync();
 

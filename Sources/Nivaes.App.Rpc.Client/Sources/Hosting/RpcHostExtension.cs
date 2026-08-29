@@ -11,7 +11,7 @@ namespace Nivaes.App.Rpc.Client.Hosting
 {
     public static class RpcHostExtension
     {
-        internal static IServiceProvider? Services;
+        internal static IServiceProvider? ServiceProvider;
 
         public static IHostApplicationBuilder AddRpcClient<TContext>(this IHostApplicationBuilder builder, Uri url, int idClient, 
             Action<IServiceProvider, DbContextOptionsBuilder> optionsAction)
@@ -59,11 +59,11 @@ namespace Nivaes.App.Rpc.Client.Hosting
             return builder;
         }
 
-        public static async Task<IHost> InitializeRpcClientAsync(this IHost host)
+        public static async Task<IServiceProvider> InitializeRpcClientAsync(this IServiceProvider serviceProvider)
         {
-            Services = host.Services;
+            ServiceProvider = serviceProvider;
 
-            await using (var scope = host.Services.CreateAsyncScope())
+            await using (var scope = serviceProvider.CreateAsyncScope())
             {
                 var factory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<RpcSyncDatabaseContext>>();
 
@@ -71,17 +71,17 @@ namespace Nivaes.App.Rpc.Client.Hosting
 
                 try
                 {
-                    await db.Database.EnsureCreatedAsync();
+                    await db.Database.MigrateAsync();
                 }
                 catch (DbException)
                 {
                     await db.Database.EnsureDeletedAsync();
 
-                    await db.Database.EnsureCreatedAsync();
+                    await db.Database.MigrateAsync();
                 }
             }
 
-            return host;
+            return serviceProvider;
         }
     }
 }

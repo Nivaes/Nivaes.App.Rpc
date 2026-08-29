@@ -2,8 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.Extensions.DependencyInjection;
-using Nivaes.App.Rpc.Client.Hosting;
 using Nivaes.App.Rpc.Client.RpcSyncData;
 using Nivaes.App.RPC.Client;
 
@@ -105,10 +103,7 @@ namespace Nivaes.App.Rpc.Client
                 if (syncData is null)
                     continue;
 
-                var syncDataItem =
-                    await rpcSyncDb.SyncDatas.FindAsync(
-                        [syncData.Id],
-                        cancellationToken);
+                var syncDataItem = await rpcSyncDb.SyncDatas.FindAsync(syncData.Id, cancellationToken);
 
                 if (syncDataItem is null)
                 {

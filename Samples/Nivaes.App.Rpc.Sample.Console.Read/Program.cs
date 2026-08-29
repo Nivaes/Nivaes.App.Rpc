@@ -1,10 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Nivaes.App.Rpc.Client.Hosting;
 using Nivaes.App.Rpc.Sample.Client;
-using Nivaes.DataTestGenerator;
 
 namespace Nivaes.App.Rpc.Sample.Reader;
 
@@ -31,7 +29,7 @@ internal static class Program
 
         using var host = builder.Build();
 
-        await host.InitializeRpcClientAsync();
+        await host.Services.InitializeRpcClientAsync();
 
         await host.StartAsync();
 
