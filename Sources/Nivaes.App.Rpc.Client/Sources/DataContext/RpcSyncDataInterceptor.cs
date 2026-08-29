@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Logging;
 using Nivaes.App.Rpc.Client.RpcSyncData;
 using Nivaes.App.RPC.Client;
 
@@ -11,11 +12,14 @@ namespace Nivaes.App.Rpc.Client
     {
         private readonly IDbContextFactory<RpcSyncDatabaseContext> _rpcSyncDbFactory;
         private readonly RpcSyncDataSignal _rpcSyncSignal;
+        private readonly ILogger _logger;
 
-        public RpcSyncDataInterceptor(IDbContextFactory<RpcSyncDatabaseContext> rpcSyncDbFactory, RpcSyncDataSignal signal)
+        public RpcSyncDataInterceptor(IDbContextFactory<RpcSyncDatabaseContext> rpcSyncDbFactory,
+            RpcSyncDataSignal signal, ILogger<RpcSyncDataInterceptor> logger)
         {
             _rpcSyncDbFactory = rpcSyncDbFactory;
             _rpcSyncSignal = signal;
+            _logger = logger;
         }
 
         public override void SaveChangesCanceled(DbContextEventData eventData)
@@ -45,6 +49,8 @@ namespace Nivaes.App.Rpc.Client
         #region SavingChanges
         public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
         {
+            _logger.LogDebug("Rpc SavingChangesAsync");
+
             if (RpcSyncDataInterceptorScope.IsSuppressed(eventData.Context!.ContextId))
                 return result;
 
@@ -60,6 +66,8 @@ namespace Nivaes.App.Rpc.Client
 
                 if (syncData is null)
                     continue;
+
+                _logger.LogTrace($"Rpc buffer {syncData.Id} - {syncData.EntityType} - {syncData.TimeStamp}");
 
                 var syncDataItem = rpcSyncDb.SyncDatas.Find(syncData.Id);
 
@@ -87,6 +95,8 @@ namespace Nivaes.App.Rpc.Client
             InterceptionResult<int> result,
             CancellationToken cancellationToken = default)
         {
+            _logger.LogDebug("Rpc SavingChangesAsync");
+
             if (RpcSyncDataInterceptorScope.IsSuppressed(eventData.Context!.ContextId))
                 return result;
 
@@ -103,8 +113,10 @@ namespace Nivaes.App.Rpc.Client
                 if (syncData is null)
                     continue;
 
-                var syncDataItem = await rpcSyncDb.SyncDatas.FindAsync(syncData.Id, cancellationToken);
+                _logger.LogTrace($"Rpc buffer {syncData.Id} - {syncData.EntityType} - {syncData.TimeStamp}");
 
+                var syncDataItem = await rpcSyncDb.SyncDatas.FindAsync(syncData.Id, cancellationToken);
+                
                 if (syncDataItem is null)
                 {
                     await rpcSyncDb.SyncDatas.AddAsync(syncData);

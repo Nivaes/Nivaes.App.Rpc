@@ -201,8 +201,8 @@ namespace Nivaes.App.Rpc.Sample.Tests
 
                 try
                 {
-                    await foreach (var item in connection)
-                            //.WithCancellation(fixture.CancellationToken))
+                    await foreach (var item in connection
+                            .WithCancellation(fixture.CancellationToken))
                     {
                         item.ShouldNotBeNull();
 

@@ -8,8 +8,6 @@ using Nivaes.App.Rpc.Client;
 using Nivaes.App.Rpc.Client.RpcSyncData;
 using Nivaes.App.RPC.Client;
 using ProtoBuf.Grpc;
-using static Grpc.Core.Metadata;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Nivaes.App.Rpc;
 
@@ -77,6 +75,8 @@ internal class RpcSyncDataWorker<TContext>(
 
     private async IAsyncEnumerable<SyncData> SyncDatas([EnumeratorCancellation] CancellationToken cancellationToken)
     {
+        logger.LogDebug("Rpc SyncDatas");
+
         await using var db = await syncDbFactory.CreateDbContextAsync(cancellationToken);
 
         var items = db.SyncDatas
@@ -98,6 +98,8 @@ internal class RpcSyncDataWorker<TContext>(
 
     private async Task ReadDatas(CancellationToken cancellationToken)
     {
+        logger.LogDebug("Rpc ReadDatas.");
+
         await using var db = await syncDbFactory.CreateDbContextAsync(cancellationToken);
 
         var rquest = new SyncDataRequest
@@ -122,6 +124,7 @@ internal class RpcSyncDataWorker<TContext>(
 
     private async Task ReceiverDatas(CancellationToken cancellationToken)
     {
+        logger.LogDebug("Rpc ReceiverDatas.");
         var requestSend = new SyncConnectionRequest
         {
             IdClient = clientConfiguration.IdClient
@@ -147,7 +150,7 @@ internal class RpcSyncDataWorker<TContext>(
     {
         await foreach (var item in items.WithCancellation(cancellationToken))
         {
-            logger.LogDebug($"RPC receiving item: {item.Id} . {item.EntityType}");
+            logger.LogTrace($"RPC receiving item: {item.Id} . {item.EntityType}");
 
             await using var db = await dbFactory.CreateDbContextAsync(cancellationToken);
 

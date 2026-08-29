@@ -3,6 +3,7 @@ using Grpc.Net.Client;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Nivaes.App.Rpc.Client.RpcSyncData;
 using Nivaes.App.RPC.Client;
 using ProtoBuf.Grpc.Client;
@@ -21,10 +22,9 @@ namespace Nivaes.App.Rpc.Client.Hosting
             {
                 optionsAction.Invoke(sp, optionsbuilder);
 
-                var rpcSyncDbFactory = sp.GetRequiredService<IDbContextFactory<RpcSyncDatabaseContext>>();
-                var rpcSyncDataSignal = sp.GetRequiredService<RpcSyncDataSignal>();
+                var interceptor = ActivatorUtilities.CreateInstance<RpcSyncDataInterceptor>(sp);
 
-                optionsbuilder.AddInterceptors(new RpcSyncDataInterceptor(rpcSyncDbFactory, rpcSyncDataSignal));
+                optionsbuilder.AddInterceptors(interceptor);
             });
 
             builder.Services.AddPooledDbContextFactory<RpcSyncDatabaseContext>(options =>
