@@ -3,6 +3,9 @@
 	<PropertyGroup>
 		<TargetFrameworks>$(_CommonTargets)</TargetFrameworks>
 
+		<AssemblyName>Nivaes.App.Rpc.Client</AssemblyName>
+		<RootNamespace>Nivaes.App.Rpc.Client</RootNamespace>
+		
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 

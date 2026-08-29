@@ -3,6 +3,9 @@
 	<PropertyGroup>
 		<TargetFrameworks>$(_CommonTargets)</TargetFrameworks>
 
+		<AssemblyName>Nivaes.App.Rpc.AspNetCore.Server</AssemblyName>
+		<RootNamespace>Nivaes.App.Rpc.AspNetCore.Server</RootNamespace>
+
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
