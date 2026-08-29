@@ -20,13 +20,14 @@ internal static class Program
         builder.Logging.AddConsole();
 
         var url = builder.Configuration["services:RpcSampleSerice:Grpc:0"];
+        var databasePath = "client.db";
 
-        builder.AddRpcClient<DatabaseContext>(new Uri(url!), 2);
+        builder.AddRpcClient<DatabaseContext>(new Uri(url!), 2, (sp, optionAction) =>
+        {
+            optionAction.UseSqlite($"Data Source={databasePath}");
+        });
 
-        GeneratedRegisterRpcDataModelsExtensions.RegisterRpcDataModelsActions();
-        //RpcDataModelTypeContainerHelper.RegisterRpcDataModels([
-        //    RpcDataModelTypeContainerHelper.New<UserDataModel>()
-        //]);
+        Nivaes.App.Rpc.Sample.GeneratedRegisterRpcDataModelsExtensions.RegisterRpcDataModelsActions();
 
         using var host = builder.Build();
 

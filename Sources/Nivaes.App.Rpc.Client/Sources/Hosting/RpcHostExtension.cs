@@ -13,16 +13,19 @@ namespace Nivaes.App.Rpc.Client.Hosting
     {
         internal static IServiceProvider? Services;
 
-        public static IHostApplicationBuilder AddRpcClient<TContext>(this IHostApplicationBuilder builder, Uri url, int idClient)
+        public static IHostApplicationBuilder AddRpcClient<TContext>(this IHostApplicationBuilder builder, Uri url, int idClient, 
+            Action<IServiceProvider, DbContextOptionsBuilder> optionsAction)
             where TContext : DbContext
         {
-            var databasePath = "client.db";
+            //var databasePath = "client.db";
 
-            builder.Services.AddPooledDbContextFactory<TContext>((sp, optionsAction) =>
+            builder.Services.AddPooledDbContextFactory<TContext>((sp, oa) =>
             {
-                optionsAction
-                    .UseSqlite($"Data Source={databasePath}")
-                    .AddInterceptors(new RpcSyncDataInterceptor());
+                optionsAction.Invoke(sp, oa);
+
+                oa.AddInterceptors(new RpcSyncDataInterceptor());
+                //.UseSqlite($"Data Source={databasePath}")
+
             });
 
             builder.Services.AddPooledDbContextFactory<RpcSyncDatabaseContext>(options =>
