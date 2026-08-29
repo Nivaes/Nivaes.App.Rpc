@@ -1,4 +1,4 @@
-using Nivaes.App.Rpc.Client.Hosting;
+using Nivaes.App.Rpc.AspNetCore.Server.Hosting;
 using ProtoBuf.Grpc.Server;
 
 namespace Nivaes.App.Rpc.Sample.Server;
@@ -22,12 +22,13 @@ internal class Program
         //               .LogTo(Console.WriteLine);
         //           });
 
-        builder.AddMongoDBClient(connectionName: "DbAppMongo");
+        //builder.AddMongoDBClient(connectionName: "DbAppMongo");
 
         // Add services to the container.
         //builder.Services.AddGrpc();
-        builder.Services.AddCodeFirstGrpc();
+        //builder.Services.AddCodeFirstGrpc();
         //builder.Services.AddHealthChecks();
+        builder.AddRpcService(mongoConnectionName: "DbAppMongo");
 
         Nivaes.App.Rpc.Sample.GeneratedRegisterRpcDataModelsExtensions.RegisterRpcDataModelsActions();
         //RpcDataModelTypeContainerHelper.RegisterRpcDataModels([

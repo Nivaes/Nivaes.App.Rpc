@@ -14,7 +14,6 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Nivaes.DataTestGenerator" />
-		<PackageReference Include="protobuf-net.Grpc.AspNetCore" />
 	</ItemGroup>
 
 	<ItemGroup>
