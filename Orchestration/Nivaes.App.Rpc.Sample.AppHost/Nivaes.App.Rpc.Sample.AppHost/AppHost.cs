@@ -7,13 +7,13 @@ var builder = DistributedApplication.CreateBuilder(args);
 //                      .WithPgAdmin();
 //var serverDb = postgres.AddDatabase("DbAppSample");
 
-var mongo = builder.AddMongoDB("RpcMongoDB")
+var dbMongo = builder.AddMongoDB("RpcMongoDB")
                 .WithLifetime(ContainerLifetime.Persistent)
                 .WithDataVolume()
                 .WithMongoExpress()
                 .WithDbGate();
 
-var mongoDb = mongo.AddDatabase("DbAppMongo");
+var mongoDb = dbMongo.AddDatabase("DbAppMongo");
 #endregion
 
 #region Server
