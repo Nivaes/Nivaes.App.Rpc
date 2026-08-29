@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 **/k8s-artifacts/**
+/Samples/Nivaes.App.Rpc.Sample.Console.Read/syncache.db
