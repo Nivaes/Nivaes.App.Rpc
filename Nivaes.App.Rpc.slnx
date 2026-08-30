@@ -14,6 +14,7 @@
 <Project Path="Samples/Nivaes.App.Rpc.Sample.Server/Nivaes.App.Rpc.Sample.Server.csproj" />
 <Project Path="Samples/Nivaes.App.Rpc.Sample.Shared/Nivaes.App.Rpc.Sample.Shared.csproj" Id="e21944a7-f969-4b0d-885d-f29d563b1fcb" />
 <Project Path="Samples/Nivaes.App.Rpc.Sample.UnitTests/Nivaes.App.Rpc.Sample.UnitTests.csproj" />
+<Project Path="Samples/Nivaes.App.Rpc.Sample.Worker/Nivaes.App.Rpc.Sample.Worker.csproj" />
 </Folder>
 
 <Folder Name="/Solution Items/">

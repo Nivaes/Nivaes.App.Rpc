@@ -33,54 +33,54 @@ namespace Nivaes.App.Rpc.Sample.Client.Database
         {
             var relationalModel = new RelationalModel(this);
 
-            var userDataModel = FindEntityType("Nivaes.App.RPC.Sample.UserDataModel")!;
+            var userDataModel = FindEntityType("Nivaes.App.Rpc.Sample.UserDataModel")!;
 
             var defaultTableMappings = new List<TableMappingBase<ColumnMappingBase>>();
             userDataModel.SetRuntimeAnnotation("Relational:DefaultMappings", defaultTableMappings);
-            var nivaesAppRPCSampleUserDataModelTableBase = new TableBase("Nivaes.App.RPC.Sample.UserDataModel", null, relationalModel);
-            var descriptionColumnBase = new ColumnBase<ColumnMappingBase>("Description", "TEXT", nivaesAppRPCSampleUserDataModelTableBase)
+            var nivaesAppRpcSampleUserDataModelTableBase = new TableBase("Nivaes.App.Rpc.Sample.UserDataModel", null, relationalModel);
+            var descriptionColumnBase = new ColumnBase<ColumnMappingBase>("Description", "TEXT", nivaesAppRpcSampleUserDataModelTableBase)
             {
                 IsNullable = true
             };
-            nivaesAppRPCSampleUserDataModelTableBase.Columns.Add("Description", descriptionColumnBase);
-            var emailColumnBase = new ColumnBase<ColumnMappingBase>("Email", "TEXT", nivaesAppRPCSampleUserDataModelTableBase)
+            nivaesAppRpcSampleUserDataModelTableBase.Columns.Add("Description", descriptionColumnBase);
+            var emailColumnBase = new ColumnBase<ColumnMappingBase>("Email", "TEXT", nivaesAppRpcSampleUserDataModelTableBase)
             {
                 IsNullable = true
             };
-            nivaesAppRPCSampleUserDataModelTableBase.Columns.Add("Email", emailColumnBase);
-            var familyNameColumnBase = new ColumnBase<ColumnMappingBase>("FamilyName", "TEXT", nivaesAppRPCSampleUserDataModelTableBase);
-            nivaesAppRPCSampleUserDataModelTableBase.Columns.Add("FamilyName", familyNameColumnBase);
-            var givenNameColumnBase = new ColumnBase<ColumnMappingBase>("GivenName", "TEXT", nivaesAppRPCSampleUserDataModelTableBase);
-            nivaesAppRPCSampleUserDataModelTableBase.Columns.Add("GivenName", givenNameColumnBase);
-            var idUserColumnBase = new ColumnBase<ColumnMappingBase>("IdUser", "TEXT", nivaesAppRPCSampleUserDataModelTableBase);
-            nivaesAppRPCSampleUserDataModelTableBase.Columns.Add("IdUser", idUserColumnBase);
-            var identificationColumnBase = new ColumnBase<ColumnMappingBase>("Identification", "TEXT", nivaesAppRPCSampleUserDataModelTableBase);
-            nivaesAppRPCSampleUserDataModelTableBase.Columns.Add("Identification", identificationColumnBase);
-            var nameColumnBase = new ColumnBase<ColumnMappingBase>("Name", "TEXT", nivaesAppRPCSampleUserDataModelTableBase);
-            nivaesAppRPCSampleUserDataModelTableBase.Columns.Add("Name", nameColumnBase);
-            var phoneNumberColumnBase = new ColumnBase<ColumnMappingBase>("PhoneNumber", "TEXT", nivaesAppRPCSampleUserDataModelTableBase)
+            nivaesAppRpcSampleUserDataModelTableBase.Columns.Add("Email", emailColumnBase);
+            var familyNameColumnBase = new ColumnBase<ColumnMappingBase>("FamilyName", "TEXT", nivaesAppRpcSampleUserDataModelTableBase);
+            nivaesAppRpcSampleUserDataModelTableBase.Columns.Add("FamilyName", familyNameColumnBase);
+            var givenNameColumnBase = new ColumnBase<ColumnMappingBase>("GivenName", "TEXT", nivaesAppRpcSampleUserDataModelTableBase);
+            nivaesAppRpcSampleUserDataModelTableBase.Columns.Add("GivenName", givenNameColumnBase);
+            var idUserColumnBase = new ColumnBase<ColumnMappingBase>("IdUser", "TEXT", nivaesAppRpcSampleUserDataModelTableBase);
+            nivaesAppRpcSampleUserDataModelTableBase.Columns.Add("IdUser", idUserColumnBase);
+            var identificationColumnBase = new ColumnBase<ColumnMappingBase>("Identification", "TEXT", nivaesAppRpcSampleUserDataModelTableBase);
+            nivaesAppRpcSampleUserDataModelTableBase.Columns.Add("Identification", identificationColumnBase);
+            var nameColumnBase = new ColumnBase<ColumnMappingBase>("Name", "TEXT", nivaesAppRpcSampleUserDataModelTableBase);
+            nivaesAppRpcSampleUserDataModelTableBase.Columns.Add("Name", nameColumnBase);
+            var phoneNumberColumnBase = new ColumnBase<ColumnMappingBase>("PhoneNumber", "TEXT", nivaesAppRpcSampleUserDataModelTableBase)
             {
                 IsNullable = true
             };
-            nivaesAppRPCSampleUserDataModelTableBase.Columns.Add("PhoneNumber", phoneNumberColumnBase);
-            var timeStampColumnBase = new ColumnBase<ColumnMappingBase>("TimeStamp", "TEXT", nivaesAppRPCSampleUserDataModelTableBase);
-            nivaesAppRPCSampleUserDataModelTableBase.Columns.Add("TimeStamp", timeStampColumnBase);
-            var timeStampTicksColumnBase = new ColumnBase<ColumnMappingBase>("TimeStampTicks", "INTEGER", nivaesAppRPCSampleUserDataModelTableBase);
-            nivaesAppRPCSampleUserDataModelTableBase.Columns.Add("TimeStampTicks", timeStampTicksColumnBase);
-            relationalModel.DefaultTables.Add("Nivaes.App.RPC.Sample.UserDataModel", nivaesAppRPCSampleUserDataModelTableBase);
-            var nivaesAppRPCSampleUserDataModelMappingBase = new TableMappingBase<ColumnMappingBase>(userDataModel, nivaesAppRPCSampleUserDataModelTableBase, null);
-            nivaesAppRPCSampleUserDataModelTableBase.AddTypeMapping(nivaesAppRPCSampleUserDataModelMappingBase, false);
-            defaultTableMappings.Add(nivaesAppRPCSampleUserDataModelMappingBase);
-            RelationalModel.CreateColumnMapping((ColumnBase<ColumnMappingBase>)idUserColumnBase, userDataModel.FindProperty("IdUser")!, nivaesAppRPCSampleUserDataModelMappingBase);
-            RelationalModel.CreateColumnMapping((ColumnBase<ColumnMappingBase>)descriptionColumnBase, userDataModel.FindProperty("Description")!, nivaesAppRPCSampleUserDataModelMappingBase);
-            RelationalModel.CreateColumnMapping((ColumnBase<ColumnMappingBase>)emailColumnBase, userDataModel.FindProperty("Email")!, nivaesAppRPCSampleUserDataModelMappingBase);
-            RelationalModel.CreateColumnMapping((ColumnBase<ColumnMappingBase>)familyNameColumnBase, userDataModel.FindProperty("FamilyName")!, nivaesAppRPCSampleUserDataModelMappingBase);
-            RelationalModel.CreateColumnMapping((ColumnBase<ColumnMappingBase>)givenNameColumnBase, userDataModel.FindProperty("GivenName")!, nivaesAppRPCSampleUserDataModelMappingBase);
-            RelationalModel.CreateColumnMapping((ColumnBase<ColumnMappingBase>)identificationColumnBase, userDataModel.FindProperty("Identification")!, nivaesAppRPCSampleUserDataModelMappingBase);
-            RelationalModel.CreateColumnMapping((ColumnBase<ColumnMappingBase>)nameColumnBase, userDataModel.FindProperty("Name")!, nivaesAppRPCSampleUserDataModelMappingBase);
-            RelationalModel.CreateColumnMapping((ColumnBase<ColumnMappingBase>)phoneNumberColumnBase, userDataModel.FindProperty("PhoneNumber")!, nivaesAppRPCSampleUserDataModelMappingBase);
-            RelationalModel.CreateColumnMapping((ColumnBase<ColumnMappingBase>)timeStampColumnBase, userDataModel.FindProperty("TimeStamp")!, nivaesAppRPCSampleUserDataModelMappingBase);
-            RelationalModel.CreateColumnMapping((ColumnBase<ColumnMappingBase>)timeStampTicksColumnBase, userDataModel.FindProperty("TimeStampTicks")!, nivaesAppRPCSampleUserDataModelMappingBase);
+            nivaesAppRpcSampleUserDataModelTableBase.Columns.Add("PhoneNumber", phoneNumberColumnBase);
+            var timeStampColumnBase = new ColumnBase<ColumnMappingBase>("TimeStamp", "TEXT", nivaesAppRpcSampleUserDataModelTableBase);
+            nivaesAppRpcSampleUserDataModelTableBase.Columns.Add("TimeStamp", timeStampColumnBase);
+            var timeStampTicksColumnBase = new ColumnBase<ColumnMappingBase>("TimeStampTicks", "INTEGER", nivaesAppRpcSampleUserDataModelTableBase);
+            nivaesAppRpcSampleUserDataModelTableBase.Columns.Add("TimeStampTicks", timeStampTicksColumnBase);
+            relationalModel.DefaultTables.Add("Nivaes.App.Rpc.Sample.UserDataModel", nivaesAppRpcSampleUserDataModelTableBase);
+            var nivaesAppRpcSampleUserDataModelMappingBase = new TableMappingBase<ColumnMappingBase>(userDataModel, nivaesAppRpcSampleUserDataModelTableBase, null);
+            nivaesAppRpcSampleUserDataModelTableBase.AddTypeMapping(nivaesAppRpcSampleUserDataModelMappingBase, false);
+            defaultTableMappings.Add(nivaesAppRpcSampleUserDataModelMappingBase);
+            RelationalModel.CreateColumnMapping((ColumnBase<ColumnMappingBase>)idUserColumnBase, userDataModel.FindProperty("IdUser")!, nivaesAppRpcSampleUserDataModelMappingBase);
+            RelationalModel.CreateColumnMapping((ColumnBase<ColumnMappingBase>)descriptionColumnBase, userDataModel.FindProperty("Description")!, nivaesAppRpcSampleUserDataModelMappingBase);
+            RelationalModel.CreateColumnMapping((ColumnBase<ColumnMappingBase>)emailColumnBase, userDataModel.FindProperty("Email")!, nivaesAppRpcSampleUserDataModelMappingBase);
+            RelationalModel.CreateColumnMapping((ColumnBase<ColumnMappingBase>)familyNameColumnBase, userDataModel.FindProperty("FamilyName")!, nivaesAppRpcSampleUserDataModelMappingBase);
+            RelationalModel.CreateColumnMapping((ColumnBase<ColumnMappingBase>)givenNameColumnBase, userDataModel.FindProperty("GivenName")!, nivaesAppRpcSampleUserDataModelMappingBase);
+            RelationalModel.CreateColumnMapping((ColumnBase<ColumnMappingBase>)identificationColumnBase, userDataModel.FindProperty("Identification")!, nivaesAppRpcSampleUserDataModelMappingBase);
+            RelationalModel.CreateColumnMapping((ColumnBase<ColumnMappingBase>)nameColumnBase, userDataModel.FindProperty("Name")!, nivaesAppRpcSampleUserDataModelMappingBase);
+            RelationalModel.CreateColumnMapping((ColumnBase<ColumnMappingBase>)phoneNumberColumnBase, userDataModel.FindProperty("PhoneNumber")!, nivaesAppRpcSampleUserDataModelMappingBase);
+            RelationalModel.CreateColumnMapping((ColumnBase<ColumnMappingBase>)timeStampColumnBase, userDataModel.FindProperty("TimeStamp")!, nivaesAppRpcSampleUserDataModelMappingBase);
+            RelationalModel.CreateColumnMapping((ColumnBase<ColumnMappingBase>)timeStampTicksColumnBase, userDataModel.FindProperty("TimeStampTicks")!, nivaesAppRpcSampleUserDataModelMappingBase);
 
             var tableMappings = new List<TableMapping>();
             userDataModel.SetRuntimeAnnotation("Relational:TableMappings", tableMappings);
@@ -142,7 +142,7 @@ namespace Nivaes.App.Rpc.Sample.Client.Database
             usersTable.PrimaryKey = pK_Users;
             pK_Users.SetRowKeyValueFactory(new SimpleRowKeyValueFactory<Guid>(pK_Users));
             var pK_UsersKey = RelationalModel.GetKey(this,
-                "Nivaes.App.RPC.Sample.UserDataModel",
+                "Nivaes.App.Rpc.Sample.UserDataModel",
                 new[] { "IdUser" });
             pK_Users.MappedKeys.Add(pK_UsersKey);
             RelationalModel.GetOrCreateUniqueConstraints(pK_UsersKey).Add(pK_Users);
@@ -151,7 +151,7 @@ namespace Nivaes.App.Rpc.Sample.Client.Database
             "IX_Users_FamilyName", usersTable, new[] { familyNameColumn }, false);
             iX_Users_FamilyName.SetRowIndexValueFactory(new SimpleRowIndexValueFactory<string>(iX_Users_FamilyName));
             var iX_Users_FamilyNameIx = RelationalModel.GetIndex(this,
-                "Nivaes.App.RPC.Sample.UserDataModel",
+                "Nivaes.App.Rpc.Sample.UserDataModel",
                 new[] { "FamilyName" });
             iX_Users_FamilyName.MappedIndexes.Add(iX_Users_FamilyNameIx);
             RelationalModel.GetOrCreateTableIndexes(iX_Users_FamilyNameIx).Add(iX_Users_FamilyName);
@@ -160,7 +160,7 @@ namespace Nivaes.App.Rpc.Sample.Client.Database
             "IX_Users_GivenName", usersTable, new[] { givenNameColumn }, false);
             iX_Users_GivenName.SetRowIndexValueFactory(new SimpleRowIndexValueFactory<string>(iX_Users_GivenName));
             var iX_Users_GivenNameIx = RelationalModel.GetIndex(this,
-                "Nivaes.App.RPC.Sample.UserDataModel",
+                "Nivaes.App.Rpc.Sample.UserDataModel",
                 new[] { "GivenName" });
             iX_Users_GivenName.MappedIndexes.Add(iX_Users_GivenNameIx);
             RelationalModel.GetOrCreateTableIndexes(iX_Users_GivenNameIx).Add(iX_Users_GivenName);
@@ -169,7 +169,7 @@ namespace Nivaes.App.Rpc.Sample.Client.Database
             "IX_Users_Name", usersTable, new[] { nameColumn }, false);
             iX_Users_Name.SetRowIndexValueFactory(new SimpleRowIndexValueFactory<string>(iX_Users_Name));
             var iX_Users_NameIx = RelationalModel.GetIndex(this,
-                "Nivaes.App.RPC.Sample.UserDataModel",
+                "Nivaes.App.Rpc.Sample.UserDataModel",
                 new[] { "Name" });
             iX_Users_Name.MappedIndexes.Add(iX_Users_NameIx);
             RelationalModel.GetOrCreateTableIndexes(iX_Users_NameIx).Add(iX_Users_Name);
@@ -178,7 +178,7 @@ namespace Nivaes.App.Rpc.Sample.Client.Database
             "IX_Users_TimeStampTicks", usersTable, new[] { timeStampTicksColumn }, false);
             iX_Users_TimeStampTicks.SetRowIndexValueFactory(new SimpleRowIndexValueFactory<long>(iX_Users_TimeStampTicks));
             var iX_Users_TimeStampTicksIx = RelationalModel.GetIndex(this,
-                "Nivaes.App.RPC.Sample.UserDataModel",
+                "Nivaes.App.Rpc.Sample.UserDataModel",
                 new[] { "TimeStampTicks" });
             iX_Users_TimeStampTicks.MappedIndexes.Add(iX_Users_TimeStampTicksIx);
             RelationalModel.GetOrCreateTableIndexes(iX_Users_TimeStampTicksIx).Add(iX_Users_TimeStampTicks);

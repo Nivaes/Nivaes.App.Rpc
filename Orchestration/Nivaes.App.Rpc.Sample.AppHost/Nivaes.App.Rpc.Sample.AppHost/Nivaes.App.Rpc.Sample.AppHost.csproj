@@ -22,6 +22,7 @@
 		<ProjectReference Include="..\..\..\Samples\Nivaes.App.Rpc.Sample.Console.Writer\Nivaes.App.Rpc.Sample.Console.Writer.csproj" />
 		<ProjectReference Include="..\..\..\Samples\Nivaes.App.Rpc.Sample.Console\Nivaes.App.Rpc.Sample.Console.csproj" />
 		<ProjectReference Include="..\..\..\Samples\Nivaes.App.Rpc.Sample.Server\Nivaes.App.Rpc.Sample.Server.csproj" />
+		<ProjectReference Include="..\..\..\Samples\Nivaes.App.Rpc.Sample.Worker\Nivaes.App.Rpc.Sample.Worker.csproj" />
 	</ItemGroup>
 
 </Project>

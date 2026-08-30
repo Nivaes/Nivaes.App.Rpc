@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-Nivaes.App.Rpc.Sample.Worker-f6a47ab5-2e52-4233-af0b-d3fae849ba56</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+	  <PackageReference Include="Grpc.Net.Client.Web" />
+	  <PackageReference Include="Grpc.Net.Client" />
+	  <PackageReference Include="protobuf-net.Grpc" />
+
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Tasks">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	  <PackageReference Include="Microsoft.Extensions.Hosting" />
+
+	  <PackageReference Include="Nivaes.DataTestGenerator" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Orchestration\Nivaes.App.Rpc.Sample.AppHost\Nivaes.App.Rpc.Sample.ServiceDefaults\Nivaes.App.Rpc.Sample.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\Nivaes.App.Rpc.Sample.Client\Nivaes.App.Rpc.Sample.Client.csproj" />
+  </ItemGroup>
+</Project>

@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Components.Web;
 using Nivaes.App.Rpc.Sample;
 using Nivaes.DataTestGenerator;
 
-
 namespace Nivaes.App.Rpc.Sample.Tests
 {
     [Collection(nameof(AppApiRpcHostFixture))]

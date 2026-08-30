@@ -23,6 +23,8 @@ internal class RpcSyncDataWorker<TContext>(
 {
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
+        logger.LogDebug("Rpc ExecuteAsync");
+
         var waitTask = signal.WaitAsync(cancellationToken).AsTask();
         var delayTask = Task.Delay(TimeSpan.FromMinutes(30), cancellationToken);
 
@@ -56,6 +58,8 @@ internal class RpcSyncDataWorker<TContext>(
 
     private async Task ProcessAsync(CancellationToken cancellationToken)
     {
+        logger.LogDebug("Rpc ProcessAsync");
+
         try
         {
             await UpdateLastTimestampSetting(cancellationToken);
