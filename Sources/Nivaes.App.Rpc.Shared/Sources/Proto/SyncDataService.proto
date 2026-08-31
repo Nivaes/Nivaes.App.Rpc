@@ -1,0 +1,25 @@
+﻿syntax = "proto3";
+
+package syncdata;
+
+service SyncDataService {
+  rpc Connect(SyncConnectionRequest) returns (stream SyncData);
+  rpc GetData(SyncDataRequest) returns (stream SyncData);
+  rpc SendData(stream SyncData) returns (SyncDataResult);
+}
+
+message SyncConnectionRequest {
+  // Propiedades de SyncConnectionRequest
+}
+
+message SyncDataRequest {
+  // Propiedades de SyncDataRequest
+}
+
+message SyncData {
+  // Propiedades de SyncData
+}
+
+message SyncDataResult {
+  bool Success
+}

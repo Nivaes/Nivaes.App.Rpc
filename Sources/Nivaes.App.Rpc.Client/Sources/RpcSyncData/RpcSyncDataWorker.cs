@@ -21,16 +21,21 @@ internal class RpcSyncDataWorker<TContext>(
     : BackgroundService
     where TContext : DbContext
 {
+    /// <summary>
+    /// Execute the backgroud service.
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Task.</returns>
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        logger.LogDebug("Rpc RpcSyncDataWorker.ExecuteAsync<--------------------------------------------->");
+        logger.LogDebug("Rpc RpcSyncDataWorker.ExecuteAsync");
 
         var waitTask = signal.WaitAsync(cancellationToken).AsTask();
         var delayTask = Task.Delay(TimeSpan.FromMinutes(30), cancellationToken);
 
         await ReadDatas(cancellationToken);
 
-        var taskSync = Task.Run(() => ReceiverDatas(cancellationToken));
+        _ = Task.Run(() => ReceiverDatas(cancellationToken));
 
         while (!cancellationToken.IsCancellationRequested)
         {
@@ -49,9 +54,9 @@ internal class RpcSyncDataWorker<TContext>(
             {
                 await Task.Delay(TimeSpan.FromSeconds(10), cancellationToken);
             }
-            catch(TaskCanceledException)
+            catch(TaskCanceledException) when(cancellationToken.IsCancellationRequested)
             {
-                logger.LogDebug("Rpc RpcSyncDataWorker.ExecuteAsync<----------------------------Cancelation----------------->");
+                logger.LogDebug("Rpc Cancelation RpcSyncDataWorker.ExecuteAsync");
 
                 return;
             }
@@ -60,6 +65,12 @@ internal class RpcSyncDataWorker<TContext>(
         logger.LogDebug("Rpc RpcSyncDataWorker.ExecuteAsync<----------------------------Fin----------------->");
     }
 
+    /// <summary>
+    /// Process the backgroud service.
+    /// Get data of buffer and send to web service.
+    /// </summary>
+    /// <param name = "cancellationToken" > Cancellation token.</param>
+    /// <returns>Task.</returns>
     private async Task ProcessAsync(CancellationToken cancellationToken)
     {
         logger.LogDebug("Rpc RpcSyncDataWorker.ProcessAsync");
@@ -68,7 +79,7 @@ internal class RpcSyncDataWorker<TContext>(
         {
             await UpdateLastTimestampSetting(cancellationToken);
         
-            var syncDatas = SyncDatas(cancellationToken);
+            var syncDatas = SyncGetDatas(cancellationToken);
 
             await syncDataService.SendData(syncDatas, new CallContext(
                     new CallOptions(
@@ -81,9 +92,14 @@ internal class RpcSyncDataWorker<TContext>(
         }
     }
 
-    private async IAsyncEnumerable<SyncData> SyncDatas([EnumeratorCancellation] CancellationToken cancellationToken)
+    /// <summary>
+    /// Get data for buffer database.
+    /// </summary>
+    /// <param name="cancellationToken">Cancelotion token.</param>
+    /// <returns>Enumeble with data of server.</returns>
+    private async IAsyncEnumerable<SyncData> SyncGetDatas([EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        logger.LogDebug("Rpc RpcSyncDataWorker.SyncDatas");
+        logger.LogDebug("Rpc RpcSyncDataWorker.SyncGetDatas");
 
         await using var db = await syncDbFactory.CreateDbContextAsync(cancellationToken);
 
@@ -104,16 +120,19 @@ internal class RpcSyncDataWorker<TContext>(
         await db.SaveChangesAsync(cancellationToken);
     }
 
+    /// <summary>
+    /// Read datas of web service and write in database.
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation Token.</param>
+    /// <returns>Task.</returns>
     private async Task ReadDatas(CancellationToken cancellationToken)
     {
         logger.LogDebug("Rpc RpcSyncDataWorker.ReadDatas.");
 
-        await using var db = await syncDbFactory.CreateDbContextAsync(cancellationToken);
-
         var rquest = new SyncDataRequest
         {
             IdClient = clientConfiguration.IdClient,
-            LastTimestampTicks = 0//await LastTimestampSetting(cancellationToken)
+            LastTimestampTicks = await LastTimestampSetting(cancellationToken) - TimeSpan.FromMinutes(5).Ticks
         };
 
         var items = syncDataService.GetData(rquest, cancellationToken);
@@ -130,6 +149,11 @@ internal class RpcSyncDataWorker<TContext>(
         }
     }
 
+    /// <summary>
+    /// Receiver datas of dateservices and write in database.
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     private async Task ReceiverDatas(CancellationToken cancellationToken)
     {
         logger.LogDebug("Rpc RpcSyncDataWorker.ReceiverDatas.");
