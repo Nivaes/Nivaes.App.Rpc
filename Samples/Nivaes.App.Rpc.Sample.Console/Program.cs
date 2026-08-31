@@ -42,7 +42,7 @@ internal static class Program
 
             await SaveUsers(host);
 
-            await Task.Delay(60000);
+            await Task.Delay(600);
         }
         finally
         {

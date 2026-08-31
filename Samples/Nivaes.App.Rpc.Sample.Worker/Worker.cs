@@ -34,5 +34,15 @@ namespace Nivaes.App.Rpc.Sample.Worker
                 await Task.Delay(TimeSpan.FromMinutes(1));
             }
         }
+
+        public override Task StartAsync(CancellationToken cancellationToken)
+        {
+            return base.StartAsync(cancellationToken);
+        }
+
+        public override Task StopAsync(CancellationToken cancellationToken)
+        {
+            return base.StopAsync(cancellationToken);
+        }
     }
 }

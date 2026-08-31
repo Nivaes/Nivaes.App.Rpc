@@ -25,9 +25,7 @@ builder.Services.AddHostedService<Worker>();
 
 Nivaes.App.Rpc.Sample.GeneratedRegisterRpcDataModelsExtensions.RegisterRpcDataModelsActions();
 
-
 //builder.AddServiceDefaults();
-//builder.Services.AddHostedService<Worker>();
 
 var host = builder.Build();
 
@@ -36,3 +34,4 @@ await host.Services.InitializeRpcClientAsync();
 await DatabaseStart.InitializeDatabase(host);
 
 await host.RunAsync();
+

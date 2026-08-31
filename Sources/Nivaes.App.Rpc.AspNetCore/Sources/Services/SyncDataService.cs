@@ -9,7 +9,7 @@ using ProtoBuf.Grpc;
 
 namespace Nivaes.App.Rpc.AspNetCore.Server;
 
-internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncDataService> logger) 
+internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncDataService> logger)
     : ISyncDataService
 {
     private const string CollectionName = "Items";
@@ -18,33 +18,42 @@ internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncData
     #region Connect
     IAsyncEnumerable<SyncData> ISyncDataService.Connect(SyncConnectionRequest request, CallContext context)
     {
-        logger.LogDebug("Rpc Connect");
+        logger.LogDebug("Rpc connect");
 
         var channel = Channel.CreateUnbounded<SyncData>();
 
         Connections[request.IdClient] = channel;
 
-        var stream = ReadMessages(channel.Reader, context.CancellationToken);
+        try
+        {
+            var stream = ReadMessages(channel.Reader, context.CancellationToken);
 
-        //context.CancellationToken.Register(() =>
-        //{
-        //    channel.Writer.TryComplete();
+            //context.CancellationToken.Register(() =>
+            //{
+            //    channel.Writer.TryComplete();
 
-        //    Connections.TryRemove(request.IdClient, out _);
+            //    Connections.TryRemove(request.IdClient, out _);
 
-        //    logger.LogInformation("Connection closed: {ClientId}", request.IdClient);
-        //});
+            //    logger.LogInformation("Connection closed: {ClientId}", request.IdClient);
+            //});
 
-        return new CleanupAsyncEnumerable<SyncData>(
-              stream,
-              () =>
-              {
-                  Connections.TryRemove(request.IdClient, out _);
+            return new CleanupAsyncEnumerable<SyncData>(
+                  stream,
+                  () =>
+                  {
+                      Connections.TryRemove(request.IdClient, out _);
 
-                  logger.LogInformation("Connection closed: {ClientId}", request.IdClient);
+                      logger.LogInformation("Connection closed: {ClientId}", request.IdClient);
 
-                  return ValueTask.CompletedTask;
-              });
+                      return ValueTask.CompletedTask;
+                  });
+        }
+        catch (InvalidOperationException) when (context.CancellationToken.IsCancellationRequested)
+        {
+            logger.LogDebug("Rpc connect cancelled");
+
+            return new List<SyncData>().ToAsyncEnumerable();
+        }
     }
 
     private async IAsyncEnumerable<SyncData> ReadMessages(ChannelReader<SyncData> reader, [EnumeratorCancellation] CancellationToken cancellationToken)
@@ -57,7 +66,7 @@ internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncData
     }
     #endregion
 
-   async IAsyncEnumerable<SyncData> ISyncDataService.GetData(SyncDataRequest request, CallContext context)
+    async IAsyncEnumerable<SyncData> ISyncDataService.GetData(SyncDataRequest request, CallContext context)
     {
         logger.LogDebug("Rpc GetData");
 
@@ -95,7 +104,7 @@ internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncData
     }
 
     async ValueTask<SyncDataResult> ISyncDataService.SendData(IAsyncEnumerable<SyncData> datas, CallContext context)
-    {       
+    {
         logger.LogDebug("Rpc SendData");
 
         var headers = context.ServerCallContext?.RequestHeaders;
@@ -104,29 +113,39 @@ internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncData
         var database = mongoClient.GetDatabase("Db1");
         var collection = database.GetCollection<MongoDocument>(CollectionName);
 
-        await foreach(var item in datas)
+        try
         {
-            logger.LogTrace($"Send item(SendData):{item.Id}");
-
-            if (!Singleton<RpcDataModelsTypeContainer>.Instance.RpcDataModelsType.TryGetValue(item.EntityType, out var syncDataType))
+            await foreach (var item in datas)
             {
-                logger.LogError($"The type {item.EntityType} not register.");
-                continue;
+                logger.LogTrace($"Send item(SendData):{item.Id}");
+
+                if (!Singleton<RpcDataModelsTypeContainer>.Instance.RpcDataModelsType.TryGetValue(item.EntityType, out var syncDataType))
+                {
+                    logger.LogError($"The type {item.EntityType} not register.");
+                    continue;
+                }
+
+                foreach (var channel in Connections)
+                {
+                    if (channel.Key != idUser)
+                        await channel.Value.Writer.WriteAsync(item, context.CancellationToken);
+                }
+
+                var test = new MongoDocument
+                {
+                    Id = item.Id,
+                    DataItem = (IRpcDataModel?)MemoryPackSerializer.Deserialize(syncDataType, item.Data),
+                    TimeStampTicks = item.TimeStampTicks
+                };
+                await collection.InsertOrUpdateOneAsync(test, context.CancellationToken);
             }
-
-            foreach (var channel in Connections)
+        }
+        catch (OperationCanceledException) when (context.CancellationToken.IsCancellationRequested)
+        {
+            return new SyncDataResult
             {
-                if(channel.Key != idUser)
-                    await channel.Value.Writer.WriteAsync(item, context.CancellationToken);
-            }
-
-            var test = new MongoDocument
-            {
-                Id = item.Id,
-                DataItem = (IRpcDataModel?)MemoryPackSerializer.Deserialize(syncDataType, item.Data),
-                TimeStampTicks = item.TimeStampTicks
+                Success = false
             };
-            await collection.InsertOrUpdateOneAsync(test, context.CancellationToken);
         }
 
         return new SyncDataResult

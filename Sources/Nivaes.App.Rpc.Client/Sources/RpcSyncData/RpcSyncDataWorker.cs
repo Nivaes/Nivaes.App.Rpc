@@ -23,7 +23,7 @@ internal class RpcSyncDataWorker<TContext>(
 {
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        logger.LogDebug("Rpc ExecuteAsync");
+        logger.LogDebug("Rpc RpcSyncDataWorker.ExecuteAsync<--------------------------------------------->");
 
         var waitTask = signal.WaitAsync(cancellationToken).AsTask();
         var delayTask = Task.Delay(TimeSpan.FromMinutes(30), cancellationToken);
@@ -51,14 +51,18 @@ internal class RpcSyncDataWorker<TContext>(
             }
             catch(TaskCanceledException)
             {
+                logger.LogDebug("Rpc RpcSyncDataWorker.ExecuteAsync<----------------------------Cancelation----------------->");
+
                 return;
             }
         }
+
+        logger.LogDebug("Rpc RpcSyncDataWorker.ExecuteAsync<----------------------------Fin----------------->");
     }
 
     private async Task ProcessAsync(CancellationToken cancellationToken)
     {
-        logger.LogDebug("Rpc ProcessAsync");
+        logger.LogDebug("Rpc RpcSyncDataWorker.ProcessAsync");
 
         try
         {
@@ -79,7 +83,7 @@ internal class RpcSyncDataWorker<TContext>(
 
     private async IAsyncEnumerable<SyncData> SyncDatas([EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        logger.LogDebug("Rpc SyncDatas");
+        logger.LogDebug("Rpc RpcSyncDataWorker.SyncDatas");
 
         await using var db = await syncDbFactory.CreateDbContextAsync(cancellationToken);
 
@@ -102,7 +106,7 @@ internal class RpcSyncDataWorker<TContext>(
 
     private async Task ReadDatas(CancellationToken cancellationToken)
     {
-        logger.LogDebug("Rpc ReadDatas.");
+        logger.LogDebug("Rpc RpcSyncDataWorker.ReadDatas.");
 
         await using var db = await syncDbFactory.CreateDbContextAsync(cancellationToken);
 
@@ -128,7 +132,7 @@ internal class RpcSyncDataWorker<TContext>(
 
     private async Task ReceiverDatas(CancellationToken cancellationToken)
     {
-        logger.LogDebug("Rpc ReceiverDatas.");
+        logger.LogDebug("Rpc RpcSyncDataWorker.ReceiverDatas.");
         var requestSend = new SyncConnectionRequest
         {
             IdClient = clientConfiguration.IdClient
@@ -152,6 +156,8 @@ internal class RpcSyncDataWorker<TContext>(
 
     private async Task SaveDatas(IAsyncEnumerable<SyncData> items, CancellationToken cancellationToken)
     {
+        logger.LogDebug("Rpc RpcSyncDataWorker.SaveDatas.");
+
         await foreach (var item in items.WithCancellation(cancellationToken))
         {
             logger.LogTrace($"RPC receiving item: {item.Id} . {item.EntityType}");

@@ -55,6 +55,6 @@ internal class Program
 
         app.MapDefaultEndpoints();
 
-        app.Run();
+        await app.RunAsync();
     }
 }
