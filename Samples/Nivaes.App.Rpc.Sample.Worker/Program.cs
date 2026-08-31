@@ -25,7 +25,7 @@ builder.Services.AddHostedService<Worker>();
 
 Nivaes.App.Rpc.Sample.GeneratedRegisterRpcDataModelsExtensions.RegisterRpcDataModelsActions();
 
-//builder.AddServiceDefaults();
+builder.AddServiceDefaults();
 
 var host = builder.Build();
 
