@@ -8,12 +8,10 @@
     <PackageVersion Include="AsyncFixer" Version="2.1.0" />
     <PackageVersion Include="AutoFixture.Xunit3" Version="4.19.0" />
     <PackageVersion Include="CommunityToolkit.Aspire.Hosting.MongoDB.Extensions" Version="13.5.0" />
-    <PackageVersion Include="Google.Protobuf" Version="3.36.0" />
     <PackageVersion Include="Grpc.AspNetCore.Server" Version="2.83.0" />
     <PackageVersion Include="Grpc.AspNetCore.Web" Version="2.83.0" />
     <PackageVersion Include="Grpc.Net.Client" Version="2.83.0" />
     <PackageVersion Include="Grpc.Net.Client.Web" Version="2.83.0" />
-    <PackageVersion Include="Grpc.Tools" Version="2.83.0" />
     <PackageVersion Include="MemoryPack" Version="1.21.4" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="5.9.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.9.0" />

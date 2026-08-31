@@ -26,15 +26,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="Sources\Proto\SyncDataService.proto" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="Google.Protobuf" />
-		<PackageReference Include="Grpc.Tools">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
 		<PackageReference Include="MemoryPack" />
 		<PackageReference Include="Nivaes.Extensions" />
 		<PackageReference Include="protobuf-net.Grpc" />
@@ -53,10 +44,6 @@
 	<ItemGroup>
 		<None Include="Images\icon.png" Pack="true" PackagePath="icon.png" />
 		<None Include="Docs\Readme.md" Pack="true" PackagePath="Readme.md" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Protobuf Include="Sources\Proto\SyncDataService.proto" />
 	</ItemGroup>
 
 </Project>
