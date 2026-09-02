@@ -4,18 +4,30 @@ on:
   workflow_dispatch:
 
 jobs:
-    SyncInfo:
-      runs-on: ubuntu-latest
+  SyncInfo:
+    strategy:
+      matrix:
+        os:
+        - ubuntu-26.04
+        - ubuntu-26.04-arm
+        - ubuntu-slim  
+        - windows-2025
+        - windows-11-arm
+        - macos-26
+        - macos-26-intel
+        - xcode-27
 
-      steps:
-        - name: System information
-          run: |
-            echo "=== CPU ==="
-            nproc
-            lscpu
-            echo "=== MEMORY ==="
-            free -h
-            echo "=== DISK ==="
-            df -h
-            echo "=== DOCKER ==="
-            docker info
+    runs-on:  ${{ matrix.os }}
+
+    steps:
+      - name: System information
+        run: |
+          echo "=== CPU ==="
+          nproc
+          lscpu
+          echo "=== MEMORY ==="
+          free -h
+          echo "=== DISK ==="
+          df -h
+          echo "=== DOCKER ==="
+          docker info
