@@ -12,5 +12,5 @@ public interface ISyncDataService
 
     IAsyncEnumerable<SyncData> GetData(SyncDataRequest request, CallContext context = default);
 
-    ValueTask<SyncDataResult> SendData(IAsyncEnumerable<SyncData> datas, CallContext context = default);    
+    ValueTask<SyncDataResult> SendData(IAsyncEnumerable<SyncData> datas, CallContext context = default);
 }

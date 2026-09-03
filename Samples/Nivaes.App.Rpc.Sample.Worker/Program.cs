@@ -16,7 +16,7 @@ builder.Logging.AddFilter("Nivaes", LogLevel.Trace);
 var url = builder.Configuration["services:RpcSampleSerice:Grpc:0"];
 var databasePath = "client.db";
 
-builder.AddRpcClient<DatabaseContext>(new Uri(url!), 1, (sp, optionAction) =>
+builder.AddRpcClient<DatabaseContext>(new Uri(url!), idTenant: 100, idClient: 4, (sp, optionAction) =>
 {
     optionAction.UseSqlite($"Data Source={databasePath}");
 });

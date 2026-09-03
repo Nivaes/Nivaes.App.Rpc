@@ -14,7 +14,10 @@ namespace Nivaes.App.Rpc.Client.Hosting
     {
         internal static IServiceProvider? ServiceProvider;
 
-        public static IHostApplicationBuilder AddRpcClient<TContext>(this IHostApplicationBuilder builder, Uri url, int idClient, 
+        public static IHostApplicationBuilder AddRpcClient<TContext>(this IHostApplicationBuilder builder,
+            Uri url,
+            int idTenant,
+            int idClient,
             Action<IServiceProvider, DbContextOptionsBuilder> optionsAction)
             where TContext : DbContext
         {
@@ -43,6 +46,7 @@ namespace Nivaes.App.Rpc.Client.Hosting
                         EnableMultipleHttp2Connections = true
                     }
                 });
+                //aa.ShutdownAsync();
             });
 
             builder.Services.AddSingleton<ISyncDataService>(sp =>
@@ -54,7 +58,13 @@ namespace Nivaes.App.Rpc.Client.Hosting
 
             builder.Services.AddSingleton<RpcSyncDataSignal>();
             builder.Services.AddHostedService<RpcSyncDataWorker<TContext>>();
-            builder.Services.AddSingleton<SyncClientConfiguration>(new SyncClientConfiguration { IdClient = idClient });
+            builder.Services.AddSingleton<SyncClientConfiguration>(
+                new SyncClientConfiguration 
+                {
+                    IdClient = idClient,
+                    IdTenant = idTenant
+                }
+            );
 
             return builder;
         }

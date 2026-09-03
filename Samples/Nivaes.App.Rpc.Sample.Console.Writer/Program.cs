@@ -22,7 +22,7 @@ internal static class Program
         var url = "https://localhost:7121";
 
         var databasePath = "client.db";
-        builder.AddRpcClient<DatabaseContext>(new Uri(url!), 3, (sp, optionAction) =>
+        builder.AddRpcClient<DatabaseContext>(new Uri(url!), idTenant: 100, idClient: 3,(sp, optionAction) =>
         {
             optionAction.UseSqlite($"Data Source={databasePath}");
         });

@@ -6,6 +6,7 @@ using MemoryPack;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using ProtoBuf.Grpc;
+using static MongoDB.Driver.WriteConcern;
 
 namespace Nivaes.App.Rpc.AspNetCore.Server;
 
@@ -70,7 +71,7 @@ internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncData
     {
         logger.LogDebug("Rpc GetData");
 
-        var database = mongoClient.GetDatabase("Db1");
+        var database = mongoClient.GetDatabase($"Db-{request.IdTenant}");
         var collection = database.GetCollection<MongoDocument>(CollectionName);
 
         var filter = Builders<MongoDocument>.Filter.And(
@@ -103,19 +104,29 @@ internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncData
         }
     }
 
+    private async IAsyncEnumerable<SyncData> Producer(CallContext ctx)
+    {
+        yield break;
+    }
+
+    private async ValueTask Consumer(IAsyncEnumerable<SyncData> source, CallContext ctx)
+    {
+    }
+
     async ValueTask<SyncDataResult> ISyncDataService.SendData(IAsyncEnumerable<SyncData> datas, CallContext context)
     {
         logger.LogDebug("Rpc SendData");
 
         var headers = context.ServerCallContext?.RequestHeaders;
+        var idTenant = int.Parse(headers!.FirstOrDefault(x => x.Key == "idtenant")!.Value!);
         var idUser = int.Parse(headers!.FirstOrDefault(x => x.Key == "idclient")!.Value!);
 
-        var database = mongoClient.GetDatabase("Db1");
+        var database = mongoClient.GetDatabase($"Db-{idTenant}");
         var collection = database.GetCollection<MongoDocument>(CollectionName);
 
         try
         {
-            await foreach (var item in datas)
+            await foreach (var item in datas.WithCancellation(context.CancellationToken))
             {
                 logger.LogTrace($"Send item(SendData):{item.Id}");
 
@@ -125,19 +136,26 @@ internal sealed class SyncDataService(IMongoClient mongoClient, ILogger<SyncData
                     continue;
                 }
 
-                foreach (var channel in Connections)
-                {
-                    if (channel.Key != idUser)
-                        await channel.Value.Writer.WriteAsync(item, context.CancellationToken);
-                }
-
-                var test = new MongoDocument
-                {
-                    Id = item.Id,
-                    DataItem = (IRpcDataModel?)MemoryPackSerializer.Deserialize(syncDataType, item.Data),
-                    TimeStampTicks = item.TimeStampTicks
-                };
-                await collection.InsertOrUpdateOneAsync(test, context.CancellationToken);
+                await Task.WhenAll(
+                    Task.Run(async () =>
+                    {
+                        foreach (var channel in Connections)
+                        {
+                            if (channel.Key != idUser)
+                                await channel.Value.Writer.WriteAsync(item, context.CancellationToken);
+                        }
+                    }),
+                    Task.Run(async() =>
+                    {
+                        var test = new MongoDocument
+                        {
+                            Id = item.Id,
+                            DataItem = (IRpcDataModel?)MemoryPackSerializer.Deserialize(syncDataType, item.Data),
+                            TimeStampTicks = item.TimeStampTicks
+                        };
+                        await collection.InsertOrUpdateOneAsync(test, context.CancellationToken);
+                    })
+                );
             }
         }
         catch (OperationCanceledException) when (context.CancellationToken.IsCancellationRequested)

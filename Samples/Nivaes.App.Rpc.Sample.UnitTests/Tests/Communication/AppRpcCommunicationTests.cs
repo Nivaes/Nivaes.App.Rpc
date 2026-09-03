@@ -80,28 +80,23 @@ namespace Nivaes.App.Rpc.Sample.Tests
             }
             var items = GetUsers();
 
-            var requestSend = new SyncDataRequest
-            {
-                IdClient = 1,
-                LastTimestampTicks = DateTime.UtcNow.Ticks
-            };
-
             await syncDataService.SendData(items,
                   new ProtoBuf.Grpc.CallContext(
                     new CallOptions(
-                        headers: new Metadata { { "IdClient", "1" } },
+                        headers: new Metadata { { "IdTenant", "10" }, { "IdClient", "1" } },
                         //credentials: 
                         cancellationToken: fixture.CancellationToken)));
 
             var requestGet = new SyncDataRequest
             {
+                IdTenant = 10,
                 IdClient = 1,
                 LastTimestampTicks = DateTime.UtcNow.Ticks
             };
 
             var itemsCopy = syncDataService.GetData(requestGet, fixture.CancellationToken);
 
-            var syncDataCopy = await itemsCopy.FirstAsync();
+            var syncDataCopy = await itemsCopy.FirstOrDefaultAsync();
             syncDataCopy.ShouldNotBeNull();
 
             var syncDataType = Singleton<RpcDataModelsTypeContainer>.Instance.RpcDataModelsType[syncDataCopy.EntityType];
@@ -171,16 +166,11 @@ namespace Nivaes.App.Rpc.Sample.Tests
                 }
             }
             var items = GetUsers();
-            var requestSend = new SyncDataRequest
-            {
-                IdClient = 1,
-                LastTimestampTicks = DateTime.UtcNow.Ticks
-            };
-
+          
             await syncDataService.SendData(items,
                   new ProtoBuf.Grpc.CallContext(
                     new CallOptions(
-                        headers: new Metadata { { "IdClient", "1" } },
+                        headers: new Metadata { { "IdTenant", "12" }, { "IdClient", "1" } },
                         //credentials: 
                         cancellationToken: fixture.CancellationToken)));
         }
@@ -262,16 +252,10 @@ namespace Nivaes.App.Rpc.Sample.Tests
                 }
             }
             var items = GetUsers();
-            var requestSend = new SyncDataRequest
-            {
-                IdClient = 1,
-                LastTimestampTicks = DateTime.UtcNow.Ticks
-            };
-
             await syncDataService.SendData(items, 
                 new ProtoBuf.Grpc.CallContext(
                     new CallOptions(
-                        headers: new Metadata { { "IdClient", "1" } },
+                        headers: new Metadata { { "IdTenant", "13" }, { "IdClient", "1" } },
                         cancellationToken: fixture.CancellationToken)));
         }
     }

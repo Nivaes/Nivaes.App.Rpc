@@ -78,12 +78,14 @@ internal class RpcSyncDataWorker<TContext>(
         try
         {
             await UpdateLastTimestampSetting(cancellationToken);
-        
+
             var syncDatas = SyncGetDatas(cancellationToken);
 
             await syncDataService.SendData(syncDatas, new CallContext(
                     new CallOptions(
-                        headers: new Metadata {{ "IdClient", clientConfiguration.IdClient } },
+                        headers: new Metadata {
+                            { "IdTenant", clientConfiguration.IdTenant.ToString() }, 
+                            { "IdClient", clientConfiguration.IdClient.ToString() } },
                         cancellationToken: cancellationToken)));
         }
         catch (Exception ex)
@@ -131,6 +133,7 @@ internal class RpcSyncDataWorker<TContext>(
 
         var rquest = new SyncDataRequest
         {
+            IdTenant = clientConfiguration.IdTenant,
             IdClient = clientConfiguration.IdClient,
             LastTimestampTicks = await LastTimestampSetting(cancellationToken) - TimeSpan.FromMinutes(5).Ticks
         };

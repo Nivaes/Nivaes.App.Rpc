@@ -42,7 +42,6 @@ builder.AddProject<Projects.Nivaes_App_Rpc_Sample_Console_Writer>("RpcSampleCons
 builder.AddProject<Projects.Nivaes_App_Rpc_Sample_Worker>("RpcSampleConsoleWorker")
                 .WithReference(appWebApi)
                 .WaitFor(appWebApi);
-
 #endregion
 
 builder.Build().Run();
