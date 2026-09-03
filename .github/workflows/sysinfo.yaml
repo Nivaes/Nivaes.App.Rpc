@@ -4,18 +4,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  SyncInfo:
+  SyncInfo-Linux:
     strategy:
       matrix:
         os:
-        - ubuntu-latest
-        - ubuntu-latest-arm
-        - ubuntu-slim  
-        - windows-latest
-        - windows-latest-arm
-        - macos-latest
-        - macos-latest-intel
-        - xcode-latest
+        - macos-26-latest
+        - macos-26-intel
+        - xcode-27
 
     runs-on:  ${{ matrix.os }}
 
@@ -32,3 +27,69 @@ jobs:
           df -h
           echo "=== DOCKER ==="
           docker info
+
+  SyncInfo-Windows:
+    strategy:
+      matrix:
+        os:
+        - windows-2025-latest
+        - windows-11-arm
+
+    runs-on:  ${{ matrix.os }}
+
+    steps:
+      - name: System information
+        run: |
+          echo "=== CPU ==="
+          powershell.exe -NoProfile -Command \
+            "Get-CimInstance Win32_Processor | Select-Object Name,NumberOfCores,NumberOfLogicalProcessors"
+
+          echo
+          echo "=== MEMORY ==="
+          powershell.exe -NoProfile -Command \
+            "\$os = Get-CimInstance Win32_OperatingSystem; [math]::Round(\$os.TotalVisibleMemorySize / 1MB, 2)"
+
+          echo
+          echo "=== DISK ==="
+          powershell.exe -NoProfile -Command \
+            "Get-PSDrive -PSProvider FileSystem | Select-Object Name,@{N='FreeGB';E={[math]::Round(\$_.Free/1GB,2)}},@{N='UsedGB';E={[math]::Round((\$_.Used)/1GB,2)}}"
+
+          echo
+          echo "=== DOCKER ==="
+          docker info || true
+
+  SyncInfo-MacOS:
+    strategy:
+      matrix:
+        os:
+        - macos-26-latest
+        - macos-26-intel
+        - xcode-27
+
+    runs-on:  ${{ matrix.os }}
+
+    steps:
+      - name: System information
+        run: |
+           echo "=== CPU ==="
+            sysctl -n hw.ncpu
+            sysctl -n hw.physicalcpu
+            sysctl -n hw.logicalcpu
+
+            echo
+            echo "=== CPU MODEL ==="
+            sysctl -n machdep.cpu.brand_string 2>/dev/null || \
+              sysctl -n hw.model
+
+            echo
+            echo "=== MEMORY ==="
+            vm_stat
+
+            echo
+            echo "=== DISK ==="
+            df -h
+
+            echo
+            echo "=== DOCKER ==="
+            docker info || true
+
