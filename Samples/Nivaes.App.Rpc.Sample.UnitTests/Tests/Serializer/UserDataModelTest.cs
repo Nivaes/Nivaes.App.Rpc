@@ -20,7 +20,7 @@ namespace Nivaes.App.Rpc.Sample.Test.Serializer
                 FamilyName = contact.FamilyName,
                 Email = contact.Email,
                 PhoneNumber = contact.TelephoneNumber,
-                TimeStamp = DateTime.UtcNow
+                DateTimeStamp = DateTime.UtcNow
             };
 
             var bin = MemoryPackSerializer.Serialize(user);
@@ -38,8 +38,8 @@ namespace Nivaes.App.Rpc.Sample.Test.Serializer
             userCopy.Email.ShouldBe(user.Email);
             userCopy.IdUser.ShouldBe(user.IdUser);
             userCopy.PhoneNumber.ShouldBe(user.PhoneNumber);
-            userCopy.TimeStamp.ShouldBe(user.TimeStamp);
-            userCopy.TimeStampTicks.ShouldBe(user.TimeStampTicks);
+            userCopy.DateTimeStamp.ShouldBe(user.DateTimeStamp);
+            userCopy.DateTimeStampTicks.ShouldBe(user.DateTimeStampTicks);
         }
 
         [Fact]
@@ -56,7 +56,7 @@ namespace Nivaes.App.Rpc.Sample.Test.Serializer
                 FamilyName = contact.FamilyName,
                 Email = contact.Email,
                 PhoneNumber = contact.TelephoneNumber,
-                TimeStamp = DateTime.UtcNow
+                DateTimeStamp = DateTime.UtcNow
             };
 
             UserDataModel? userCopy = null;
@@ -75,8 +75,8 @@ namespace Nivaes.App.Rpc.Sample.Test.Serializer
             userCopy.Email.ShouldBe(user.Email);
             userCopy.IdUser.ShouldBe(user.IdUser);
             userCopy.PhoneNumber.ShouldBe(user.PhoneNumber);
-            userCopy.TimeStamp.ShouldBe(user.TimeStamp);
-            userCopy.TimeStampTicks.ShouldBe(user.TimeStampTicks);
+            userCopy.DateTimeStamp.ShouldBe(user.DateTimeStamp);
+            userCopy.DateTimeStampTicks.ShouldBe(user.DateTimeStampTicks);
         }
 
         [Fact]
@@ -93,7 +93,7 @@ namespace Nivaes.App.Rpc.Sample.Test.Serializer
                 FamilyName = contact.FamilyName,
                 Email = contact.Email,
                 PhoneNumber = contact.TelephoneNumber,
-                TimeStamp = DateTime.UtcNow
+                DateTimeStamp = DateTime.UtcNow
             };
 
             MemoryStream ms = new MemoryStream();
@@ -113,8 +113,8 @@ namespace Nivaes.App.Rpc.Sample.Test.Serializer
             userCopy.Email.ShouldBe(user.Email);
             userCopy.IdUser.ShouldBe(user.IdUser);
             userCopy.PhoneNumber.ShouldBe(user.PhoneNumber);
-            userCopy.TimeStamp.ShouldBe(user.TimeStamp);
-            userCopy.TimeStampTicks.ShouldBe(user.TimeStampTicks);
+            userCopy.DateTimeStamp.ShouldBe(user.DateTimeStamp);
+            userCopy.DateTimeStampTicks.ShouldBe(user.DateTimeStampTicks);
         }
     }
 }

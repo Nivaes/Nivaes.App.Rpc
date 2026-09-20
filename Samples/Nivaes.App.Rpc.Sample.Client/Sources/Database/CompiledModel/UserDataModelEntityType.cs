@@ -312,23 +312,23 @@ namespace Nivaes.App.Rpc.Sample.Client.Database
                 propertyInfo: typeof(DataModel).GetProperty("TimeStamp", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly),
                 sentinel: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
             timeStamp.SetGetter(
-                DateTime (UserDataModel instance) => instance.TimeStamp,
-                bool (UserDataModel instance) => instance.TimeStamp == default(DateTime));
+                DateTime (UserDataModel instance) => instance.DateTimeStamp,
+                bool (UserDataModel instance) => instance.DateTimeStamp == default(DateTime));
             timeStamp.SetSetter(
                 UserDataModel (UserDataModel instance, DateTime value) =>
                 {
-                    instance.TimeStamp = value;
+                    instance.DateTimeStamp = value;
                     return instance;
                 });
             timeStamp.SetMaterializationSetter(
                 UserDataModel (UserDataModel instance, DateTime value) =>
                 {
-                    instance.TimeStamp = value;
+                    instance.DateTimeStamp = value;
                     return instance;
                 });
             timeStamp.SetAccessors(
-                DateTime (IInternalEntry entry) => ((UserDataModel)(entry.Entity)).TimeStamp,
-                DateTime (IInternalEntry entry) => ((UserDataModel)(entry.Entity)).TimeStamp,
+                DateTime (IInternalEntry entry) => ((UserDataModel)(entry.Entity)).DateTimeStamp,
+                DateTime (IInternalEntry entry) => ((UserDataModel)(entry.Entity)).DateTimeStamp,
                 DateTime (IInternalEntry entry) => entry.ReadOriginalValue<DateTime>(timeStamp, 8),
                 DateTime (IInternalEntry entry) => entry.GetCurrentValue<DateTime>(timeStamp));
             timeStamp.SetPropertyIndexes(

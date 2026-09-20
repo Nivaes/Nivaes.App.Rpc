@@ -157,7 +157,7 @@ namespace Nivaes.App.Rpc.Client
             if (item is null)
                 return null;
 
-            item.TimeStampTicks = DateTime.UtcNow.Ticks;
+            item.DateTimeStampTicks = DateTime.UtcNow.Ticks;
 
             var itemData =
                 MemoryPackSerializer.Serialize(
@@ -169,7 +169,7 @@ namespace Nivaes.App.Rpc.Client
                 Id = item.Id,
                 Data = itemData,
                 EntityType = item.GetType().FullName!,
-                TimeStampTicks = item.TimeStampTicks,
+                TimeStampTicks = item.DateTimeStampTicks,
             };
         }
         #endregion

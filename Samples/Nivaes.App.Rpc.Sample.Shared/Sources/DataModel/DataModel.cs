@@ -13,15 +13,15 @@ public abstract partial class DataModel
 {
     public abstract Guid Id { get; }
 
-    #region TimeStamp
+    #region DateTimeStamp
     [MemoryPackIgnore]
-    public DateTime TimeStamp
+    public DateTime DateTimeStamp
     {
-        get => new DateTime(TimeStampTicks, DateTimeKind.Utc);
-        set => TimeStampTicks = value.Ticks;
+        get => new DateTime(DateTimeStampTicks, DateTimeKind.Utc);
+        set => DateTimeStampTicks = value.Ticks;
     }
 
-    public long TimeStampTicks
+    public long DateTimeStampTicks
     {
         get
         {
@@ -32,7 +32,20 @@ public abstract partial class DataModel
         }
         set => field = value;
     }
+    #endregion
 
+    #region DeleteDateTimeStamp
+    [MemoryPackIgnore]
+    public DateTime? DeleteDateTimeStamp
+    {
+        get => DeleteDateTimeStampTicks.HasValue
+            ? new(DeleteDateTimeStampTicks.Value, DateTimeKind.Utc)
+            : null;
+        set => DeleteDateTimeStampTicks = value?.Ticks;
+    }
+
+    [MemoryPackInclude]
+    public long? DeleteDateTimeStampTicks { get; set; }
     #endregion
 
     #region INotifyPropertyChanged

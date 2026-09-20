@@ -67,10 +67,10 @@ public class ServerDatabaseContext : DbContext
             entity.Property(e => e.PhoneNumber)
                 .HasColumnName("PhoneNumber");
 
-            entity.HasIndex(up => up.TimeStampTicks)
+            entity.HasIndex(up => up.DateTimeStampTicks)
                 .IsUnique(false);
 
-            entity.Property(up => up.TimeStampTicks)
+            entity.Property(up => up.DateTimeStampTicks)
                 .IsRequired()
                 .HasColumnName("TimeStampTicks");
         });

@@ -66,7 +66,7 @@ namespace Nivaes.App.Rpc.Sample.Tests
                     FamilyName = contact.FamilyName,
                     Email = contact.Email,
                     PhoneNumber = contact.TelephoneNumber,
-                    TimeStamp = DateTime.UtcNow
+                    DateTimeStamp = DateTime.UtcNow
                 };
                 var itemData = MemoryPackSerializer.Serialize(item.GetType(), item);
 
@@ -152,7 +152,7 @@ namespace Nivaes.App.Rpc.Sample.Tests
                         FamilyName = contact.FamilyName,
                         Email = contact.Email,
                         PhoneNumber = contact.TelephoneNumber,
-                        TimeStamp = DateTime.UtcNow
+                        DateTimeStamp = DateTime.UtcNow
                     };
                     var itemData = MemoryPackSerializer.Serialize(item.GetType(), item);
 
@@ -236,7 +236,7 @@ namespace Nivaes.App.Rpc.Sample.Tests
                         FamilyName = contact.FamilyName,
                         Email = contact.Email,
                         PhoneNumber = contact.TelephoneNumber,
-                        TimeStamp = DateTime.UtcNow
+                        DateTimeStamp = DateTime.UtcNow
                     };
                     var itemData = MemoryPackSerializer.Serialize(item.GetType(), item);
 
