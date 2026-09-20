@@ -23,13 +23,7 @@ public abstract partial class DataModel
 
     public long DateTimeStampTicks
     {
-        get
-        {
-            if(field == 0)
-                field = DateTime.UtcNow.Ticks;
-
-            return field;
-        }
+        get => field == 0 ? DateTime.Now.Ticks : field;
         set => field = value;
     }
     #endregion
